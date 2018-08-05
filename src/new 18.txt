@@ -1,0 +1,30 @@
+next do itinerary and flight association table and flight passenger seat assignment
+
+
+if there are two flights in an itinerary then two row in booking
+
+spring session jdbc
+
+check if transactions can be done and configured
+server.servlet.context-path=
+spring security -- done
+
+reload aircraft data
+
+address for users and employee types and crew assignment and employee register ids
+
+C:\Database Management\Example\BUETAirlines.com-master\Example\Credit Card
+C:\Database Management\Example\BUETAirlines.com-master\Example\Seat_Booking
+C:\Database Management\Example\BUETAirlines.com-master\Admin\pages\adminpages
+C:\Database Management\Example\BUETAirlines.com-master\PROJECT  TABLES
+C:\Database Management\Example\BUETAirlines.com-master\Research
+C:\Database Management\Example\BUETAirlines.com-master\SQL Code
+
+"yyyy-MM-dd'T'HH:mm:ss.SSSX"
+
+Search cities - use api to autofill the airport from city
+select dates
+search the from and to
+display the results 
+
+when booking check schedule table if same flight for same dates(departure and arrival) is already present in DB. If yes, then take the itinerary id and check from itinerary table if the user is booking for that exact itinerary. If yes then use the schedule id for booking. Else, insert in itinerary for the user search(user input from and to airports) and insert new rows in schedule for that itinerary.
