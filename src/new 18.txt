@@ -28,3 +28,15 @@ search the from and to
 display the results 
 
 when booking check schedule table if same flight for same dates(departure and arrival) is already present in DB. If yes, then take the itinerary id and check from itinerary table if the user is booking for that exact itinerary. If yes then use the schedule id for booking. Else, insert in itinerary for the user search(user input from and to airports) and insert new rows in schedule for that itinerary.
+
+
+
+pending :
+
+create user, update profile, sign out
+add credit card, update credit card, delete credit card
+display to users their booked itineraries
+cancel itinerary
+add role dependencies on functionality
+
+admin functionalities

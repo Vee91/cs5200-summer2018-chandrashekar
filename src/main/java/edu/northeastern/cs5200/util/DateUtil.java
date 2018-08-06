@@ -28,6 +28,14 @@ public class DateUtil {
 		return null;
 	}
 
+	public static java.sql.Date dateToSQLDate(Date date) {
+		java.sql.Date sqlDate = null;
+		if (date != null) {
+			sqlDate = new java.sql.Date(date.getTime());
+		}
+		return sqlDate;
+	}
+
 	public static Date getDateFromISO(String source) {
 		return dateFromInstant(Instant.parse(source));
 	}

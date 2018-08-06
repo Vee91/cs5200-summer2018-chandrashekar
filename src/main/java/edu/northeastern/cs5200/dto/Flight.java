@@ -18,15 +18,13 @@ public class Flight {
 	private Airport origin;
 	private Airport destination;
 	private String airline;
-	private String flightNumber;
+	private int flightNumber;
 	private String aircraft;
 
-	public Flight() {
-
-	}
+	public Flight() {}
 
 	public Flight(Date departsAt, Date arrivesAt, Airport origin, Airport destination, String airline,
-			String flightNumber, String aircraft) {
+			int flightNumber, String aircraft) {
 		super();
 		this.departsAt = departsAt;
 		this.arrivesAt = arrivesAt;
@@ -80,12 +78,12 @@ public class Flight {
 		this.airline = airline;
 	}
 
-	public String getFlightNumber() {
+	public int getFlightNumber() {
 		return flightNumber;
 	}
 
 	@JsonSetter("flight_number")
-	public void setFlightNumber(String flightNumber) {
+	public void setFlightNumber(int flightNumber) {
 		this.flightNumber = flightNumber;
 	}
 

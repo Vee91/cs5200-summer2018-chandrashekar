@@ -22,7 +22,6 @@ public class PersonController {
     public HelloObject securedUser(){
     	HelloObject obj = new HelloObject("Hello Vikas Chandrashekar ADmin!");
 		return obj;
-
     }
 
 }

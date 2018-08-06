@@ -48,7 +48,8 @@ public class SearchServiceImpl implements SearchService {
 		try {
 			String jsonResult = thirdParty.searchFlight(query);
 			JSONObject json = new JSONObject(jsonResult);
-			List<FlightSearchResult> results = formatSearchResult(json, query.isReturnFlight());
+			List<FlightSearchResult> results = formatSearchResult(json, query.isReturnFlight(), query.getOrigin(),
+					query.getDestination());
 			Iterator<FlightSearchResult> itr = results.iterator();
 			Map<String, String> cache = new HashMap<>();
 			Map<String, Object> infoMap = new HashMap<>();
@@ -103,20 +104,25 @@ public class SearchServiceImpl implements SearchService {
 
 	}
 
-	private List<FlightSearchResult> formatSearchResult(JSONObject json, boolean returnFlight)
-			throws JSONException, IOException {
+	private List<FlightSearchResult> formatSearchResult(JSONObject json, boolean returnFlight, String origin,
+			String destination) throws JSONException, IOException {
 		List<FlightSearchResult> output = new ArrayList<>();
 		ObjectMapper mapper = new ObjectMapper();
-		FlightSearchResult result = new FlightSearchResult();
+		
 		JSONArray resultArr = json.getJSONArray("results");
 		for (int i = 0; i < resultArr.length(); i++) {
 			JSONArray itineraries = resultArr.getJSONObject(i).getJSONArray("itineraries");
 			JSONObject outbound = itineraries.getJSONObject(0).getJSONObject("outbound");
 			Itinerary out = mapper.readValue(outbound.toString(), Itinerary.class);
+			out.setOrigin(origin);
+			out.setDestination(destination);
+			FlightSearchResult result = new FlightSearchResult();
 			result.setOutbound(out);
 			if (returnFlight) {
 				JSONObject inbound = itineraries.getJSONObject(0).getJSONObject("inbound");
 				Itinerary in = mapper.readValue(inbound.toString(), Itinerary.class);
+				in.setOrigin(destination);
+				in.setDestination(origin);
 				result.setInbound(in);
 			}
 			JSONObject fare = resultArr.getJSONObject(i).getJSONObject("fare");
@@ -137,14 +143,14 @@ public class SearchServiceImpl implements SearchService {
 		if (code.getCode() != null) {
 			// TODO remove code
 			/*
-			JSONObject airportObj = new JSONObject(thirdParty.getAirport(code.getCode()));
-			JSONArray arr = airportObj.getJSONArray("response");
-			if (arr.length() > 0) {
-				String name = arr.getJSONObject(0).getString("name");
-				code.setLabel(name);
-				cache.put(code.getCode(), name);
-			}		*/
-			code.setLabel(flightDao.getAirport(code.getCode()));}
+			 * JSONObject airportObj = new
+			 * JSONObject(thirdParty.getAirport(code.getCode())); JSONArray arr =
+			 * airportObj.getJSONArray("response"); if (arr.length() > 0) { String name =
+			 * arr.getJSONObject(0).getString("name"); code.setLabel(name);
+			 * cache.put(code.getCode(), name); }
+			 */
+			code.setLabel(flightDao.getAirport(code.getCode()));
+		}
 	}
 
 }

@@ -8,9 +8,9 @@ public class Person {
 	private String username;
 	private String password;
 	private String role;
-	private int phone;
+	private String phone;
 	private String email;
-	
+
 	public Person() {
 
 	}
@@ -21,8 +21,23 @@ public class Person {
 		this.firstname = users.getFirstname();
 		this.lastname = users.getLastname();
 		this.role = users.getRole();
+		this.id = users.getId();
 		this.phone = users.getPhone();
 		this.email = users.getEmail();
+	}
+
+	
+	public Person(int id, String firstname, String lastname, String username, String password, String role,
+			String phone, String email) {
+		super();
+		this.id = id;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.phone = phone;
+		this.email = email;
 	}
 
 	public int getId() {
@@ -73,11 +88,11 @@ public class Person {
 		this.role = role;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -89,5 +104,4 @@ public class Person {
 		this.email = email;
 	}
 
-	
 }
