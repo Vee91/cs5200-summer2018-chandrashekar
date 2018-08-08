@@ -2,8 +2,7 @@ require.config({
 	baseUrl : '',
 	// paths: maps ids with paths (no extension)
 	paths : {
-		'jquery' : 'extResources/js/jquery-2.1.4.min',
-		'jqueryui' : 'extResources/js/jquery-1.11.4.ui.min',
+		'jquery' : 'extResources/js/jquery-3.2.1.min',
 		'angular' : 'extResources/js/angular.min',
 		'domReady' : 'extResources/js/domready',
 		'angularRoute' : 'extResources/js/angular-route',
@@ -16,7 +15,12 @@ require.config({
 		'homeController' : 'appResources/js/controllers/homeController',
 		'homeService': 'appResources/js/services/homeService',
 		'loginController' : 'appResources/js/controllers/loginController',
-
+		'loginService': 'appResources/js/services/loginService',
+		'registerController' : 'appResources/js/controllers/registerController',
+		'registerService': 'appResources/js/services/registerService',
+		'profileController' : 'appResources/js/controllers/profileController',
+		'adminController' : 'appResources/js/controllers/adminController',
+		'adminService': 'appResources/js/services/adminService',
 	},
 	// shim: makes external libraries reachable
 	shim : {
@@ -40,7 +44,7 @@ require.config({
 });
 
 // Angular Bootstrap
-require([ 'angular', 'app', 'jqueryui' ], function(angular, app) {
+require([ 'angular', 'app' ], function(angular, app) {
 	angular.element().ready(function() {
 		// bootstrap the app manually
 		require([ 'domReady' ], function() {

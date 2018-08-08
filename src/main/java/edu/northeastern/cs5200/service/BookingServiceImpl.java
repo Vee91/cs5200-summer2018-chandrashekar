@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.northeastern.cs5200.dao.BookingDao;
 import edu.northeastern.cs5200.dto.Flight;
 import edu.northeastern.cs5200.dto.FlightSearchResult;
 import edu.northeastern.cs5200.dto.Itinerary;
+import edu.northeastern.cs5200.dto.Passenger;
 import edu.northeastern.cs5200.util.ResponseResource;
 
 @Service
@@ -25,25 +27,73 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	private BookingDao bookingDao;
 
+	@Transactional
 	@Override
-	public ResponseResource bookItinerary(FlightSearchResult itinerary) {
+	public ResponseResource bookItinerary(FlightSearchResult itinerary, List<Passenger> passengers, int cardId,
+			int securityCode) {
 		// TODO validations
-
+		LOG.info("BookingService | bookItinerary | Successful :: Validation Success");
+		ResponseResource out = new ResponseResource();
+		int inboundBookingid = -1;
+		LOG.info("BookingService | bookItinerary | starting outbound booking");
 		int bookingid = validateOutbound(itinerary.getOutbound(), true);
-		// TODO insert passengers
-		// bookingDao.insertPassengers(bookingid, passengers)
+		LOG.info("BookingService | bookItinerary | outbound booking successful with booking id " + bookingid);
+		int outboundPass = bookingDao.insertPassengers(bookingid, passengers);
+		LOG.info("BookingService | bookItinerary | " + outboundPass + "passengers added to outbound booking "
+				+ bookingid);
+		if (outboundPass != passengers.size()) {
+			LOG.error("BookingService | bookItinerary | Error adding passengers for outbound booking " + bookingid);
+			out.setCode("400");
+			out.setMessage("There was an error adding passengers to your booking. Please try again");
+			return out;
+		}
 
 		if (itinerary.getInbound() != null) {
-			int inboundBookingid = validateOutbound(itinerary.getInbound(), false);
-			// TODO insert passengers
-			// bookingDao.insertPassengers(bookingid, passengers)
+			LOG.info("BookingService | bookItinerary | starting inbound booking");
+			inboundBookingid = validateOutbound(itinerary.getInbound(), false);
+			LOG.info("BookingService | bookItinerary | inbound booking successful with booking id " + inboundBookingid);
+			int inboundPass = bookingDao.insertPassengers(inboundBookingid, passengers);
+			LOG.info("BookingService | bookItinerary | " + inboundPass + "passengers added to inbound booking "
+					+ inboundBookingid);
+			if (inboundPass != passengers.size()) {
+				LOG.error("BookingService | bookItinerary | Error adding passengers for outbound booking "
+						+ inboundBookingid);
+				out.setCode("400");
+				out.setMessage("There was an error adding passengers to your booking. Please try again");
+				return out;
+			}
 		}
-		// TODO
-		// inserttransaction
-		ResponseResource out = new ResponseResource();
+
+		if (validateTransaction(bookingid, cardId, securityCode) == 0) {
+			out.setCode("400");
+			out.setMessage(
+					"There was a problem while charging your card. Your card will not be charged. Please try aggin.");
+			return out;
+		}
+
+		if (inboundBookingid != -1) {
+			if (validateTransaction(inboundBookingid, cardId, securityCode) == 0) {
+				out.setCode("400");
+				out.setMessage(
+						"There was a problem while charging your card. Your card will not be charged. Please try aggin.");
+				return out;
+			}
+		}
+
 		out.setCode("200");
 		out.setMessage("Sucessfully booked your itinerary");
 		return out;
+	}
+
+	private int validateTransaction(int bookingid, int cardId, int securityCode) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		int dbSecCode = bookingDao.getSecurityCode(cardId, username);
+		if (dbSecCode == securityCode) {
+			return bookingDao.makeTransaction(bookingid, cardId);
+		} else {
+			return 0;
+		}
 	}
 
 	private int validateOutbound(Itinerary itinerary, boolean outbound) {
@@ -61,7 +111,9 @@ public class BookingServiceImpl implements BookingService {
 
 		// if flights are not scheduled scheduled, schedule them
 		if (!unscheduled.isEmpty()) {
+			LOG.info("BookingService | validateOutbound | outbound :: " + outbound + " | unscheduled flights exist");
 			bookingDao.scheduleFlights(unscheduled);
+			LOG.info("BookingService | validateOutbound | outbound :: " + outbound + " | scheduled flights");
 		}
 
 		// insert itenerary if it does not exist
@@ -77,7 +129,9 @@ public class BookingServiceImpl implements BookingService {
 
 		// if itinerary does not exist then make it
 		if (!itrExists) {
+			LOG.info("BookingService | handleItinerary | outbound :: " + outbound + " | itinerary does not exist");
 			bookingDao.insertItinerary(itinerary);
+			LOG.info("BookingService | handleItinerary | outbound :: " + outbound + " | itinerary added successfully");
 		}
 	}
 

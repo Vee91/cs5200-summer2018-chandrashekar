@@ -27,7 +27,7 @@ public class CardController {
 	// TODO authentication
 	@RequestMapping(value = { "/card/add" }, method = RequestMethod.GET)
 	@ResponseBody
-	ResponseResource addCreditCard() {
+	public ResponseResource addCreditCard() {
 		// TODO
 		CreditCard c = new CreditCard();
 		return creditService.addCreditCard(c);
@@ -36,14 +36,14 @@ public class CardController {
 	// TODO authentication
 	@RequestMapping(value = { "/card" }, method = RequestMethod.GET)
 	@ResponseBody
-	ResponseResource getAllCreditCard() {
+	public ResponseResource getAllCreditCard() {
 		return creditService.getAllCreditCard();
 	}
 
 	// TODO authentication
 	@RequestMapping(value = { "/card/delete" }, method = RequestMethod.GET)
 	@ResponseBody
-	ResponseResource deleteCard() {
+	public ResponseResource deleteCard() {
 		// TODO
 		int id = 0;
 		int securityCode = 0;

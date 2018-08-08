@@ -24,13 +24,13 @@ public class SearchController {
 
 	@RequestMapping(value = { "/autocomplete/{value}" }, method = RequestMethod.GET)
 	@ResponseBody
-	ResponseResource autoComplete(@PathVariable(value = "value") String value) {
+	public ResponseResource autoComplete(@PathVariable(value = "value") String value) {
 		return searchService.autoComplete(value);
 	}
 
 	@RequestMapping(value = { "/searchFlight" }, method = RequestMethod.GET)
 	@ResponseBody
-	ResponseResource searchFlight(/* @RequestBody FlightSearch searchQuery */) {
+	public ResponseResource searchFlight(/* @RequestBody FlightSearch searchQuery */) {
 		FlightSearch query = new FlightSearch();
 		query.setOrigin("IST");
 		query.setDestination("BOS");

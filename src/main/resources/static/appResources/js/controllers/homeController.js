@@ -1,4 +1,4 @@
-define([ 'app', 'jqueryui','homeService'], function(app) {
+define(['jquery', 'angular', 'app','homeService'], function(jquery, angular, app, jqueryui) {
 	app.controller('homeController', [ '$location', 'HomeService', function($location, HomeService) {
 		var vm = this;
 
@@ -7,6 +7,13 @@ define([ 'app', 'jqueryui','homeService'], function(app) {
                 .then(function (response) {
                 	vm.message = response;
                 });
+            
+            $('.burger, .overlay').click(function(){
+      		  $('.burger').toggleClass('clicked');
+      		  $('.overlay').toggleClass('show');
+      		  $('nav').toggleClass('show');
+      		  $('body').toggleClass('overflow');
+      		});
         }
 		
 		init();

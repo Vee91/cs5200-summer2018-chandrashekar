@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.northeastern.cs5200.controllers.hello.HelloObject;
+import edu.northeastern.cs5200.util.ResponseResource;
 
 @RestController
 @RequestMapping("/api")
@@ -17,11 +18,12 @@ public class PersonController {
 		return obj;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/admin")
-    public HelloObject securedUser(){
-    	HelloObject obj = new HelloObject("Hello Vikas Chandrashekar ADmin!");
-		return obj;
+    public ResponseResource securedUser(){
+    	ResponseResource out = new ResponseResource();
+    	out.setCode("200");
+    	out.setMessage("This is default admin log in page");
+    	return out;
     }
 
 }

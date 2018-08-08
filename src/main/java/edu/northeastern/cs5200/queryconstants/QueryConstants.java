@@ -15,6 +15,10 @@ public class QueryConstants {
 	public static final StringBuilder ASSIGN_FLIGHT_ITINERARY = new StringBuilder();
 	public static final StringBuilder INSERT_SCHEDULE = new StringBuilder();
 	public static final StringBuilder INSERT_CREDIT_CARD = new StringBuilder();
+	public static final StringBuilder INSERT_PASSENGER = new StringBuilder();
+	public static final StringBuilder INSERT_PERSON = new StringBuilder();
+	public static final StringBuilder INSERT_USER = new StringBuilder();
+	public static final StringBuilder INSERT_EMPLOYEE = new StringBuilder();
 
 	public static final StringBuilder SELECT_AIRLINE = new StringBuilder();
 	public static final StringBuilder SELECT_AIRCRAFT = new StringBuilder();
@@ -28,6 +32,8 @@ public class QueryConstants {
 	public static final StringBuilder ITINERARY_EXIST = new StringBuilder();
 
 	public static final StringBuilder DELETE_CARD = new StringBuilder();
+
+	public static final StringBuilder UPDATE_USERNAME = new StringBuilder();
 
 	static {
 		INSERT_AIRCRAFT.append("INSERT INTO `cs5200_summer2018_chandrashekar`.`aircrafts` ");
@@ -115,6 +121,30 @@ public class QueryConstants {
 
 		DELETE_CARD.append(" DELETE FROM `cs5200_summer2018_chandrashekar`.`creditcard` ");
 		DELETE_CARD.append(" WHERE id = ? and user = ? ");
+
+		INSERT_PASSENGER.append(" INSERT INTO `cs5200_summer2018_chandrashekar`.`passenger` ");
+		INSERT_PASSENGER.append(" (`booking`,`firstname`,`lastname`,`adult`,`phone_no`,`gender`,`seat_number`) ");
+		INSERT_PASSENGER.append(" VALUES ");
+		INSERT_PASSENGER.append(" (?,?,?,?,?,?,?) ");
+
+		INSERT_PERSON.append(" INSERT INTO `cs5200_summer2018_chandrashekar`.`person` ");
+		INSERT_PERSON.append(" (`firstname`,`lastname`,`email`,`password`,`role`) ");
+		INSERT_PERSON.append(" VALUES ");
+		INSERT_PERSON.append(" (?,?,?,?,?) ");
+
+		UPDATE_USERNAME.append(" update `cs5200_summer2018_chandrashekar`.`person` ");
+		UPDATE_USERNAME.append(" set `username` = ? ");
+		UPDATE_USERNAME.append(" where `id` = ? ");
+
+		INSERT_USER.append(" INSERT INTO `cs5200_summer2018_chandrashekar`.`user` ");
+		INSERT_USER.append(" (`id`) ");
+		INSERT_USER.append(" VALUES ");
+		INSERT_USER.append(" (?) ");
+
+		INSERT_EMPLOYEE.append(" INSERT INTO `cs5200_summer2018_chandrashekar`.`employee` ");
+		INSERT_EMPLOYEE.append(" (`id`) ");
+		INSERT_EMPLOYEE.append(" VALUES ");
+		INSERT_EMPLOYEE.append(" (?) ");
 
 	}
 

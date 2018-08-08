@@ -1,16 +1,38 @@
-<div>
-this is mine
-    <form name="f" action="/travelbooking/login"  method="post">
-        <fieldset>
-            <legend>Please Login</legend>
-            
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username"/>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password"/>
-            <div class="form-actions">
-                <button type="submit" name = "submit" class="btn">Log in</button>
-            </div>
-        </fieldset>
-    </form>
+
+<div class="container">
+	<div id="signup" class="signup-con">
+		<div class="signup-screen">
+			<div class="space-bot text-center">
+				<h1 class="registration-header">Log in</h1>
+				<div class="divider"></div>
+			</div>
+			<form name="f" class="form-register" method="post"
+				action="/travelbooking/login" method="post" novalidate>
+
+				<div class="input-field col s6">
+					<input id="username" type="text" class="validate" name="username"
+						required> <label for="username">Username</label>
+				</div>
+
+				<div class="input-field col s6">
+					<input id="password" name="password" type="password"
+						class="validate" required> <label for="password">Password</label>
+				</div>
+
+				<div class="space-top text-center">
+					<button type="submit" name="submit"
+						ng-disabled="form-register.$invalid"
+						class="waves-effect waves-light btn done">
+						<i class="material-icons left">done</i> Login
+					</button>
+					<a href="/travelbooking/">
+						<button type="button" class="waves-effect waves-light btn cancel">
+							<i class="material-icons left">clear</i>Cancel
+						</button>
+					</a>
+				</div>
+
+			</form>
+		</div>
+	</div>
 </div>

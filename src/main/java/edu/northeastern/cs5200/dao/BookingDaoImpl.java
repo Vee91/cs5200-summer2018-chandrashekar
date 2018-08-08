@@ -11,6 +11,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import edu.northeastern.cs5200.dto.Flight;
 import edu.northeastern.cs5200.dto.Itinerary;
+import edu.northeastern.cs5200.dto.Passenger;
 import edu.northeastern.cs5200.queryconstants.QueryConstants;
 import edu.northeastern.cs5200.util.DateUtil;
 
@@ -50,7 +52,7 @@ public class BookingDaoImpl implements BookingDao {
 	// and insert in booking
 	@Override
 	public int insertBooking(List<Flight> flights, String username) {
-		
+
 		int bookingid = insertIntoBookingDetails(username);
 		Iterator<Flight> itr = flights.iterator();
 		while (itr.hasNext()) {
@@ -120,6 +122,42 @@ public class BookingDaoImpl implements BookingDao {
 							DateUtil.dateToSQLDate(f.getArrivesAt()) },
 					new int[] { Types.INTEGER, Types.DATE, Types.DATE });
 		}
+	}
+
+	@Override
+	public int insertPassengers(int bookingid, List<Passenger> passengers) {
+		Iterator<Passenger> itr = passengers.iterator();
+		int i = 0;
+		while (itr.hasNext()) {
+			i += insertPassengerToDB(bookingid, itr.next());
+		}
+		return i;
+	}
+
+	private int insertPassengerToDB(int bookingid, Passenger next) {
+		return jdbcTemplate.update(
+				QueryConstants.INSERT_PASSENGER.toString(), new Object[] { bookingid, next.getFirstname(),
+						next.getLastname(), next.getAdult(), next.getPhoneNo(), next.getGender(), next.getSeatNo() },
+				new int[] { Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.BIT, Types.VARCHAR, Types.BIT, Types.VARCHAR });
+
+	}
+
+	@Override
+	public int getSecurityCode(int cardId, String username) {
+		try {
+			return jdbcTemplate.queryForObject(QueryConstants.SELECT_SECURITY_CODE.toString(),
+					new Object[] { cardId, username }, new int[] { Types.INTEGER, Types.VARCHAR }, Integer.class);
+		} catch (EmptyResultDataAccessException e) {
+			LOG.error("BookingDao | getSecurityCode | Exception :: No security code | Card does not exist");
+			return 0;
+		}
+	}
+
+	@Override
+	public int makeTransaction(int bookingid, int cardId) {
+		return 0;
+		// TODO insert to transaction table
+		
 	}
 
 }
