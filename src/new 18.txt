@@ -34,7 +34,7 @@ when booking check schedule table if same flight for same dates(departure and ar
 pending :
 
 create user, update profile, sign out
-add credit card, update credit card, delete credit card
+add credit card, delete credit card, display credit card
 display to users their booked itineraries
 cancel itinerary
 add role dependencies on functionality

@@ -1,7 +1,7 @@
-define(['angular', 'routes', 'angularRoute', 'angularSanitize'],
+define(['angular', 'routes', 'angularRoute', 'angularSanitize', 'angularAnimate','angularAria','angularMessage','angularMaterial'],
     function (angular, routesConfig) {
         'use strict';
-        var app = angular.module('Travel', ['ngRoute', 'ngSanitize']);
+        var app = angular.module('Travel', ['ngRoute', 'ngSanitize', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial']);
 
         app.factory('httpInterceptor', function ($q, $log, $location) {
             return {};

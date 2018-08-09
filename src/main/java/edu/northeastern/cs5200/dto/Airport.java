@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Airport {
 
-	private String code;
+	private String value;
 	private String label;
 	private String terminal;
 
@@ -16,17 +16,17 @@ public class Airport {
 	@JsonCreator
 	public Airport(@JsonProperty("airport") String value, @JsonProperty("name") String label,
 			@JsonProperty("terminal") String terminal) {
-		this.code = value;
+		this.value = value;
 		this.label = label;
 		this.terminal = terminal;
 	}
 
 	public String getCode() {
-		return code;
+		return value;
 	}
 
 	public void setCode(String code) {
-		this.code = code;
+		this.value = code;
 	}
 
 	public String getLabel() {

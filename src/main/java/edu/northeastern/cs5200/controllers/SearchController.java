@@ -41,4 +41,10 @@ public class SearchController {
 		return searchService.searchFlight(query);
 
 	}
+	
+	@RequestMapping(value = { "/init" }, method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseResource init() {
+		return searchService.init();
+	}
 }

@@ -27,6 +27,8 @@ public class ResponseResource implements Serializable {
 	private Map<String, Object> errors;
 
 	private Map<String, Object> infoMap;
+	
+	private boolean loggedin;
 
 	public Map<String, Object> getInfoMap() {
 		return infoMap;
@@ -112,6 +114,8 @@ public class ResponseResource implements Serializable {
 		}
 		getErrors().put(name, errors);
 	}
+	
+	
 /*
 	@Override
 	public int hashCode() {
@@ -143,6 +147,14 @@ public class ResponseResource implements Serializable {
 		}
 		return true;
 	}*/
+
+	public boolean isLoggedin() {
+		return loggedin;
+	}
+
+	public void setLoggedin(boolean loggedin) {
+		this.loggedin = loggedin;
+	}
 
 	@Override
 	public String toString() {

@@ -8,4 +8,6 @@ public interface SearchService {
 	public ResponseResource autoComplete(String value);
 
 	public ResponseResource searchFlight(FlightSearch query);
+
+	public ResponseResource init();
 }

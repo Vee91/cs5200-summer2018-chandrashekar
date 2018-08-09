@@ -11,6 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -151,6 +153,19 @@ public class SearchServiceImpl implements SearchService {
 			 */
 			code.setLabel(flightDao.getAirport(code.getCode()));
 		}
+	}
+
+	@Override
+	public ResponseResource init() {
+		ResponseResource out = new ResponseResource();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		if(username.equals("anonymousUser")) {
+			out.setLoggedin(false);
+		} else {
+			out.setLoggedin(true);
+		}
+		return out;
 	}
 
 }

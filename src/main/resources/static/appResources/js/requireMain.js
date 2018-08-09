@@ -7,6 +7,10 @@ require.config({
 		'domReady' : 'extResources/js/domready',
 		'angularRoute' : 'extResources/js/angular-route',
 		'angularSanitize' : 'extResources/js/angular-sanitize',
+		'angularAnimate':'extResources/js/angular-animate.min',
+		'angularAria' : 'extResources/js/angular-aria.min',
+		'angularMessage':'extResources/js/angular-messages.min',
+		'angularMaterial':'extResources/js/angular-material.min',
 		'bootstrap' : 'extResources/js/bootstrap.min',
 		'uibootstrap' : 'extResources/js/ui-bootstrap-tpls-0.9.0',
 		'uibootstrap_upd' : 'extResources/js/ui-bootstrap-0.13.4',
@@ -39,7 +43,19 @@ require.config({
 		},
 		'angularSanitize' : {
 			'deps' : [ 'angular' ]
-		}
+		},
+		'angularAnimate': {
+            deps: ['angular']
+        },
+        'angularAria': {
+            deps:[ 'angular']
+        },
+        'angularMessage' : {
+                deps: ['angular']
+        },
+        'angularMaterial': {
+            deps: ['angular', 'angularAnimate', 'angularAria']
+        }
 	}
 });
 

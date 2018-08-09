@@ -1,0 +1,13 @@
+.body-main {
+	padding-right: 15px;
+	padding-left: 15px;
+	padding-top: 15px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.highlight {
+	border: 1px solid blue;
+	border-radius: 2px;
+	margin: -1px;
+}
