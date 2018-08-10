@@ -27,6 +27,21 @@ public class DateUtil {
 		}
 		return null;
 	}
+	
+	public static String getDateAsString(String dateString, String oldFormat, String newFormat) {
+		Date date = getDateFromString(dateString, oldFormat);
+		return getDateAsString(date, newFormat);
+	} 
+	
+	public static String getDateAsString(Date date,String format){
+		if(date!=null) {
+			LOG.info("DateUtils | getDateAsString | source:"+date+" | format:"+format);
+			DateFormat sdf = new SimpleDateFormat(format);
+			return sdf.format(date);
+		}
+		LOG.info("DateUtils | getDateAsString | source:= | format:"+format+" | DATE_IS_NULL");
+		return null;
+	}
 
 	public static java.sql.Date dateToSQLDate(Date date) {
 		java.sql.Date sqlDate = null;

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,20 +29,12 @@ public class SearchController {
 		return searchService.autoComplete(value);
 	}
 
-	@RequestMapping(value = { "/searchFlight" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/searchFlight" }, method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseResource searchFlight(/* @RequestBody FlightSearch searchQuery */) {
-		FlightSearch query = new FlightSearch();
-		query.setOrigin("IST");
-		query.setDestination("BOS");
-		query.setDepartureDate("2018-10-15");
-		query.setReturnFlight(false);
-		// query.setReturnDate("2018-10-19");
-
-		return searchService.searchFlight(query);
-
+	public ResponseResource searchFlight(@RequestBody FlightSearch searchQuery) {
+		return searchService.searchFlight(searchQuery);
 	}
-	
+
 	@RequestMapping(value = { "/init" }, method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseResource init() {

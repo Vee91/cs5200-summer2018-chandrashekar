@@ -3,40 +3,56 @@ define(['jquery', 'angular', 'app', 'homeService'], function(jquery, angular, ap
 		var self           = this;
 		self.loggedin      = false;
 		self.from          = null;
-	    self.fromSearch    = null;
-	    self.querySearch   = querySearch;
-	    
-		function init() {
-            HomeService.startApp()
-                .then(function (response) {
-                	self.loggedin = response.loggedin;
-                });
-            
-              $('.burger, .overlay').click(function(){
-      		  $('.burger').toggleClass('clicked');
-      		  $('.overlay').toggleClass('show');
-      		  $('nav').toggleClass('show');
-      		  $('body').toggleClass('overflow');
-      		});
-        }
+		self.fromSearch    = null;
+		self.to            = null;
+		self.toSearch      = null;
+		self.minDepDate    = new Date();
+		self.dDate         = null;
+		self.rDate         = null;
+		self.nonstop       = false;
 		
-	    // ******************************
-	    // Internal methods
-	    // ******************************
+		self.querySearch   = querySearch;
+		self.searchFlight  = searchFlight;
+		
 
-	    /**
-	     * Search for airports...
-	     */
-	    function querySearch (query) {
-	    	if(query.length >= 3) {
-	    		return HomeService.autocomplete(query)
-                .then(function (response) {
-                	return response.success.airports;
-                });
-	    	} else {
-	    		return [];
-	    	}
-	    }
+		function init() {
+			self.minDepDate.setDate(self.minDepDate.getDate() + 3);
+			HomeService.startApp()
+			.then(function (response) {
+				self.loggedin = response.loggedin;
+			});
+
+			$('.burger, .overlay').click(function(){
+				$('.burger').toggleClass('clicked');
+				$('.overlay').toggleClass('show');
+				$('nav').toggleClass('show');
+				$('body').toggleClass('overflow');
+			});
+			
+		}
+
+		// ******************************
+		// Internal methods
+		// ******************************
+
+		/**
+		 * Search for airports...
+		 */
+		function querySearch (query) {
+			if(query.length >= 3) {
+				return HomeService.autocomplete(query)
+				.then(function (response) {
+					return response.success.airports;
+				});
+			} else {
+				return [];
+			}
+		}
+		
+		function searchFlight(){
+			HomeService.saveSearch(self.from.value, self.to.value, self.dDate, self.rDate, self.nonstop);
+			$location.path('/search/results');
+		}
 
 		init();
 

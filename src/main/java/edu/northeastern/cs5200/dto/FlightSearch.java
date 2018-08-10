@@ -7,6 +7,7 @@ public class FlightSearch {
 	private String departureDate;
 	private String returnDate;
 	private boolean returnFlight;
+	private boolean nonstop;
 
 	public String getOrigin() {
 		return origin;
@@ -46,6 +47,14 @@ public class FlightSearch {
 
 	public void setReturnFlight(boolean returnFlight) {
 		this.returnFlight = returnFlight;
+	}
+
+	public boolean isNonstop() {
+		return nonstop;
+	}
+
+	public void setNonstop(boolean nonstop) {
+		this.nonstop = nonstop;
 	}
 
 }

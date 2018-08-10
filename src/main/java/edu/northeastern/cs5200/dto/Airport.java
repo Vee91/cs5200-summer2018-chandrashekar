@@ -2,10 +2,11 @@ package edu.northeastern.cs5200.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class Airport {
 
-	private String value;
+	private String code;
 	private String label;
 	private String terminal;
 
@@ -14,19 +15,20 @@ public class Airport {
 	}
 
 	@JsonCreator
-	public Airport(@JsonProperty("airport") String value, @JsonProperty("name") String label,
+	public Airport(@JsonProperty("airport") String code, @JsonProperty("name") String label,
 			@JsonProperty("terminal") String terminal) {
-		this.value = value;
+		this.code = code;
 		this.label = label;
 		this.terminal = terminal;
 	}
 
 	public String getCode() {
-		return value;
+		return code;
 	}
 
+	@JsonSetter("value")
 	public void setCode(String code) {
-		this.value = code;
+		this.code = code;
 	}
 
 	public String getLabel() {

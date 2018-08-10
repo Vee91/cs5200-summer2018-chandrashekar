@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import edu.northeastern.cs5200.dto.Airport;
 import edu.northeastern.cs5200.dto.FlightSearch;
+import edu.northeastern.cs5200.util.DateUtil;
 import edu.northeastern.cs5200.util.TravelConstants;
 
 @Repository
@@ -31,10 +32,11 @@ public class ThirdPartyImpl implements ThirdParty {
 	@Override
 	public String searchFlight(FlightSearch query) {
 		String uri = "https://api.sandbox.amadeus.com/v1.2/flights/low-fare-search?origin=" + query.getOrigin()
-				+ "&destination=" + query.getDestination() + "&departure_date=" + query.getDepartureDate();
-		if (query.isReturnFlight())
+				+ "&destination=" + query.getDestination() + "&departure_date="
+				+ DateUtil.getDateAsString(DateUtil.getDateFromString(query.getDepartureDate(), "yyyy-mm-dd"), "yyyy-mm-dd");
+		if (query.getReturnDate() != null)
 			uri = uri + "&return_date=" + query.getReturnDate();
-		uri = uri + "&number_of_results=6&apikey=" + TravelConstants.API_KEY;
+		uri = uri + "&number_of_results=6&nonstop=" + query.isNonstop() + "&apikey=" + TravelConstants.API_KEY;
 
 		RestTemplate restTemplate = new RestTemplate();
 		try {

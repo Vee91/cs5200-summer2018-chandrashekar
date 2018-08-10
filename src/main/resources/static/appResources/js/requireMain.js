@@ -25,6 +25,8 @@ require.config({
 		'profileController' : 'appResources/js/controllers/profileController',
 		'adminController' : 'appResources/js/controllers/adminController',
 		'adminService': 'appResources/js/services/adminService',
+		'searchController' : 'appResources/js/controllers/searchController',
+		'searchService' : 'appResources/js/services/searchService',
 	},
 	// shim: makes external libraries reachable
 	shim : {

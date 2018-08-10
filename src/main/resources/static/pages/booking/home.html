@@ -5,20 +5,20 @@
 <md-content class="md-padding " layout-xs="column" layout="row"
 	layout-align="center" layout-fill>
 <div flex-xs flex-gt-xs="50" layout="column" layout-align="center">
+
 	<md-card> <md-card-title> <md-card-title-text>
-	<span class="md-headline">Search Flights</span> </md-card-title-text> </md-card-title> 
-	<md-card-content>
-	<form ng-submit="$event.preventDefault()" name="searchForm">
+	<span class="md-headline">Search Flights</span> </md-card-title-text> </md-card-title> <md-card-content>
+	
+	<form name="searchForm">
 		<div layout-gt-sm="row">
-			
+
 			<md-autocomplete flex required md-input-name="fromField"
-				md-input-minlength="3" md-input-maxlength="70"
-				md-no-cache="true" md-selected-item="model.from"
-				md-search-text="model.fromSearch"
+				md-input-minlength="3" md-input-maxlength="70" md-no-cache="true"
+				md-selected-item="model.from" md-search-text="model.fromSearch"
 				md-items="from in model.querySearch(model.fromSearch)"
-				md-item-text="from.label" md-require-match
-				md-floating-label="From"> <md-item-template>
-			<span md-highlight-text="model.fromSearch">{{from.label}}</span> </md-item-template>
+				md-item-text="from.label" md-require-match md-floating-label="From">
+			<md-item-template> <span
+				md-highlight-text="model.fromSearch">{{from.label}}</span> </md-item-template>
 			<div ng-messages="searchForm.fromField.$error"
 				ng-if="searchForm.fromField.$touched">
 				<div ng-message="required">
@@ -30,16 +30,15 @@
 				<div ng-message="maxlength">Your entry is too long.</div>
 			</div>
 			</md-autocomplete>
-			
+
 
 			<md-autocomplete flex required md-input-name="toField"
-				md-input-minlength="3" md-input-maxlength="70"
-				md-no-cache="true" md-selected-item="model.to"
-				md-search-text="model.toSearch"
+				md-input-minlength="3" md-input-maxlength="70" md-no-cache="true"
+				md-selected-item="model.to" md-search-text="model.toSearch"
 				md-items="to in model.querySearch(model.toSearch)"
-				md-item-text="to.label" md-require-match
-				md-floating-label="From"> <md-item-template>
-			<span md-highlight-text="model.toSearch">{{to.label}}</span> </md-item-template>
+				md-item-text="to.label" md-require-match md-floating-label="To">
+			<md-item-template> <span
+				md-highlight-text="model.toSearch">{{to.label}}</span> </md-item-template>
 			<div ng-messages="searchForm.toField.$error"
 				ng-if="searchForm.toField.$touched">
 				<div ng-message="required">
@@ -51,10 +50,52 @@
 				<div ng-message="maxlength">Your entry is too long.</div>
 			</div>
 			</md-autocomplete>
+			
 		</div>
+
+		<div layout-gt-sm="row">
+			<md-input-container flex > 
+				<label>Departure date</label> 
+			<md-datepicker 
+				required ng-model="model.dDate" md-input-name="depDate"
+				md-min-date="model.minDepDate" md-open-on-focus> </md-datepicker>
+
+			<div ng-messages="myForm.depDate.$error"
+				ng-if="searchForm.depDate.$touched">
+				<div ng-message="valid">Please use a valid date format</div>
+				<div ng-message="mindate">Choose a date on or after
+					{{model.minDepDate | date:"shortDate"}}</div>
+				<div ng-message="required">
+					You <b>must</b> enter departure date.
+				</div>
+			</div>
+			</md-input-container>
+
+			<md-input-container flex> 
+				<label>Return date</label> 
+			<md-datepicker ng-model="model.rDate"
+				md-min-date="model.dDate" ng-disabled="!model.dDate"
+				md-open-on-focus></md-datepicker>
+				<div ng-messages="myForm.depDate.$error"
+				ng-if="searchForm.depDate.$touched">
+				<div ng-message="valid">Please use a valid date format</div>
+				<div ng-message="mindate">Choose a date on or after
+					{{model.minDepDate | date:"shortDate"}}</div>
+			</div>
+			</md-input-container>
+		</div>
+		
+		<div layout-gt-sm="row">
+		<md-input-container flex> 
+		<md-checkbox md-no-ink aria-label="Checkbox No Ink" ng-model="model.nonstop" class="md-primary">
+            Non Stop
+          </md-checkbox>
+          </md-input-container>
+          </div>
+
 	</form>
 	</md-card-content> <md-card-actions layout="row" layout-align="end center">
-	<md-button>Action 1</md-button> <md-button>Action 2</md-button> </md-card-actions> </md-card>
+	<md-button ng-disabled = "searchForm.$invalid" class="md-raised md-primary" ng-click = "model.searchFlight()">Search</md-button> </md-card-actions> </md-card>
 
 </div>
 </md-content>
