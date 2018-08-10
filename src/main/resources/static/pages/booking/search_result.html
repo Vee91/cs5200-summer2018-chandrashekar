@@ -31,12 +31,12 @@
 			{{model.message}}</div>
 			
 			<h2> Search Results</h2`>	
-	<div ng-repeat = "item in model.tiles" style ="padding-top : 5px">
-		<md-grid-list md-cols="3" md-row-height="10:1" md-gutter="4px">
+	<div ng-repeat = "item in model.results.results" style ="padding-top : 5px">
+		<md-grid-list md-cols="3" md-row-height="14:1" md-gutter="4px">
     <md-grid-tile class="gray" md-colspan="3">
-        <div layout="column" layout-fill>this is a static row</div>
+        <div layout="column" layout-fill>{{item.outbound.origin}} to {{item.outbound.destination}}  Duration of flight : {{item.outbound.duration}}</div>
     </md-grid-tile>
-    <md-grid-tile class="gray"  ng-repeat="item in model.tiles" md-colspan="3">
+    <md-grid-tile class="gray"  ng-repeat="flight in item.outbound.flights" md-colspan="3">
         <div layout="row" flex>
             <div flex>this row</div>
             <div flex>should repeat</div>

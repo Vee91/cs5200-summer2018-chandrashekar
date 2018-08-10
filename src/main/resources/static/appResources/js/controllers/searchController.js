@@ -3,6 +3,7 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService'], function(jq
 		var vm = this;
 		vm.message = null;
 		vm.tiles = null;
+		vm.results = null;
 		function init() {
 			vm.query = HomeService.getSearchQuery();
 			vm.tiles = [1,2,4];
@@ -15,7 +16,7 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService'], function(jq
 			
 			SearchService.searchFlights(vm.query).then(function (response) {
 				if(response.code == 200) {
-					console.log(response.success);
+					vm.results = response.success;
 				} else {
 					vm.message = response.message;
 				}
