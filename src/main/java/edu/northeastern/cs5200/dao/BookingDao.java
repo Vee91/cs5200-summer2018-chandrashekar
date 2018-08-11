@@ -23,4 +23,8 @@ public interface BookingDao {
 	public int getSecurityCode(int cardId, String username);
 
 	public int makeTransaction(int bookingid, int cardId);
+
+	public boolean checkIfFlightExist(Flight f);
+
+	public void insertFlight(Flight f);
 }

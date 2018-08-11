@@ -1,5 +1,8 @@
 package edu.northeastern.cs5200.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CreditCard {
 
 	private int id;

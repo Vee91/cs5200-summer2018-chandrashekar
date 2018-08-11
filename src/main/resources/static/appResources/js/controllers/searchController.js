@@ -31,7 +31,6 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService'], function(jq
 		}
 		
 		function book(flight) {
-			console.log(flight);
 			SearchService.savequery(flight);
 			$location.path('/book');
 		}

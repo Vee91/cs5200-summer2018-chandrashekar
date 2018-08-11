@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.northeastern.cs5200.dao.BookingDao;
+import edu.northeastern.cs5200.dao.CreditCardDao;
+import edu.northeastern.cs5200.dto.CreditCard;
 import edu.northeastern.cs5200.dto.Flight;
 import edu.northeastern.cs5200.dto.FlightSearchResult;
 import edu.northeastern.cs5200.dto.Itinerary;
@@ -26,6 +28,54 @@ public class BookingServiceImpl implements BookingService {
 
 	@Autowired
 	private BookingDao bookingDao;
+	
+	@Autowired
+	private CreditCardDao creditDao;
+
+	@Transactional
+	@Override
+	public ResponseResource bookItinerary(FlightSearchResult itinerary, List<Passenger> passengers, CreditCard card) {
+		// TODO validations
+		LOG.info("BookingService | bookItinerary | Successful :: Validation Success");
+		ResponseResource out = new ResponseResource();
+		int inboundBookingid = -1;
+		LOG.info("BookingService | bookItinerary | starting outbound booking");
+		int bookingid = validateOutbound(itinerary.getOutbound(), true);
+		LOG.info("BookingService | bookItinerary | outbound booking successful with booking id " + bookingid);
+		int outboundPass = bookingDao.insertPassengers(bookingid, passengers);
+		LOG.info("BookingService | bookItinerary | " + outboundPass + "passengers added to outbound booking "
+				+ bookingid);
+		if (outboundPass != passengers.size()) {
+			LOG.error("BookingService | bookItinerary | Error adding passengers for outbound booking " + bookingid);
+			out.setCode("400");
+			out.setMessage("There was an error adding passengers to your booking. Please try again");
+			return out;
+		}
+
+		if (itinerary.getInbound() != null) {
+			LOG.info("BookingService | bookItinerary | starting inbound booking");
+			inboundBookingid = validateOutbound(itinerary.getInbound(), false);
+			LOG.info("BookingService | bookItinerary | inbound booking successful with booking id " + inboundBookingid);
+			int inboundPass = bookingDao.insertPassengers(inboundBookingid, passengers);
+			LOG.info("BookingService | bookItinerary | " + inboundPass + "passengers added to inbound booking "
+					+ inboundBookingid);
+			if (inboundPass != passengers.size()) {
+				LOG.error("BookingService | bookItinerary | Error adding passengers for outbound booking "
+						+ inboundBookingid);
+				out.setCode("400");
+				out.setMessage("There was an error adding passengers to your booking. Please try again");
+				return out;
+			}
+		}
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		creditDao.addCreditCard(card, username);
+
+		out.setCode("200");
+		out.setMessage("Sucessfully booked your itinerary");
+		return out;
+	}
 
 	@Transactional
 	@Override
@@ -104,6 +154,9 @@ public class BookingServiceImpl implements BookingService {
 		Iterator<Flight> outItr = flights.iterator();
 		while (outItr.hasNext()) {
 			Flight f = outItr.next();
+			if(!bookingDao.checkIfFlightExist(f)) {
+				bookingDao.insertFlight(f);
+			}
 			if (!bookingDao.checkIfExists(f)) {
 				unscheduled.add(f);
 			}

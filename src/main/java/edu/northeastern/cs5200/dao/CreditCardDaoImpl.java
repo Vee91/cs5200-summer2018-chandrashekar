@@ -27,7 +27,7 @@ public class CreditCardDaoImpl implements CreditCardDao {
 		return jdbcTemplate.update(QueryConstants.INSERT_CREDIT_CARD.toString(),
 				new Object[] { username, cc.getCardNumber(), cc.getFullName(), cc.getExpMonth(), cc.getExpYear(),
 						cc.getSecurityCode() },
-				new int[] { Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.INTEGER });
+				new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.INTEGER });
 	}
 
 	@Override

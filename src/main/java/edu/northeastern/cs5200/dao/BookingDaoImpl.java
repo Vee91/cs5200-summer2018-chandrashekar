@@ -42,6 +42,14 @@ public class BookingDaoImpl implements BookingDao {
 	}
 
 	@Override
+	public boolean checkIfFlightExist(Flight f) {
+		int x = jdbcTemplate.queryForObject(QueryConstants.FLIGHT_EXIST.toString(), new Object[] { f.getFlightNumber(),
+				f.getOrigin().getValue(), f.getDestination().getValue(), f.getAirline(), f.getAircraft() },
+				Integer.class);
+		return x > 0 ? true : false;
+	}
+
+	@Override
 	public boolean checkIfExists(String origin, String destination, String duration) {
 		int x = jdbcTemplate.queryForObject(QueryConstants.ITINERARY_EXIST.toString(),
 				new Object[] { origin, destination, duration }, Integer.class);
@@ -135,10 +143,11 @@ public class BookingDaoImpl implements BookingDao {
 	}
 
 	private int insertPassengerToDB(int bookingid, Passenger next) {
-		return jdbcTemplate.update(
-				QueryConstants.INSERT_PASSENGER.toString(), new Object[] { bookingid, next.getFirstname(),
-						next.getLastname(), next.getAdult(), next.getPhoneNo(), next.getGender(), next.getSeatNo() },
-				new int[] { Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.BIT, Types.VARCHAR, Types.BIT, Types.VARCHAR });
+		return jdbcTemplate.update(QueryConstants.INSERT_PASSENGER.toString(),
+				new Object[] { bookingid, next.getFirstname(), next.getLastname(), next.getAdult(), next.getPhoneNo(),
+						next.getGender(), next.getSeatNo() },
+				new int[] { Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.BIT, Types.VARCHAR, Types.BIT,
+						Types.VARCHAR });
 
 	}
 
@@ -157,7 +166,17 @@ public class BookingDaoImpl implements BookingDao {
 	public int makeTransaction(int bookingid, int cardId) {
 		return 0;
 		// TODO insert to transaction table
-		
+
+	}
+
+	@Override
+	public void insertFlight(Flight f) {
+		jdbcTemplate.update(QueryConstants.INSERT_FLIGHT.toString(),
+				new Object[] { f.getFlightNumber(), f.getOrigin().getValue(), f.getOrigin().getTerminal(),
+						f.getDestination().getValue(), f.getDestination().getTerminal(), f.getAirline(),
+						f.getAircraft() },
+				new int[] { Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+						Types.VARCHAR });
 	}
 
 }

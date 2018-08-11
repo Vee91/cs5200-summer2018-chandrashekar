@@ -163,30 +163,31 @@
 	<div layout-gt-sm="row">
           <md-input-container class="md-block" flex-gt-sm>
             <label>First name</label>
-            <input>
+            <input ng-model="model.passenger1.firstname">
           </md-input-container>
 
           <md-input-container class="md-block" flex-gt-sm>
             <label>Last name</label>
-            <input>
+            <input ng-model = "model.passenger1.lastname">
           </md-input-container>
           
           <md-input-container class="md-block" flex-gt-sm>
             <label>Phone no</label>
-            <input>
+            <input ng-model = "model.passenger1.phoneNo">
           </md-input-container>
         </div>
         
         <div layout-gt-sm="row">
-     <md-radio-group flex>
+     <md-radio-group ng-model = "model.passenger1.gender" flex>
       <md-radio-button value="1" class="md-primary">Male</md-radio-button>
       <md-radio-button value="0"> Female </md-radio-button>
     </md-radio-group>
     
-     <md-radio-group flex>
+     <md-radio-group ng-model = "model.passenger1.adult" flex>
       <md-radio-button value="1" class="md-primary">Adult</md-radio-button>
       <md-radio-button value="0"> child </md-radio-button>
     </md-radio-group>
+    
     </div>
     
     <md-divider></md-divider>
@@ -199,27 +200,27 @@
 	<div layout-gt-sm="row">
           <md-input-container class="md-block" flex-gt-sm>
             <label>First name</label>
-            <input>
+            <input ng-model = "model.passenger2.firstname">
           </md-input-container>
 
           <md-input-container class="md-block" flex-gt-sm>
             <label>Last name</label>
-            <input>
+            <input ng-model = "model.passenger2.lastname">
           </md-input-container>
           
           <md-input-container class="md-block" flex-gt-sm>
             <label>Phone no</label>
-            <input>
+            <input ng-model="model.passenger2.phoneNo">
           </md-input-container>
         </div>
         
         <div layout-gt-sm="row">
-     <md-radio-group flex>
+     <md-radio-group ng-model = "model.passenger2.gender" flex>
       <md-radio-button value="1" class="md-primary">Male</md-radio-button>
       <md-radio-button value="0"> Female </md-radio-button>
     </md-radio-group>
     
-     <md-radio-group flex>
+     <md-radio-group ng-model = "model.passenger2.adult" flex>
       <md-radio-button value="1" class="md-primary">Adult</md-radio-button>
       <md-radio-button value="0"> child </md-radio-button>
     </md-radio-group>
@@ -236,38 +237,93 @@
 	<div layout-gt-sm="row">
           <md-input-container class="md-block" flex-gt-sm>
             <label>First name</label>
-            <input>
+            <input ng-model = "model.passenger3.firstname">
           </md-input-container>
 
           <md-input-container class="md-block" flex-gt-sm>
             <label>Last name</label>
-            <input>
+            <input ng-model = "model.passenger3.lastname">
           </md-input-container>
           
           <md-input-container class="md-block" flex-gt-sm>
             <label>Phone no</label>
-            <input>
+            <input ng-model = "model.passenger3.phoneNo">
           </md-input-container>
         </div>
         
         <div layout-gt-sm="row">
-     <md-radio-group flex>
+     <md-radio-group ng-model = "model.passenger3.gender" flex>
       <md-radio-button value="1" class="md-primary">Male</md-radio-button>
       <md-radio-button value="0"> Female </md-radio-button>
     </md-radio-group>
     
-     <md-radio-group flex>
+     <md-radio-group ng-moel = "model.passenger3.adult" flex>
       <md-radio-button value="1" class="md-primary">Adult</md-radio-button>
       <md-radio-button value="0"> child </md-radio-button>
     </md-radio-group>
     </div>
     <md-divider></md-divider>
      </div>
-    
+	</md-content>
+	</md-tab>
 	
+	 <md-tab label="Payment">
+		
+	<md-content class="md-padding">
+	
+	<form name = "crediForm">
+	<div layout-gt-sm="row"> 
+	<md-input-container class="md-block">
+          <label>Credit Card Number</label>
+          <input name="credit" required ng-model="model.card.cardNumber" ng-pattern="/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/" />
+          <div class="hint">1234-5678-1234-4444</div>
+          <div ng-messages="crediForm.credit.$error" >
+            <div ng-message="pattern">Please enter a valid credit card number with the format shown.</div>
+          </div>
+     </md-input-container>
+     </div>
+     
+     <div layout-gt-sm="row"> 
+     <md-input-container class="md-block">
+          <label>Full Name</label>
+          <input name="name" required ng-model="model.card.fullName" />
+     </md-input-container>
+     </div>
+     
+     <div layout-gt-sm="row"> 
+     <md-input-container class="md-block">
+          <label>Exp Month</label>
+          <input name="month" ng-model="model.card.expMonth" required type="number" min = "1" max = "12"/>
+          <div ng-messages="crediForm.month.$error" >
+            <div ng-message="pattern">Please enter a valid month.</div>
+          </div>
+     </md-input-container>
+     
+     <md-input-container class="md-block">
+          <label>Exp Year</label>
+          <input name="year" ng-model="model.card.expYear" required type="number" min = "2018" max = "2025"/>
+          <div ng-messages="crediForm.year.$error" >
+            <div ng-message="pattern">Please enter a valid year.</div>
+          </div>
+     </md-input-container>
+     </div>
+     
+     <div layout-gt-sm="row"> 
+     <md-input-container class="md-block">
+          <label>Security Code</label>
+          <input name="cvv" ng-model="model.card.securityCode" type="number" required ng-pattern="/^[0-9]{3}$/"/>
+          <div ng-messages="crediForm.cvv.$error" >
+            <div ng-message="pattern">Please enter a valid security code</div>
+          </div>
+     </md-input-container>
+     </div>
+     
+     <md-button class="md-raised md-primary" ng-click = "model.confirmBook()"> Book </md-button>
+	
+	</form>
 	
 	</md-content>
-	</md-tab> 
+	</md-tab>  
 	
 	</md-tabs>
 </div>

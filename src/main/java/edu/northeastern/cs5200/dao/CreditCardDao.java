@@ -6,12 +6,12 @@ import edu.northeastern.cs5200.dto.CreditCard;
 
 public interface CreditCardDao {
 
-	int addCreditCard(CreditCard cc, String username);
+	public int addCreditCard(CreditCard cc, String username);
 
-	List<CreditCard> getAllCreditCard(String username);
+	public List<CreditCard> getAllCreditCard(String username);
 
-	int getSecurityCode(int id, String username);
+	public int getSecurityCode(int id, String username);
 
-	int deleteCard(int id, String username);
+	public int deleteCard(int id, String username);
 
 }

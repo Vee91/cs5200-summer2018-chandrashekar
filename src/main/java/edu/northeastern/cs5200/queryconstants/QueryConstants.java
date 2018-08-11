@@ -19,6 +19,7 @@ public class QueryConstants {
 	public static final StringBuilder INSERT_PERSON = new StringBuilder();
 	public static final StringBuilder INSERT_USER = new StringBuilder();
 	public static final StringBuilder INSERT_EMPLOYEE = new StringBuilder();
+	public static final StringBuilder INSERT_FLIGHT = new StringBuilder();
 
 	public static final StringBuilder SELECT_AIRLINE = new StringBuilder();
 	public static final StringBuilder SELECT_AIRCRAFT = new StringBuilder();
@@ -30,6 +31,7 @@ public class QueryConstants {
 
 	public static final StringBuilder SCHEDULE_EXIST = new StringBuilder();
 	public static final StringBuilder ITINERARY_EXIST = new StringBuilder();
+	public static final StringBuilder FLIGHT_EXIST = new StringBuilder();
 
 	public static final StringBuilder DELETE_CARD = new StringBuilder();
 
@@ -145,6 +147,20 @@ public class QueryConstants {
 		INSERT_EMPLOYEE.append(" (`id`) ");
 		INSERT_EMPLOYEE.append(" VALUES ");
 		INSERT_EMPLOYEE.append(" (?) ");
+
+		FLIGHT_EXIST.append(
+				"select count(1) from cs5200_summer2018_chandrashekar.flights where flight_number = ? and origin_airport = ? and destination_airport = ? and airline = ? and aircraft = ?  ");
+
+		INSERT_FLIGHT.append(" INSERT INTO `cs5200_summer2018_chandrashekar`.`flights`  ");
+		INSERT_FLIGHT.append(" (`flight_number`,  ");
+		INSERT_FLIGHT.append(" `origin_airport`,  ");
+		INSERT_FLIGHT.append(" `origin_terminal`,  ");
+		INSERT_FLIGHT.append(" `destination_airport`,  ");
+		INSERT_FLIGHT.append(" `destination_terminal`,  ");
+		INSERT_FLIGHT.append(" `airline`,  ");
+		INSERT_FLIGHT.append(" `aircraft`)  ");
+		INSERT_FLIGHT.append(" VALUES  ");
+		INSERT_FLIGHT.append(" (?,?,?,?,?,?,?)  ");
 
 	}
 
