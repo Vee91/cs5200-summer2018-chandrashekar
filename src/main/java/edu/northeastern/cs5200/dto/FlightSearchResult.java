@@ -4,8 +4,8 @@ public class FlightSearchResult {
 
 	private Itinerary outbound;
 	private Itinerary inbound;
-	private String price;
-	private String tax;
+	private float price;
+	private float tax;
 
 	public Itinerary getOutbound() {
 		return outbound;
@@ -23,19 +23,19 @@ public class FlightSearchResult {
 		this.inbound = inbound;
 	}
 
-	public String getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 
-	public String getTax() {
+	public float getTax() {
 		return tax;
 	}
 
-	public void setTax(String tax) {
+	public void setTax(float tax) {
 		this.tax = tax;
 	}
 

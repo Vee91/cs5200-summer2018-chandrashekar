@@ -16,10 +16,10 @@ define([ 'app'], function(app) {
 			searchQuery.departureDate = d;
 			searchQuery.returnDate = r;
 			searchQuery.nonstop = n;
-		}
+		};
 		function getSearchQuery(){
 			return searchQuery;
-		}
+		};
 
 		function startApp() {
 			var url = "api/init";

@@ -1,0 +1,312 @@
+<div class="burger">
+	<span></span>
+</div>
+
+<md-content class="md-padding" layout-xs="column" layout="row"
+	layout-align="center" layout-fill>
+<div flex-xs flex layout="column" style="padding-right: 50px">
+
+	<md-toolbar>
+	<div class="md-toolbar-tools">
+		<md-button aria-label="Go Back" ng-href="/travelbooking">
+		Back </md-button>
+
+		<i class="material-icons" style="padding-right: 10px">flight_takeoff</i>
+		<h2 md-truncate style="padding-right: 25px">{{model.query.outbound.origin}}</h2>
+		<i class="material-icons" ng-hide={{model.query.inbound}}
+			style="padding-right: 25px">arrow_right_alt</i> <i
+			class="material-icons" ng-show={{model.query.inbound}}
+			style="padding-right: 25px">compare_arrows</i>
+		<h2 md-truncate style="padding-right: 10px">{{model.query.outbound.destination}}</h2>
+		<i class="material-icons" style="padding-right: 25px">flight_land</i>
+	</div>
+	</md-toolbar>
+
+	<div style="padding-top: 20px">
+		<md-grid-list md-cols="10" md-row-height="5:1" md-gutter="4px">
+		<md-grid-tile class="gray" md-colspan="10">
+		<div flex>
+			<p class="md-title">{{model.query.outbound.origin}} to
+				{{model.query.outbound.destination}}
+			<p>
+		</div>
+		<div flex>
+			<p class="md-title">Price: ${{(model.query.price +
+				model.query.tax).toFixed(2)}}
+			<p>
+		</div>
+		</md-grid-tile> <md-grid-tile class="gray" md-colspan="2"
+			md-rowspan="{{model.query.outbound.flights.length + 1}}">
+		<div layout="row" flex>
+			<div flex>
+				<p class="md-body-2" style="font-weight: bold; color: #00695C;">Outbound(Duration:
+					{{model.query.outbound.duration}})</p>
+				<br>
+			</div>
+		</div>
+		</md-grid-tile> <md-grid-tile class="gray" md-colspan="8">
+		<div layout="row" flex>
+			<div flex>
+				<p class="subhead md-body-2" style="font-weight: bold">From</p>
+			</div>
+			<div flex>
+				<p class="subhead md-body-2" style="font-weight: bold">To</p>
+			</div>
+			<div flex>
+				<p class="subhead md-body-2" style="font-weight: bold">Departs
+					At</p>
+			</div>
+			<div flex>
+				<p class="subhead md-body-2" style="font-weight: bold">Arrives
+					At</p>
+			</div>
+			<div flex>
+				<p class="subhead md-body-2" style="font-weight: bold">Airline</p>
+			</div>
+		</div>
+		</md-grid-tile> <md-grid-tile class="gray"
+			ng-repeat="flight in model.query.outbound.flights" md-colspan="8">
+		<div layout="row" flex>
+			<div flex>
+				<p class="md-body-1">{{flight.origin.label}}</p>
+			</div>
+			<div flex>
+				<p class="md-body-1">{{flight.destination.label}}</p>
+			</div>
+			<div flex>
+				<p class="md-body-1">{{flight.departs_at | date : 'medium'}}</p>
+			</div>
+			<div flex>
+				<p class="md-body-1">{{flight.arrives_at | date : 'medium'}}</p>
+			</div>
+			<div flex>
+				<p class="md-body-1">{{flight.operatingAirlineName}}</p>
+			</div>
+		</div>
+		</md-grid-tile> <md-grid-tile class="gray" md-colspan="2"
+			md-rowspan="{{model.query.inbound.flights.length + 1}}"
+			ng-show="model.query.inbound">
+		<div layout="row" flex>
+			<div flex>
+				<p class="md-body-2" style="font-weight: bold; color: #00695C;">Inbound
+					(Duration: {{model.query.inbound.duration}})</p>
+			</div>
+		</div>
+		</md-grid-tile> <md-grid-tile class="gray" md-colspan="8"
+			ng-show="model.query.inbound">
+		<div layout="row" flex>
+			<div flex>
+				<p class="subhead md-body-2" style="font-weight: bold">From</p>
+			</div>
+			<div flex>
+				<p class="subhead md-body-2" style="font-weight: bold">To</p>
+			</div>
+			<div flex>
+				<p class="subhead md-body-2" style="font-weight: bold">Departs
+					At</p>
+			</div>
+			<div flex>
+				<p class="subhead md-body-2" style="font-weight: bold">Arrives
+					At</p>
+			</div>
+			<div flex>
+				<p class="subhead md-body-2" style="font-weight: bold">Airline</p>
+			</div>
+		</div>
+		</md-grid-tile> <md-grid-tile class="gray"
+			ng-repeat="flight in model.query.inbound.flights" md-colspan="8"
+			ng-show="model.query.inbound">
+		<div layout="row" flex>
+			<div flex>
+				<p class="md-body-1">{{flight.origin.label}}</p>
+			</div>
+			<div flex>
+				<p class="md-body-1">{{flight.destination.label}}</p>
+			</div>
+			<div flex>
+				<p class="md-body-1">{{flight.departs_at | date : 'medium'}}</p>
+			</div>
+			<div flex>
+				<p class="md-body-1">{{flight.arrives_at | date : 'medium'}}</p>
+			</div>
+			<div flex>
+				<p class="md-body-1">{{flight.operatingAirlineName}}</p>
+			</div>
+		</div>
+		</md-grid-tile> </md-grid-list>
+		<md-divider></md-divider>
+	</div>
+
+	<md-tabs md-selected="model.selectedIndex" md-border-bottom
+		md-autoselect md-swipe-content md-align-tabs="bottom"
+		md-dynamic-height="true">
+		
+	 <md-tab label="Passengers">
+		
+	<md-content class="md-padding">
+	
+	<div layout-gt-sm="row"> 
+	<md-input-container>
+	<label> No of Passengers* </label>
+	<md-select ng-model="model.size">
+		  <md-option value="1" ng-selected="true">1</md-option>
+          <md-option value="2">2</md-option>
+          <md-option value="3">3</md-option>
+	</md-select>
+	</md-input-container>
+	</div>
+	
+	<div layout-gt-sm="row">
+	<h2 class = "md-body-2"> Passenger 1 </h2>
+	</div>
+	
+	<div layout-gt-sm="row">
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>First name</label>
+            <input>
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Last name</label>
+            <input>
+          </md-input-container>
+          
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Phone no</label>
+            <input>
+          </md-input-container>
+        </div>
+        
+        <div layout-gt-sm="row">
+     <md-radio-group flex>
+      <md-radio-button value="1" class="md-primary">Male</md-radio-button>
+      <md-radio-button value="0"> Female </md-radio-button>
+    </md-radio-group>
+    
+     <md-radio-group flex>
+      <md-radio-button value="1" class="md-primary">Adult</md-radio-button>
+      <md-radio-button value="0"> child </md-radio-button>
+    </md-radio-group>
+    </div>
+    
+    <md-divider></md-divider>
+    
+    <div ng-show = "model.size == 2 || model.size == 3">
+    <div layout-gt-sm="row">
+	<h2 class = "md-body-2"> Passenger 2 </h2>
+	</div>
+	
+	<div layout-gt-sm="row">
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>First name</label>
+            <input>
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Last name</label>
+            <input>
+          </md-input-container>
+          
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Phone no</label>
+            <input>
+          </md-input-container>
+        </div>
+        
+        <div layout-gt-sm="row">
+     <md-radio-group flex>
+      <md-radio-button value="1" class="md-primary">Male</md-radio-button>
+      <md-radio-button value="0"> Female </md-radio-button>
+    </md-radio-group>
+    
+     <md-radio-group flex>
+      <md-radio-button value="1" class="md-primary">Adult</md-radio-button>
+      <md-radio-button value="0"> child </md-radio-button>
+    </md-radio-group>
+    </div>
+    <md-divider></md-divider>
+    </div>
+    
+    
+    <div ng-show= "model.size == 3">
+    <div layout-gt-sm="row">
+	<h2 class = "md-body-2"> Passenger 3 </h2>
+	</div>
+	
+	<div layout-gt-sm="row">
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>First name</label>
+            <input>
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Last name</label>
+            <input>
+          </md-input-container>
+          
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Phone no</label>
+            <input>
+          </md-input-container>
+        </div>
+        
+        <div layout-gt-sm="row">
+     <md-radio-group flex>
+      <md-radio-button value="1" class="md-primary">Male</md-radio-button>
+      <md-radio-button value="0"> Female </md-radio-button>
+    </md-radio-group>
+    
+     <md-radio-group flex>
+      <md-radio-button value="1" class="md-primary">Adult</md-radio-button>
+      <md-radio-button value="0"> child </md-radio-button>
+    </md-radio-group>
+    </div>
+    <md-divider></md-divider>
+     </div>
+    
+	
+	
+	</md-content>
+	</md-tab> 
+	
+	</md-tabs>
+</div>
+</md-content>
+
+<nav>
+	<ul class="main">
+		<li><a href="#0">Home</a></li>
+		<li><a href="#0">Shop</a></li>
+		<li><a href="#0">About</a></li>
+		<li><a href="#0">Contact</a></li>
+		<li ng-hide="model.loggedin"><a href="login">Sign In</a></li>
+		<li ng-show="model.loggedin"><a href="logout">Sign Out</a></li>
+	</ul>
+
+
+	<div class="social">
+		<a href="https://twitter.com/?lang=en" target="_blank"><svg
+				xmlns="http://www.w3.org/2000/svg"
+				xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+				width="64px" height="64px" viewBox="0 0 64 64">
+				<g transform="translate(0, 0)">
+				<path
+					d="M64,12.2c-2.4,1-4.9,1.8-7.5,2.1c2.7-1.6,4.8-4.2,5.8-7.3c-2.5,1.5-5.3,2.6-8.3,3.2C51.5,7.6,48.1,6,44.3,6 c-7.3,0-13.1,5.9-13.1,13.1c0,1,0.1,2,0.3,3C20.6,21.6,10.9,16.3,4.5,8.4c-1.1,1.9-1.8,4.2-1.8,6.6c0,4.6,2.3,8.6,5.8,10.9 c-2.2-0.1-4.2-0.7-5.9-1.6c0,0.1,0,0.1,0,0.2c0,6.4,4.5,11.7,10.5,12.9c-1.1,0.3-2.3,0.5-3.5,0.5c-0.8,0-1.7-0.1-2.5-0.2 c1.7,5.2,6.5,9,12.3,9.1c-4.5,3.5-10.2,5.6-16.3,5.6c-1.1,0-2.1-0.1-3.1-0.2C5.8,55.8,12.7,58,20.1,58c24.2,0,37.4-20,37.4-37.4 c0-0.6,0-1.1,0-1.7C60,17.1,62.2,14.8,64,12.2z"></path></g></svg></a>
+		<a href="https://www.instagram.com/?hl=en" target="_blank"><svg
+				xmlns="http://www.w3.org/2000/svg"
+				xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+				width="64px" height="64px" viewBox="0 0 64 64">
+				<g transform="translate(0, 0)">
+				<path
+					d="M32,5.766c8.544,0,9.556,0.033,12.931,0.187c3.642,0.166,7.021,0.895,9.621,3.496 c2.6,2.6,3.329,5.979,3.496,9.621c0.154,3.374,0.187,4.386,0.187,12.931s-0.033,9.556-0.187,12.931 c-0.166,3.642-0.895,7.021-3.496,9.621c-2.6,2.6-5.98,3.329-9.621,3.496c-3.374,0.154-4.386,0.187-12.931,0.187 s-9.557-0.033-12.931-0.187c-3.642-0.166-7.021-0.895-9.621-3.496c-2.6-2.6-3.329-5.979-3.496-9.621 C5.798,41.556,5.766,40.544,5.766,32s0.033-9.556,0.187-12.931c0.166-3.642,0.895-7.021,3.496-9.621 c2.6-2.6,5.979-3.329,9.621-3.496C22.444,5.798,23.456,5.766,32,5.766 M32,0c-8.691,0-9.78,0.037-13.194,0.193 c-5.2,0.237-9.768,1.511-13.436,5.178C1.705,9.037,0.43,13.604,0.193,18.806C0.037,22.22,0,23.309,0,32 c0,8.691,0.037,9.78,0.193,13.194c0.237,5.2,1.511,9.768,5.178,13.436c3.666,3.666,8.234,4.941,13.436,5.178 C22.22,63.963,23.309,64,32,64s9.78-0.037,13.194-0.193c5.199-0.237,9.768-1.511,13.436-5.178c3.666-3.666,4.941-8.234,5.178-13.436 C63.963,41.78,64,40.691,64,32s-0.037-9.78-0.193-13.194c-0.237-5.2-1.511-9.768-5.178-13.436 c-3.666-3.666-8.234-4.941-13.436-5.178C41.78,0.037,40.691,0,32,0L32,0z"></path> <path
+					data-color="color-2"
+					d="M32,15.568c-9.075,0-16.432,7.357-16.432,16.432c0,9.075,7.357,16.432,16.432,16.432 S48.432,41.075,48.432,32C48.432,22.925,41.075,15.568,32,15.568z M32,42.667c-5.891,0-10.667-4.776-10.667-10.667 c0-5.891,4.776-10.667,10.667-10.667c5.891,0,10.667,4.776,10.667,10.667C42.667,37.891,37.891,42.667,32,42.667z"></path> <circle
+					data-color="color-2" cx="49.082" cy="14.918" r="3.84"></circle></g></svg></a>
+	</div>
+
+	<ul class="sub">
+		<li><a href="#0">FAQ</a></li>
+		<li><a href="#0">Terms &amp; Conditions</li>
+	</ul>
+</nav>
+<div class="overlay"></div>

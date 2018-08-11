@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class Airport {
 
-	private String code;
+	private String value;
 	private String label;
 	private String terminal;
 
@@ -14,22 +14,25 @@ public class Airport {
 		super();
 	}
 
-	@JsonCreator
-	public Airport(@JsonProperty("airport") String code, @JsonProperty("name") String label,
-			@JsonProperty("terminal") String terminal) {
-		this.code = code;
+	public Airport(String value, String label, String terminal) {
+		this.value = value;
 		this.label = label;
 		this.terminal = terminal;
 	}
 
-	public String getCode() {
-		return code;
+	public String getValue() {
+		return value;
 	}
 
-	@JsonSetter("value")
-	public void setCode(String code) {
-		this.code = code;
+	@JsonSetter("airport")
+	public void setAirport(String value) {
+		this.value = value;
 	}
+	
+	public void setValue(String value) {
+		this.value = value;
+	}
+
 
 	public String getLabel() {
 		return label;

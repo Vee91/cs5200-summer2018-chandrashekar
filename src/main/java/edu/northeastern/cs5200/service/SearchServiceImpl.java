@@ -49,6 +49,7 @@ public class SearchServiceImpl implements SearchService {
 		// TODO sanitize and validate input
 		try {
 			String jsonResult = thirdParty.searchFlight(query);
+			query.setReturnFlight(query.getReturnDate() == null ? false : true);
 			JSONObject json = new JSONObject(jsonResult);
 			List<FlightSearchResult> results = formatSearchResult(json, query.isReturnFlight(), query.getOrigin(),
 					query.getDestination());
@@ -83,34 +84,39 @@ public class SearchServiceImpl implements SearchService {
 			Flight f = itr.next();
 			getAirport(f.getOrigin(), cache);
 			getAirport(f.getDestination(), cache);
-			getAirline(f.getAirline(), infoMap);
-			getAircraft(f.getAircraft(), infoMap);
+			f.setOperatingAirlineName(getAirline(f.getAirline(), infoMap));
+			f.setAircraftName(getAircraft(f.getAircraft(), infoMap));
 		}
 
 	}
 
-	private void getAircraft(String aircraft, Map<String, Object> infoMap) {
-		if (infoMap.containsKey(aircraft)) {
-			return;
-		} else {
-			infoMap.put(aircraft, flightDao.getAircraft(aircraft));
+	private String getAircraft(String aircraft, Map<String, Object> infoMap) {
+		if (!infoMap.containsKey(aircraft)) {
+			String name = flightDao.getAircraft(aircraft);
+			infoMap.put(aircraft, name);
+			return name;
+		}
+		else {
+			return infoMap.get(aircraft).toString();
 		}
 	}
 
-	private void getAirline(String airline, Map<String, Object> infoMap) {
-		if (infoMap.containsKey(airline)) {
-			return;
-		} else {
-			infoMap.put(airline, flightDao.getAirline(airline));
+	private String getAirline(String airline, Map<String, Object> infoMap) {
+		if (!infoMap.containsKey(airline)) {
+			String name = flightDao.getAirline(airline);
+			infoMap.put(airline, name);
+			return name;
 		}
-
+		else {
+			return infoMap.get(airline).toString();
+		}
 	}
 
 	private List<FlightSearchResult> formatSearchResult(JSONObject json, boolean returnFlight, String origin,
 			String destination) throws JSONException, IOException {
 		List<FlightSearchResult> output = new ArrayList<>();
 		ObjectMapper mapper = new ObjectMapper();
-		
+
 		JSONArray resultArr = json.getJSONArray("results");
 		for (int i = 0; i < resultArr.length(); i++) {
 			JSONArray itineraries = resultArr.getJSONObject(i).getJSONArray("itineraries");
@@ -128,8 +134,8 @@ public class SearchServiceImpl implements SearchService {
 				result.setInbound(in);
 			}
 			JSONObject fare = resultArr.getJSONObject(i).getJSONObject("fare");
-			result.setPrice(fare.getString("total_price"));
-			result.setTax(fare.getJSONObject("price_per_adult").getString("tax"));
+			result.setPrice(Float.parseFloat(fare.getString("total_price")));
+			result.setTax(Float.parseFloat(fare.getJSONObject("price_per_adult").getString("tax")));
 			output.add(result);
 		}
 
@@ -137,21 +143,13 @@ public class SearchServiceImpl implements SearchService {
 	}
 
 	private void getAirport(Airport code, Map<String, String> cache) throws JSONException {
-		if (cache.containsKey(code.getCode())) {
-			code.setLabel(cache.get(code.getCode()));
+		if (cache.containsKey(code.getValue())) {
+			code.setLabel(cache.get(code.getValue()));
 			return;
 		}
 
-		if (code.getCode() != null) {
-			// TODO remove code
-			/*
-			 * JSONObject airportObj = new
-			 * JSONObject(thirdParty.getAirport(code.getCode())); JSONArray arr =
-			 * airportObj.getJSONArray("response"); if (arr.length() > 0) { String name =
-			 * arr.getJSONObject(0).getString("name"); code.setLabel(name);
-			 * cache.put(code.getCode(), name); }
-			 */
-			code.setLabel(flightDao.getAirport(code.getCode()));
+		if (code.getValue() != null) {
+			code.setLabel(flightDao.getAirport(code.getValue()));
 		}
 	}
 
@@ -160,7 +158,7 @@ public class SearchServiceImpl implements SearchService {
 		ResponseResource out = new ResponseResource();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
-		if(username.equals("anonymousUser")) {
+		if (username.equals("anonymousUser")) {
 			out.setLoggedin(false);
 		} else {
 			out.setLoggedin(true);

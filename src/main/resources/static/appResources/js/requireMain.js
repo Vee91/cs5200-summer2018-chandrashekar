@@ -27,6 +27,7 @@ require.config({
 		'adminService': 'appResources/js/services/adminService',
 		'searchController' : 'appResources/js/controllers/searchController',
 		'searchService' : 'appResources/js/services/searchService',
+		'bookController' : 'appResources/js/controllers/bookController',
 	},
 	// shim: makes external libraries reachable
 	shim : {

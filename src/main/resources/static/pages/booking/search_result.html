@@ -30,21 +30,75 @@
 		<div class="alert alert-danger" ng-show="model.message">
 			{{model.message}}</div>
 			
-			<h2> Search Results</h2`>	
-	<div ng-repeat = "item in model.results.results" style ="padding-top : 5px">
-		<md-grid-list md-cols="3" md-row-height="14:1" md-gutter="4px">
-    <md-grid-tile class="gray" md-colspan="3">
-        <div layout="column" layout-fill>{{item.outbound.origin}} to {{item.outbound.destination}}  Duration of flight : {{item.outbound.duration}}</div>
+			<h2 class="md-headline"> Search Results</h2`>	
+			
+			<div ng-show = "model.loading" layout="row" layout-sm="column" layout-align="center">
+      <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
+	<div ng-hide = "model.loading" ng-repeat = "item in model.results.results" style ="padding-top : 20px">
+		<md-grid-list md-cols="10" md-row-height="5:1" md-gutter="4px">
+    <md-grid-tile class="gray" md-colspan="10">
+    <div flex> <p class="md-title">{{item.outbound.origin}} to {{item.outbound.destination}}<p></div>
+    <div flex> <p class="md-title"> Price: ${{(item.price + item.tax).toFixed(2)}}<p></div>
+    <md-button class="md-raised" ng-click = "model.book(item)"> Book </md-button>
     </md-grid-tile>
-    <md-grid-tile class="gray"  ng-repeat="flight in item.outbound.flights" md-colspan="3">
+    
+    <md-grid-tile class="gray" md-colspan="2" md-rowspan = "{{item.outbound.flights.length + 1}}">
         <div layout="row" flex>
-            <div flex>this row</div>
-            <div flex>should repeat</div>
-            <div flex>for every</div>
-            <div flex>item</div>
+       		<div flex ><p class="md-body-2" style = "font-weight: bold; color : #00695C;">Outbound(Duration: {{item.outbound.duration}})</p><br>
+       		</div>
         </div>
       </md-grid-tile>
+    
+    <md-grid-tile class="gray" md-colspan="8">
+        <div layout="row" flex>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">From</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">To</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Departs At</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Arrives At</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Airline</p></div>
+        </div>
+      </md-grid-tile>
+      
+    
+    <md-grid-tile class="gray"  ng-repeat="flight in item.outbound.flights" md-colspan="8">
+        <div layout="row" flex>
+            <div flex><p class="md-body-1">{{flight.origin.label}}</p></div>
+            <div flex><p class="md-body-1">{{flight.destination.label}}</p></div>
+            <div flex><p class="md-body-1">{{flight.departs_at | date : 'medium'}}</p></div>
+            <div flex><p class="md-body-1">{{flight.arrives_at | date : 'medium'}}</p></div>
+            <div flex><p class="md-body-1">{{flight.operatingAirlineName}}</p></div>
+        </div>
+      </md-grid-tile>
+      
+      <md-grid-tile class="gray" md-colspan="2" md-rowspan = "{{item.inbound.flights.length + 1}}" ng-show = "item.inbound">
+        <div layout="row" flex>
+       		<div flex ><p class="md-body-2" style = "font-weight: bold; color : #00695C;">Inbound (Duration: {{item.inbound.duration}})</p></div>
+        </div>
+      </md-grid-tile>
+    
+    <md-grid-tile class="gray" md-colspan="8" ng-show = "item.inbound">
+        <div layout="row" flex>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">From</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">To</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Departs At</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Arrives At</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Airline</p></div>
+        </div>
+      </md-grid-tile>
+    
+    <md-grid-tile class="gray"  ng-repeat="flight in item.inbound.flights" md-colspan="8" ng-show = "item.inbound">
+        <div layout="row" flex>
+            <div flex><p class="md-body-1">{{flight.origin.label}}</p></div>
+            <div flex><p class="md-body-1">{{flight.destination.label}}</p></div>
+            <div flex><p class="md-body-1">{{flight.departs_at | date : 'medium'}}</p></div>
+            <div flex><p class="md-body-1">{{flight.arrives_at | date : 'medium'}}</p></div>
+            <div flex><p class="md-body-1">{{flight.operatingAirlineName}}</p></div>
+        </div>
+      </md-grid-tile>
+       
 </md-grid-list>
+ <md-divider></md-divider>
 </div>
 
 </div>

@@ -15,3 +15,12 @@
 .red {
 	background: #ff8a80;
 }
+
+md-divider {
+    border-width: 1px;
+    border-style: solid;
+}
+
+.subhead {
+	color : #7B1FA2;
+}

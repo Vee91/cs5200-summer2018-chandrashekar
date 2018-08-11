@@ -35,7 +35,7 @@ public class ThirdPartyImpl implements ThirdParty {
 				+ "&destination=" + query.getDestination() + "&departure_date="
 				+ DateUtil.getDateAsString(DateUtil.getDateFromString(query.getDepartureDate(), "yyyy-mm-dd"), "yyyy-mm-dd");
 		if (query.getReturnDate() != null)
-			uri = uri + "&return_date=" + query.getReturnDate();
+			uri = uri + "&return_date=" + DateUtil.getDateAsString(DateUtil.getDateFromString(query.getReturnDate(), "yyyy-mm-dd"), "yyyy-mm-dd");
 		uri = uri + "&number_of_results=6&nonstop=" + query.isNonstop() + "&apikey=" + TravelConstants.API_KEY;
 
 		RestTemplate restTemplate = new RestTemplate();

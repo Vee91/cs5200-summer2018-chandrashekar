@@ -20,6 +20,25 @@ public class Flight {
 	private String airline;
 	private int flightNumber;
 	private String aircraft;
+	private String operatingAirlineName;
+	private String aircraftName;
+	
+	
+	public String getAircraftName() {
+		return aircraftName;
+	}
+
+	public void setAircraftName(String aircraftName) {
+		this.aircraftName = aircraftName;
+	}
+
+	public String getOperatingAirlineName() {
+		return operatingAirlineName;
+	}
+
+	public void setOperatingAirlineName(String operatingAirlineName) {
+		this.operatingAirlineName = operatingAirlineName;
+	}
 
 	public Flight() {}
 
