@@ -10,7 +10,6 @@ define([ 'app'], function(app) {
 			var body = { "passengers" : p, 
 					"card" : c,
 					"itinerary" : q};
-			console.log(body);
 			return $http.post(url, body)
 			.then(function (response) {
 				return response.data;

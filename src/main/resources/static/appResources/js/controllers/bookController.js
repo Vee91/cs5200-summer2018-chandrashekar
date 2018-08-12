@@ -7,6 +7,10 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService', 'bookingServ
 		vm.passenger2 = null;
 		vm.passenger3 = null;
 		vm.card = null;
+		vm.disabled = false;;
+		vm.user          = null;
+		vm.admin         = null;
+		vm.loggedin      = false;
 		vm.confirmBook = confirmBook;
 		
 		function init() {
@@ -17,9 +21,20 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService', 'bookingServ
 				$('nav').toggleClass('show');
 				$('body').toggleClass('overflow');
 			});
+			
+			HomeService.startApp()
+			.then(function (response) {
+				vm.loggedin = response.loggedin;
+				var role = response.message;
+				if(role == 'ROLE_USER')
+					vm.user = true;
+				if(role == 'ROLE_ADMIN')
+					vm.admin = true;
+			});
 		}
 		
 		function confirmBook() {
+			vm.disabled = true;
 			var passengers = [];
 			if(vm.passenger1 != null) {
 				passengers.push(vm.passenger1);
@@ -33,10 +48,12 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService', 'bookingServ
 			BookingService.book(passengers, vm.card, vm.query)
 			.then(function (response) {
 				if(response.code == 200) {
-					console.log(response);
+					$location.path('/tickets');
 				} else {
-					
+					vm.message = response.message;
 				}
+			}, function(error) {
+				vm.disabled = false;
 			});
 		}
 		

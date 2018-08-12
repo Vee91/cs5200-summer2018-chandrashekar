@@ -318,7 +318,7 @@
      </md-input-container>
      </div>
      
-     <md-button class="md-raised md-primary" ng-click = "model.confirmBook()"> Book </md-button>
+     <md-button class="md-raised md-primary" ng-disabled = "model.disabled" ng-click = "model.confirmBook()"> Book </md-button>
 	
 	</form>
 	
@@ -332,9 +332,12 @@
 <nav>
 	<ul class="main">
 		<li><a href="#0">Home</a></li>
-		<li><a href="#0">Shop</a></li>
-		<li><a href="#0">About</a></li>
-		<li><a href="#0">Contact</a></li>
+		<li ng-show= "model.loggedin && model.user"><a href="tickets">My Tickets</a></li>
+		<li ng-show= "model.loggedin && model.admin"><a href="tickets">Admin Dashboard</a></li>
+		<li ng-hide="model.loggedin"><a href="#0">About</a></li>
+		<li ng-hide="model.loggedin"><a href="#0">Contact</a></li>
+		<li ng-show= "model.loggedin && model.user"><a href="#0">My Cards</a></li>
+		<li ng-show= "model.loggedin"><a href="#0">Profile</a></li>
 		<li ng-hide="model.loggedin"><a href="login">Sign In</a></li>
 		<li ng-show="model.loggedin"><a href="logout">Sign Out</a></li>
 	</ul>

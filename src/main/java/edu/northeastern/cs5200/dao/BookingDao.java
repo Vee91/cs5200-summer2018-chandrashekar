@@ -2,6 +2,7 @@ package edu.northeastern.cs5200.dao;
 
 import java.util.List;
 
+import edu.northeastern.cs5200.dto.Booking;
 import edu.northeastern.cs5200.dto.Flight;
 import edu.northeastern.cs5200.dto.Itinerary;
 import edu.northeastern.cs5200.dto.Passenger;
@@ -27,4 +28,14 @@ public interface BookingDao {
 	public boolean checkIfFlightExist(Flight f);
 
 	public void insertFlight(Flight f);
+
+	public int getScheduleId(Flight next);
+
+	public List<Booking> getActiveBookingId(String username);
+
+	public List<Booking> getInactiveBookingId(String username);
+
+	public void getBookedFlights(Booking next, String username, boolean b);
+
+	public void getBookedPassengers(Booking b);
 }

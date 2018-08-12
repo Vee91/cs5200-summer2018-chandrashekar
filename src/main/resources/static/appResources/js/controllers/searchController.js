@@ -6,6 +6,9 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService'], function(jq
 		vm.results = null;
 		vm.info = null;
 		vm.loading = true;
+		vm.user          = null;
+		vm.admin         = null;
+		vm.loggedin      = false;
 		vm.book = book;
 		
 		function init() {
@@ -15,6 +18,16 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService'], function(jq
 				$('.overlay').toggleClass('show');
 				$('nav').toggleClass('show');
 				$('body').toggleClass('overflow');
+			});
+			
+			HomeService.startApp()
+			.then(function (response) {
+				vm.loggedin = response.loggedin;
+				var role = response.message;
+				if(role == 'ROLE_USER')
+					vm.user = true;
+				if(role == 'ROLE_ADMIN')
+					vm.admin = true;
 			});
 			
 			SearchService.searchFlights(vm.query).then(function (response) {

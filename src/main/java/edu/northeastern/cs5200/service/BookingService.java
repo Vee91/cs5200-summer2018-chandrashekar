@@ -13,4 +13,6 @@ public interface BookingService {
 
 	public ResponseResource bookItinerary(FlightSearchResult itinerary, List<Passenger> passengers, CreditCard card);
 
+	public ResponseResource getMyItineraries();
+
 }

@@ -2,6 +2,7 @@ package edu.northeastern.cs5200.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -95,8 +97,7 @@ public class SearchServiceImpl implements SearchService {
 			String name = flightDao.getAircraft(aircraft);
 			infoMap.put(aircraft, name);
 			return name;
-		}
-		else {
+		} else {
 			return infoMap.get(aircraft).toString();
 		}
 	}
@@ -106,8 +107,7 @@ public class SearchServiceImpl implements SearchService {
 			String name = flightDao.getAirline(airline);
 			infoMap.put(airline, name);
 			return name;
-		}
-		else {
+		} else {
 			return infoMap.get(airline).toString();
 		}
 	}
@@ -158,6 +158,10 @@ public class SearchServiceImpl implements SearchService {
 		ResponseResource out = new ResponseResource();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
+		final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		for (final GrantedAuthority grantedAuthority : authorities) {
+			out.setMessage(grantedAuthority.getAuthority());
+		}
 		if (username.equals("anonymousUser")) {
 			out.setLoggedin(false);
 		} else {

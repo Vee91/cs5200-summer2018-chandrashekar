@@ -9,7 +9,7 @@ check if transactions can be done and configured
 server.servlet.context-path=
 spring security -- done
 
-reload aircraft data
+reload aircraft data  -- done
 
 address for users and employee types and crew assignment and employee register ids
 
@@ -28,6 +28,26 @@ search the from and to
 display the results 
 
 when booking check schedule table if same flight for same dates(departure and arrival) is already present in DB. If yes, then take the itinerary id and check from itinerary table if the user is booking for that exact itinerary. If yes then use the schedule id for booking. Else, insert in itinerary for the user search(user input from and to airports) and insert new rows in schedule for that itinerary.
+
+
+DELETE FROM `cs5200_summer2018_chandrashekar`.`passenger`;
+
+DELETE FROM `cs5200_summer2018_chandrashekar`.`booking`;
+
+DELETE FROM `cs5200_summer2018_chandrashekar`.`flights_in_itinerary`;
+
+DELETE FROM `cs5200_summer2018_chandrashekar`.`itinerary`;
+
+DELETE FROM `cs5200_summer2018_chandrashekar`.`schedule`;
+
+DELETE FROM `cs5200_summer2018_chandrashekar`.`flights`;
+
+DELETE FROM `cs5200_summer2018_chandrashekar`.`booking_details`;
+
+DELETE FROM `cs5200_summer2018_chandrashekar`.`transaction`;
+
+DELETE FROM `cs5200_summer2018_chandrashekar`.`creditcard`;
+
 
 
 

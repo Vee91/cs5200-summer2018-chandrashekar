@@ -32,8 +32,8 @@ public class CreditCardDaoImpl implements CreditCardDao {
 
 	@Override
 	public List<CreditCard> getAllCreditCard(String username) {
-		return jdbcTemplate.queryForList(QueryConstants.SELECT_CREDIT_CARD.toString(), new Object[] { username },
-				new int[] { Types.VARCHAR }, CreditCard.class);
+		return jdbcTemplate.query(QueryConstants.SELECT_CREDIT_CARD.toString(), new Object[] { username },
+				new int[] { Types.VARCHAR }, BeanPropertyRowMapper.newInstance(CreditCard.class));
 	}
 
 	@Override

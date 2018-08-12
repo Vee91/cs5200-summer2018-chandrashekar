@@ -43,10 +43,10 @@ public class DateUtil {
 		return null;
 	}
 
-	public static java.sql.Date dateToSQLDate(Date date) {
-		java.sql.Date sqlDate = null;
+	public static java.sql.Timestamp dateToSQLDate(Date date) {
+		java.sql.Timestamp sqlDate = null;
 		if (date != null) {
-			sqlDate = new java.sql.Date(date.getTime());
+			sqlDate = new java.sql.Timestamp(date.getTime());
 		}
 		return sqlDate;
 	}

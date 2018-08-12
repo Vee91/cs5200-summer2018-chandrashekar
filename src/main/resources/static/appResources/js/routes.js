@@ -51,6 +51,12 @@ define([], function () {
 					dependencies: ['bookController'],
 					cntrl: 'bookController',
 					cntrlAs: 'model'
+				},
+				'/tickets' : {
+					templateUrl: 'pages/booking/tickets.html',
+					dependencies: ['ticketController'],
+					cntrl: 'ticketController',
+					cntrlAs: 'model'
 				}
 			}
 	};

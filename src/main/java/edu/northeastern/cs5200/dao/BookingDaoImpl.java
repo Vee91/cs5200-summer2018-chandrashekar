@@ -2,9 +2,11 @@ package edu.northeastern.cs5200.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,12 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import edu.northeastern.cs5200.dto.BookedFlight;
+import edu.northeastern.cs5200.dto.Booking;
 import edu.northeastern.cs5200.dto.Flight;
 import edu.northeastern.cs5200.dto.Itinerary;
 import edu.northeastern.cs5200.dto.Passenger;
@@ -34,10 +40,10 @@ public class BookingDaoImpl implements BookingDao {
 
 	@Override
 	public boolean checkIfExists(Flight f) {
-		int x = jdbcTemplate.queryForObject(
-				QueryConstants.SCHEDULE_EXIST.toString(), new Object[] { f.getFlightNumber(),
-						DateUtil.dateToSQLDate(f.getDepartsAt()), DateUtil.dateToSQLDate(f.getDepartsAt()) },
-				Integer.class);
+		int x = jdbcTemplate.queryForObject(QueryConstants.SCHEDULE_EXIST.toString(),
+				new Object[] { f.getFlightNumber(), DateUtil.dateToSQLDate(f.getDepartsAt()),
+						DateUtil.dateToSQLDate(f.getArrivesAt()) },
+				new int[] { Types.INTEGER, Types.TIMESTAMP, Types.TIMESTAMP }, Integer.class);
 		return x > 0 ? true : false;
 	}
 
@@ -64,8 +70,7 @@ public class BookingDaoImpl implements BookingDao {
 		int bookingid = insertIntoBookingDetails(username);
 		Iterator<Flight> itr = flights.iterator();
 		while (itr.hasNext()) {
-			int scid = getScheduleId(itr.next());
-			confirmBooking(scid, bookingid);
+			confirmBooking(itr.next().getScheduleId(), bookingid);
 		}
 		return bookingid;
 	}
@@ -89,9 +94,12 @@ public class BookingDaoImpl implements BookingDao {
 		return keyHolder.getKey().intValue();
 	}
 
-	private int getScheduleId(Flight next) {
-		return jdbcTemplate.queryForObject(QueryConstants.GET_SCHEDULE_ID.toString(),
-				new Object[] { next.getFlightNumber() }, Integer.class);
+	@Override
+	public int getScheduleId(Flight next) {
+		return jdbcTemplate.queryForObject(
+				QueryConstants.GET_SCHEDULE_ID.toString(), new Object[] { next.getFlightNumber(),
+						DateUtil.dateToSQLDate(next.getDepartsAt()), DateUtil.dateToSQLDate(next.getArrivesAt()) },
+				Integer.class);
 	}
 
 	@Override
@@ -116,7 +124,7 @@ public class BookingDaoImpl implements BookingDao {
 		Iterator<Flight> itr = flights.iterator();
 		while (itr.hasNext()) {
 			jdbcTemplate.update(QueryConstants.ASSIGN_FLIGHT_ITINERARY.toString(),
-					new Object[] { itid, getScheduleId(itr.next()) }, new int[] { Types.INTEGER, Types.INTEGER });
+					new Object[] { itid, itr.next().getScheduleId() }, new int[] { Types.INTEGER, Types.INTEGER });
 		}
 	}
 
@@ -125,10 +133,19 @@ public class BookingDaoImpl implements BookingDao {
 		Iterator<Flight> itr = flights.iterator();
 		while (itr.hasNext()) {
 			Flight f = itr.next();
-			jdbcTemplate.update(QueryConstants.INSERT_SCHEDULE.toString(),
-					new Object[] { f.getFlightNumber(), DateUtil.dateToSQLDate(f.getDepartsAt()),
-							DateUtil.dateToSQLDate(f.getArrivesAt()) },
-					new int[] { Types.INTEGER, Types.DATE, Types.DATE });
+			KeyHolder keyHolder = new GeneratedKeyHolder();
+			jdbcTemplate.update(new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+					PreparedStatement ps = connection.prepareStatement(QueryConstants.INSERT_SCHEDULE.toString(),
+							Statement.RETURN_GENERATED_KEYS);
+					ps.setInt(1, f.getFlightNumber());
+					ps.setTimestamp(2, DateUtil.dateToSQLDate(f.getDepartsAt()));
+					ps.setTimestamp(3, DateUtil.dateToSQLDate(f.getArrivesAt()));
+					return ps;
+				}
+			}, keyHolder);
+			f.setScheduleId(keyHolder.getKey().intValue());
 		}
 	}
 
@@ -177,6 +194,55 @@ public class BookingDaoImpl implements BookingDao {
 						f.getAircraft() },
 				new int[] { Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
 						Types.VARCHAR });
+	}
+
+	@Override
+	public List<Booking> getActiveBookingId(String username) {
+		List<Booking> bookings = new ArrayList<Booking>();
+		return jdbcTemplate.query(QueryConstants.FIND_ACTIVE_BOOKING_ID.toString(), new Object[] { username },
+				new ResultSetExtractor<List<Booking>>() {
+					@Override
+					public List<Booking> extractData(ResultSet rs) throws SQLException {
+						while (rs.next()) {
+							Booking b = new Booking();
+							b.setBookingId(rs.getInt(1));
+							bookings.add(b);
+						}
+						return bookings;
+					}
+				});
+	}
+
+	@Override
+	public List<Booking> getInactiveBookingId(String username) {
+		List<Booking> bookings = new ArrayList<Booking>();
+		return jdbcTemplate.query(QueryConstants.FIND_INACTIVE_BOOKING_ID.toString(), new Object[] { username },
+				new ResultSetExtractor<List<Booking>>() {
+					@Override
+					public List<Booking> extractData(ResultSet rs) throws SQLException {
+						while (rs.next()) {
+							Booking b = new Booking();
+							b.setBookingId(rs.getInt(1));
+							bookings.add(b);
+						}
+						return bookings;
+					}
+				});
+	}
+
+	@Override
+	public void getBookedFlights(Booking next, String username, boolean active) {
+		int a = active ? 1 : 0;
+		next.setFlights(jdbcTemplate.query(QueryConstants.FIND_BOOKED_FLIGHTS.toString(),
+				new Object[] { username, next.getBookingId(), a },
+				new int[] { Types.VARCHAR, Types.INTEGER, Types.BIT }, BeanPropertyRowMapper.newInstance(BookedFlight.class)));
+	}
+
+	@Override
+	public void getBookedPassengers(Booking b) {
+		b.setPassengers(jdbcTemplate.query(QueryConstants.FIND_BOOKED_PASSENGERS.toString(),
+				new Object[] { b.getBookingId() }, new int[] { Types.INTEGER }, BeanPropertyRowMapper.newInstance(Passenger.class)));
+
 	}
 
 }

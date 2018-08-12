@@ -28,6 +28,10 @@ public class QueryConstants {
 	public static final StringBuilder FIND_PERSON_BY_USERNAME = new StringBuilder();
 	public static final StringBuilder SELECT_CREDIT_CARD = new StringBuilder();
 	public static final StringBuilder SELECT_SECURITY_CODE = new StringBuilder();
+	public static final StringBuilder FIND_ACTIVE_BOOKING_ID = new StringBuilder();
+	public static final StringBuilder FIND_INACTIVE_BOOKING_ID = new StringBuilder();
+	public static final StringBuilder FIND_BOOKED_FLIGHTS = new StringBuilder();
+	public static final StringBuilder FIND_BOOKED_PASSENGERS = new StringBuilder();
 
 	public static final StringBuilder SCHEDULE_EXIST = new StringBuilder();
 	public static final StringBuilder ITINERARY_EXIST = new StringBuilder();
@@ -68,7 +72,8 @@ public class QueryConstants {
 		ITINERARY_EXIST.append(
 				"SELECT count(1) FROM cs5200_summer2018_chandrashekar.itinerary where origin = ? and destination = ? and duration = ?");
 
-		GET_SCHEDULE_ID.append("SELECT id FROM cs5200_summer2018_chandrashekar.schedule where flight = ?");
+		GET_SCHEDULE_ID.append(
+				"SELECT id FROM cs5200_summer2018_chandrashekar.schedule where flight = ? and departure = ? and arrival = ?");
 
 		INSERT_BOOKING_DETAILS.append("INSERT INTO `cs5200_summer2018_chandrashekar`.`booking_details`");
 		INSERT_BOOKING_DETAILS.append(" (`user`) ");
@@ -161,6 +166,56 @@ public class QueryConstants {
 		INSERT_FLIGHT.append(" `aircraft`)  ");
 		INSERT_FLIGHT.append(" VALUES  ");
 		INSERT_FLIGHT.append(" (?,?,?,?,?,?,?)  ");
+
+		FIND_ACTIVE_BOOKING_ID.append(" SELECT  ");
+		FIND_ACTIVE_BOOKING_ID.append("  id ");
+		FIND_ACTIVE_BOOKING_ID.append(" FROM ");
+		FIND_ACTIVE_BOOKING_ID.append("  cs5200_summer2018_chandrashekar.booking_details ");
+		FIND_ACTIVE_BOOKING_ID.append(" WHERE ");
+		FIND_ACTIVE_BOOKING_ID.append("  user = ? AND active = 1 ");
+
+		FIND_INACTIVE_BOOKING_ID.append(" SELECT  ");
+		FIND_INACTIVE_BOOKING_ID.append("  id ");
+		FIND_INACTIVE_BOOKING_ID.append(" FROM ");
+		FIND_INACTIVE_BOOKING_ID.append("  cs5200_summer2018_chandrashekar.booking_details ");
+		FIND_INACTIVE_BOOKING_ID.append(" WHERE ");
+		FIND_INACTIVE_BOOKING_ID.append("  user = ? AND active = 0 ");
+
+		FIND_BOOKED_FLIGHTS.append(" SELECT  ");
+		FIND_BOOKED_FLIGHTS.append(" sc.flight, ");
+		FIND_BOOKED_FLIGHTS.append(" sc.departure, ");
+		FIND_BOOKED_FLIGHTS.append(" sc.arrival, ");
+		FIND_BOOKED_FLIGHTS.append(" sc.status, ");
+		FIND_BOOKED_FLIGHTS.append(" air.name AS airline, ");
+		FIND_BOOKED_FLIGHTS.append(" craft.name AS aircraft, ");
+		FIND_BOOKED_FLIGHTS.append(" org.name AS origin, ");
+		FIND_BOOKED_FLIGHTS.append(" f.origin_terminal AS originTerminal, ");
+		FIND_BOOKED_FLIGHTS.append(" dest.name AS destination, ");
+		FIND_BOOKED_FLIGHTS.append(" f.destination_terminal AS destinationTerminal ");
+		FIND_BOOKED_FLIGHTS.append(" FROM ");
+		FIND_BOOKED_FLIGHTS.append(" cs5200_summer2018_chandrashekar.booking_details book, ");
+		FIND_BOOKED_FLIGHTS.append(" cs5200_summer2018_chandrashekar.booking bd, ");
+		FIND_BOOKED_FLIGHTS.append(" cs5200_summer2018_chandrashekar.schedule sc, ");
+		FIND_BOOKED_FLIGHTS.append(" cs5200_summer2018_chandrashekar.flights f, ");
+		FIND_BOOKED_FLIGHTS.append(" cs5200_summer2018_chandrashekar.airlines air, ");
+		FIND_BOOKED_FLIGHTS.append(" cs5200_summer2018_chandrashekar.aircrafts craft, ");
+		FIND_BOOKED_FLIGHTS.append(" cs5200_summer2018_chandrashekar.cities org, ");
+		FIND_BOOKED_FLIGHTS.append(" cs5200_summer2018_chandrashekar.cities dest ");
+		FIND_BOOKED_FLIGHTS.append(" WHERE ");
+		FIND_BOOKED_FLIGHTS.append(" book.id = bd.booking ");
+		FIND_BOOKED_FLIGHTS.append(" AND sc.id = bd.schedule ");
+		FIND_BOOKED_FLIGHTS.append("     AND f.flight_number = sc.flight ");
+		FIND_BOOKED_FLIGHTS.append("     AND air.code = f.airline ");
+		FIND_BOOKED_FLIGHTS.append("     AND craft.code = f.aircraft ");
+		FIND_BOOKED_FLIGHTS.append("     AND f.origin_airport = org.code ");
+		FIND_BOOKED_FLIGHTS.append(" AND f.destination_airport = dest.code ");
+		FIND_BOOKED_FLIGHTS.append(" AND book.user = ? ");
+		FIND_BOOKED_FLIGHTS.append(" AND book.id = ? ");
+		FIND_BOOKED_FLIGHTS.append(" AND book.active = ? ");
+		FIND_BOOKED_FLIGHTS.append(" ORDER BY sc.departure ");
+
+		FIND_BOOKED_PASSENGERS.append(
+				" SELECT firstname, lastname, adult, gender, phone_no as phoneNo FROM cs5200_summer2018_chandrashekar.passenger where booking = ?");
 
 	}
 

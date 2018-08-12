@@ -1,8 +1,10 @@
 package edu.northeastern.cs5200.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.northeastern.cs5200.dao.BookingDao;
 import edu.northeastern.cs5200.dao.CreditCardDao;
+import edu.northeastern.cs5200.dto.Booking;
 import edu.northeastern.cs5200.dto.CreditCard;
 import edu.northeastern.cs5200.dto.Flight;
 import edu.northeastern.cs5200.dto.FlightSearchResult;
@@ -28,7 +31,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Autowired
 	private BookingDao bookingDao;
-	
+
 	@Autowired
 	private CreditCardDao creditDao;
 
@@ -67,7 +70,7 @@ public class BookingServiceImpl implements BookingService {
 				return out;
 			}
 		}
-		
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		creditDao.addCreditCard(card, username);
@@ -154,11 +157,13 @@ public class BookingServiceImpl implements BookingService {
 		Iterator<Flight> outItr = flights.iterator();
 		while (outItr.hasNext()) {
 			Flight f = outItr.next();
-			if(!bookingDao.checkIfFlightExist(f)) {
+			if (!bookingDao.checkIfFlightExist(f)) {
 				bookingDao.insertFlight(f);
 			}
 			if (!bookingDao.checkIfExists(f)) {
 				unscheduled.add(f);
+			} else {
+				f.setScheduleId(bookingDao.getScheduleId(f));
 			}
 		}
 
@@ -194,6 +199,38 @@ public class BookingServiceImpl implements BookingService {
 		} else {
 			return bookingDao.checkIfExists(itinerary.getDestination(), itinerary.getOrigin(), itinerary.getDuration());
 		}
+	}
+
+	@Override
+	public ResponseResource getMyItineraries() {
+		ResponseResource out = new ResponseResource();
+		Map<String, Object> success = new HashMap<>();
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+
+		List<Booking> active = bookingDao.getActiveBookingId(username);
+		List<Booking> inactive = bookingDao.getInactiveBookingId(username);
+
+		Iterator<Booking> activeItr = active.iterator();
+		Iterator<Booking> inactiveItr = inactive.iterator();
+
+		while (activeItr.hasNext()) {
+			Booking b = activeItr.next();
+			bookingDao.getBookedFlights(b, username, true);
+			bookingDao.getBookedPassengers(b);
+		}
+
+		while (inactiveItr.hasNext()) {
+			Booking b = inactiveItr.next();
+			bookingDao.getBookedFlights(b, username, true);
+			bookingDao.getBookedPassengers(b);
+		}
+
+		success.put("active", active);
+		success.put("inactive", inactive);
+		out.setSuccess(success);
+		return out;
 	}
 
 }

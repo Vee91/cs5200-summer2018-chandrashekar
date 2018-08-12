@@ -9,11 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Flight {
 
-	@JsonFormat
-    (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mm")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mm")
 	private Date departsAt;
-	@JsonFormat
-    (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mm")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mm")
 	private Date arrivesAt;
 	private Airport origin;
 	private Airport destination;
@@ -22,8 +20,16 @@ public class Flight {
 	private String aircraft;
 	private String operatingAirlineName;
 	private String aircraftName;
-	
-	
+	private int scheduleId;
+
+	public int getScheduleId() {
+		return scheduleId;
+	}
+
+	public void setScheduleId(int scheduleId) {
+		this.scheduleId = scheduleId;
+	}
+
 	public String getAircraftName() {
 		return aircraftName;
 	}
@@ -40,10 +46,11 @@ public class Flight {
 		this.operatingAirlineName = operatingAirlineName;
 	}
 
-	public Flight() {}
+	public Flight() {
+	}
 
-	public Flight(Date departsAt, Date arrivesAt, Airport origin, Airport destination, String airline,
-			int flightNumber, String aircraft) {
+	public Flight(Date departsAt, Date arrivesAt, Airport origin, Airport destination, String airline, int flightNumber,
+			String aircraft) {
 		super();
 		this.departsAt = departsAt;
 		this.arrivesAt = arrivesAt;
