@@ -10,7 +10,8 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService'], function(jq
 		vm.admin         = null;
 		vm.loggedin      = false;
 		vm.book = book;
-		
+		vm.logout = logout;
+
 		function init() {
 			vm.query = HomeService.getSearchQuery();
 			$('.burger, .overlay').click(function(){
@@ -19,7 +20,7 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService'], function(jq
 				$('nav').toggleClass('show');
 				$('body').toggleClass('overflow');
 			});
-			
+
 			HomeService.startApp()
 			.then(function (response) {
 				vm.loggedin = response.loggedin;
@@ -29,7 +30,7 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService'], function(jq
 				if(role == 'ROLE_ADMIN')
 					vm.admin = true;
 			});
-			
+
 			SearchService.searchFlights(vm.query).then(function (response) {
 				if(response.code == 200) {
 					vm.results = response.success;
@@ -40,12 +41,20 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService'], function(jq
 					vm.loading = false;
 				}
 			});
-			
+
 		}
-		
+
 		function book(flight) {
 			SearchService.savequery(flight);
 			$location.path('/book');
+		}
+		
+		function logout() {
+			HomeService.logout().then(function (response) {
+				if(response == 200) {
+					$location.path('/login');
+				}
+			});
 		}
 
 		init();

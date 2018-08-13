@@ -180,10 +180,10 @@ public class BookingDaoImpl implements BookingDao {
 	}
 
 	@Override
-	public int makeTransaction(int bookingid, int cardId) {
-		return 0;
-		// TODO insert to transaction table
-
+	public int makeTransaction(int bookingid, int cardId, double ammountPayable) {
+		return jdbcTemplate.update(QueryConstants.INSERT_TRANSACTION.toString(),
+				new Object[] { bookingid, ammountPayable, cardId, "Success" },
+				new int[] { Types.INTEGER, Types.DECIMAL, Types.INTEGER, Types.VARCHAR });
 	}
 
 	@Override
@@ -235,14 +235,28 @@ public class BookingDaoImpl implements BookingDao {
 		int a = active ? 1 : 0;
 		next.setFlights(jdbcTemplate.query(QueryConstants.FIND_BOOKED_FLIGHTS.toString(),
 				new Object[] { username, next.getBookingId(), a },
-				new int[] { Types.VARCHAR, Types.INTEGER, Types.BIT }, BeanPropertyRowMapper.newInstance(BookedFlight.class)));
+				new int[] { Types.VARCHAR, Types.INTEGER, Types.BIT },
+				BeanPropertyRowMapper.newInstance(BookedFlight.class)));
 	}
 
 	@Override
 	public void getBookedPassengers(Booking b) {
-		b.setPassengers(jdbcTemplate.query(QueryConstants.FIND_BOOKED_PASSENGERS.toString(),
-				new Object[] { b.getBookingId() }, new int[] { Types.INTEGER }, BeanPropertyRowMapper.newInstance(Passenger.class)));
+		b.setPassengers(
+				jdbcTemplate.query(QueryConstants.FIND_BOOKED_PASSENGERS.toString(), new Object[] { b.getBookingId() },
+						new int[] { Types.INTEGER }, BeanPropertyRowMapper.newInstance(Passenger.class)));
 
+	}
+
+	@Override
+	public void deletePassengerForBookingId(int id) {
+		jdbcTemplate.update(QueryConstants.DELETE_PASSENGER_FOR_BOOKING.toString(), new Object[] { id },
+				new int[] { Types.INTEGER });
+	}
+
+	@Override
+	public void inactivateBooking(int id) {
+		jdbcTemplate.update(QueryConstants.INACTIVATE_BOOKING.toString(), new Object[] { id },
+				new int[] { Types.INTEGER });
 	}
 
 }

@@ -74,7 +74,20 @@ public class BookingServiceImpl implements BookingService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		creditDao.addCreditCard(card, username);
-
+		if (bookingDao.makeTransaction(bookingid, card.getId(),
+				passengers.size() * Math.round((itinerary.getPrice() + itinerary.getTax()) * 100.0) / 100.0) == 0) {
+			out.setCode("400");
+			out.setMessage(
+					"There was a problem while charging your card. Your card will not be charged. Please try aggin.");
+			return out;
+		}
+		if (inboundBookingid != -1 && bookingDao.makeTransaction(inboundBookingid, card.getId(),
+				passengers.size() * Math.round((itinerary.getPrice() + itinerary.getTax()) * 100.0) / 100.0) == 0) {
+			out.setCode("400");
+			out.setMessage(
+					"There was a problem while charging your card. Your card will not be charged. Please try aggin.");
+			return out;
+		}
 		out.setCode("200");
 		out.setMessage("Sucessfully booked your itinerary");
 		return out;
@@ -143,7 +156,9 @@ public class BookingServiceImpl implements BookingService {
 		String username = authentication.getName();
 		int dbSecCode = bookingDao.getSecurityCode(cardId, username);
 		if (dbSecCode == securityCode) {
-			return bookingDao.makeTransaction(bookingid, cardId);
+			// TODO
+			//return bookingDao.makeTransaction(bookingid, cardId);
+			return 0;
 		} else {
 			return 0;
 		}
@@ -179,7 +194,6 @@ public class BookingServiceImpl implements BookingService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		return bookingDao.insertBooking(itinerary.getFlights(), username);
-
 	}
 
 	private void handleItinerary(Itinerary itinerary, boolean outbound) {
@@ -223,13 +237,23 @@ public class BookingServiceImpl implements BookingService {
 
 		while (inactiveItr.hasNext()) {
 			Booking b = inactiveItr.next();
-			bookingDao.getBookedFlights(b, username, true);
+			bookingDao.getBookedFlights(b, username, false);
 			bookingDao.getBookedPassengers(b);
 		}
 
 		success.put("active", active);
 		success.put("inactive", inactive);
 		out.setSuccess(success);
+		return out;
+	}
+
+	@Override
+	public ResponseResource cancel(int id) {
+		bookingDao.deletePassengerForBookingId(id);
+		bookingDao.inactivateBooking(id);
+		ResponseResource out = new ResponseResource();
+		out.setCode("200");
+		out.setMessage("Booking "+ id+ " cancelled successfully");
 		return out;
 	}
 

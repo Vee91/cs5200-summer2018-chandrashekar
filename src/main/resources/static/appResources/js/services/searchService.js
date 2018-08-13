@@ -12,7 +12,7 @@ define([ 'app'], function(app) {
 		function setQuery(f){
 			query = f;
 		};
-		
+
 		function getQuery(){
 			return query;
 		};

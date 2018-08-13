@@ -35,5 +35,11 @@ public class BookingController {
 	public ResponseResource getMyItineraries() {
 		return bookingService.getMyItineraries();
 	}
+	
+	@RequestMapping(value = { "/ticket/cancel" }, method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseResource cancel(@RequestBody int id) {
+		return bookingService.cancel(id);
+	}
 
 }

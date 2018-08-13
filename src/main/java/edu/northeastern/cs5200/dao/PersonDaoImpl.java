@@ -19,4 +19,5 @@ public class PersonDaoImpl implements PersonDao {
 		return jdbctemplate.queryForObject(QueryConstants.FIND_PERSON_BY_USERNAME.toString(), new Object[] { username },
 				BeanPropertyRowMapper.newInstance(Person.class));
 	}
+	
 }

@@ -20,26 +20,34 @@ public class QueryConstants {
 	public static final StringBuilder INSERT_USER = new StringBuilder();
 	public static final StringBuilder INSERT_EMPLOYEE = new StringBuilder();
 	public static final StringBuilder INSERT_FLIGHT = new StringBuilder();
+	public static final StringBuilder INSERT_TRANSACTION = new StringBuilder();
 
 	public static final StringBuilder SELECT_AIRLINE = new StringBuilder();
 	public static final StringBuilder SELECT_AIRCRAFT = new StringBuilder();
 	public static final StringBuilder SELECT_AIRPORT = new StringBuilder();
 	public static final StringBuilder GET_SCHEDULE_ID = new StringBuilder();
 	public static final StringBuilder FIND_PERSON_BY_USERNAME = new StringBuilder();
+	public static final StringBuilder FIND_PERSON_PROFILE = new StringBuilder();
 	public static final StringBuilder SELECT_CREDIT_CARD = new StringBuilder();
 	public static final StringBuilder SELECT_SECURITY_CODE = new StringBuilder();
 	public static final StringBuilder FIND_ACTIVE_BOOKING_ID = new StringBuilder();
 	public static final StringBuilder FIND_INACTIVE_BOOKING_ID = new StringBuilder();
 	public static final StringBuilder FIND_BOOKED_FLIGHTS = new StringBuilder();
 	public static final StringBuilder FIND_BOOKED_PASSENGERS = new StringBuilder();
+	public static final StringBuilder CARD_USER_ID = new StringBuilder();
+	public static final StringBuilder SELECT_PASSWORD = new StringBuilder();
 
 	public static final StringBuilder SCHEDULE_EXIST = new StringBuilder();
 	public static final StringBuilder ITINERARY_EXIST = new StringBuilder();
 	public static final StringBuilder FLIGHT_EXIST = new StringBuilder();
 
 	public static final StringBuilder DELETE_CARD = new StringBuilder();
+	public static final StringBuilder DELETE_PASSENGER_FOR_BOOKING = new StringBuilder();
+	public static final StringBuilder INACTIVATE_BOOKING = new StringBuilder();
 
 	public static final StringBuilder UPDATE_USERNAME = new StringBuilder();
+	public static final StringBuilder UPDATE_CARD = new StringBuilder();
+	public static final StringBuilder UPDATE_PROFILE = new StringBuilder();
 
 	static {
 		INSERT_AIRCRAFT.append("INSERT INTO `cs5200_summer2018_chandrashekar`.`aircrafts` ");
@@ -118,7 +126,7 @@ public class QueryConstants {
 		SELECT_CREDIT_CARD.append(" `creditcard`.`id`, `creditcard`.`card_number` as cardNumber, ");
 		SELECT_CREDIT_CARD.append(" `creditcard`.`full_name` as fullName, ");
 		SELECT_CREDIT_CARD.append(" `creditcard`.`exp_month` as expMonth, ");
-		SELECT_CREDIT_CARD.append(" `creditcard`.`exp_year` as expYear, ");
+		SELECT_CREDIT_CARD.append(" `creditcard`.`exp_year` as expYear, `creditcard`.`security_code` as securityCode ");
 		SELECT_CREDIT_CARD.append(" FROM `cs5200_summer2018_chandrashekar`.`creditcard` ");
 		SELECT_CREDIT_CARD.append(" where user = ? ");
 
@@ -216,6 +224,52 @@ public class QueryConstants {
 
 		FIND_BOOKED_PASSENGERS.append(
 				" SELECT firstname, lastname, adult, gender, phone_no as phoneNo FROM cs5200_summer2018_chandrashekar.passenger where booking = ?");
+
+		INSERT_TRANSACTION.append(" INSERT INTO `cs5200_summer2018_chandrashekar`.`transaction` ");
+		INSERT_TRANSACTION.append(" (`booking`, ");
+		INSERT_TRANSACTION.append(" `amount_payable`, ");
+		INSERT_TRANSACTION.append(" `paid_from`, ");
+		INSERT_TRANSACTION.append(" `payment_status`) ");
+		INSERT_TRANSACTION.append(" VALUES ");
+		INSERT_TRANSACTION.append(" (?,?,?,?) ");
+
+		DELETE_PASSENGER_FOR_BOOKING
+				.append(" DELETE FROM cs5200_summer2018_chandrashekar.passenger WHERE booking = ? ");
+
+		INACTIVATE_BOOKING.append(" UPDATE `cs5200_summer2018_chandrashekar`.`booking_details` ");
+		INACTIVATE_BOOKING.append(" SET ");
+		INACTIVATE_BOOKING.append(" `active` = 0 ");
+		INACTIVATE_BOOKING.append(" WHERE `id` = ? ");
+
+		UPDATE_CARD.append(" UPDATE `cs5200_summer2018_chandrashekar`.`creditcard` ");
+		UPDATE_CARD.append(" SET ");
+		UPDATE_CARD.append(" `card_number` = ?, ");
+		UPDATE_CARD.append(" `full_name` = ?, ");
+		UPDATE_CARD.append(" `exp_month` = ?, ");
+		UPDATE_CARD.append(" `exp_year` = ?, ");
+		UPDATE_CARD.append(" `security_code` = ? ");
+		UPDATE_CARD.append(" WHERE `id` = ? ");
+
+		CARD_USER_ID.append(" SELECT  ");
+		CARD_USER_ID.append(" user ");
+		CARD_USER_ID.append(" FROM ");
+		CARD_USER_ID.append(" `cs5200_summer2018_chandrashekar`.`creditcard` ");
+		CARD_USER_ID.append(" WHERE ");
+		CARD_USER_ID.append(" `id` = ? ");
+
+		FIND_PERSON_PROFILE.append(
+				" SELECT id, firstname, lastname, phone, email, username FROM cs5200_summer2018_chandrashekar.person where username = ? ");
+
+		SELECT_PASSWORD.append(" SELECT password FROM cs5200_summer2018_chandrashekar.person where username = ? ");
+
+		UPDATE_PROFILE.append(" UPDATE `cs5200_summer2018_chandrashekar`.`person` ");
+		UPDATE_PROFILE.append(" SET ");
+		UPDATE_PROFILE.append(" `firstname` = ?, ");
+		UPDATE_PROFILE.append(" `lastname` = ?, ");
+		UPDATE_PROFILE.append(" `phone` = ?, ");
+		UPDATE_PROFILE.append(" `email` = ?, ");
+		UPDATE_PROFILE.append(" `username` = ? ");
+		UPDATE_PROFILE.append(" WHERE `username` = ? ");
 
 	}
 

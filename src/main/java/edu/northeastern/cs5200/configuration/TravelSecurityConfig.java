@@ -51,12 +51,16 @@ public class TravelSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
 			.antMatchers("/admin").hasRole("ADMIN")
+			.antMatchers("/tickets").authenticated()
+			.antMatchers("/cards").authenticated()
+			.antMatchers("/book").authenticated()
 			.antMatchers("/profile").authenticated()
 			.anyRequest().permitAll()
 			.and()
 			.formLogin().loginPage("/login").successHandler(new RefererAuthenticationSuccessHandler()).permitAll()
 			.and()
-			.logout().permitAll();
+			.logout().logoutUrl("/logout") 
+			.logoutSuccessUrl("/login").permitAll();
 		
 	}
 

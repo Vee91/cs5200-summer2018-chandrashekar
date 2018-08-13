@@ -21,7 +21,8 @@
 		<i class="material-icons" style="padding-right: 25px">flight_land</i>
 	</div>
 	</md-toolbar>
-
+<div class="alert alert-danger" ng-show="model.message">
+			{{model.message}}</div>
 	<div style="padding-top: 20px">
 		<md-grid-list md-cols="10" md-row-height="5:1" md-gutter="4px">
 		<md-grid-tile class="gray" md-colspan="10">
@@ -336,10 +337,10 @@
 		<li ng-show= "model.loggedin && model.admin"><a href="tickets">Admin Dashboard</a></li>
 		<li ng-hide="model.loggedin"><a href="#0">About</a></li>
 		<li ng-hide="model.loggedin"><a href="#0">Contact</a></li>
-		<li ng-show= "model.loggedin && model.user"><a href="#0">My Cards</a></li>
+		<li ng-show= "model.loggedin && model.user"><a href="cards">My Cards</a></li>
 		<li ng-show= "model.loggedin"><a href="#0">Profile</a></li>
 		<li ng-hide="model.loggedin"><a href="login">Sign In</a></li>
-		<li ng-show="model.loggedin"><a href="logout">Sign Out</a></li>
+		<li ng-click = "model.logout()" ng-show="model.loggedin"><a href="logout">Sign Out</a></li>
 	</ul>
 
 

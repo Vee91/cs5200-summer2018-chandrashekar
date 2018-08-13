@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import edu.northeastern.cs5200.dao.PersonDao;
 import edu.northeastern.cs5200.dto.MyPersonDetails;
 import edu.northeastern.cs5200.dto.Person;
+import edu.northeastern.cs5200.util.ResponseResource;
 
 @Service
 public class MyPersonDetailService implements UserDetailsService {
@@ -20,4 +21,5 @@ public class MyPersonDetailService implements UserDetailsService {
 		Person out = personDao.getPersonByUsername(username);
 		return new MyPersonDetails(out);
 	}
+
 }

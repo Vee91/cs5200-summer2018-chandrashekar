@@ -5,7 +5,8 @@ define([ 'app'], function(app) {
 				autocomplete : autocomplete,
 				saveSearch : saveSearch,
 				setSearchQuery : setSearchQuery,
-				getSearchQuery : getSearchQuery
+				getSearchQuery : getSearchQuery,
+				logout : logout
 		};
 
 		var searchQuery = {};
@@ -40,6 +41,14 @@ define([ 'app'], function(app) {
 		function saveSearch(from, to, dDate, rDate, nonstop) {
 			setSearchQuery(from, to, dDate, rDate, nonstop);
 		};
+		
+		function logout() {
+			var url = "logout";
+			return $http.post(url)
+			.then(function (response) {
+				return response.status;
+			});
+		}
 
 		return factory;
 	});

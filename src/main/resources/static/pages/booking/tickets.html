@@ -2,19 +2,141 @@
 	<span></span>
 </div>
 
-My tickets
+<md-content class="md-padding" layout-xs="column" layout="row"
+	layout-align="center" layout-fill>
+<div flex-xs flex layout="column" style="padding-right: 50px">
+	<md-toolbar>
+	<div class="md-toolbar-tools">
+		<md-button aria-label="Go Back" ng-href="/travelbooking">
+		Back </md-button>
+		<h2 md-truncate style="padding-right: 25px">My Tickets</h2>
+	</div>
+	</md-toolbar>
+	<div class="alert alert-danger" ng-show="model.message">
+			{{model.message}}</div>
+		
+	
+	<md-tabs md-selected="model.selectedIndex" md-border-bottom
+		md-autoselect md-swipe-content md-align-tabs="top"
+		md-dynamic-height="true">
+		
+	 <md-tab label="Active">
+		
+	<md-content class="md-padding">
+	
+    <div ng-repeat = "item in model.active" style ="padding-top : 20px">
+		<md-grid-list md-cols="10" md-row-height="5:1" md-gutter="4px">
+    <md-grid-tile class="gray" md-colspan="10">
+    <div flex> <p class="md-title">Booking Id : {{item.bookingId}}<p></div>
+    <md-button class="md-accent md-raised md-hue-3" ng-click="model.cancel($event, item.bookingId)"> Cancel </md-button>
+    </md-grid-tile>
+    
+    <md-grid-tile class="gray" md-colspan="10">
+        <div layout="row" flex>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Flight</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">From(Terminal)</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Departure Time</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">To(Terminal)</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Arrival Time</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Airline</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Aircraft</p></div>
+        </div>
+      </md-grid-tile>
+      
+    
+    <md-grid-tile class="gray"  ng-repeat="flight in item.flights" md-colspan="10">
+        <div layout="row" flex>
+            <div flex><p class="md-body-1">{{flight.flight}}</p></div>
+            <div flex><p class="md-body-1">{{flight.origin}}({{flight.originTerminal}})</p></div>
+            <div flex><p class="md-body-1">{{flight.departure | date : 'medium'}}</p></div>
+            <div flex><p class="md-body-1">{{flight.destination}}({{flight.destinationTerminal}})</p></div>
+            <div flex><p class="md-body-1">{{flight.arrival | date : 'medium'}}</p></div>
+            <div flex><p class="md-body-1">{{flight.airline}}</p></div>
+            <div flex><p class="md-body-1">{{flight.aircraft}}</p></div>
+        </div>
+      </md-grid-tile>
+      
+      <md-grid-tile class="gray" md-colspan="10">
+      <div flex> <p class="md-title">Passengers<p></div>
+      </md-grid-tile>
+      
+      <md-grid-tile class="gray"  md-colspan="10">
+        <div layout="row" flex>
+            <div ng-repeat="passenger in item.passengers"  flex><p class="md-body-1">{{passenger.firstname}} {{passenger.lastname}}</p></div>
+        </div>
+      </md-grid-tile>
+       
+</md-grid-list>
+ <md-divider></md-divider>
+</div>
+    
+    
+	</md-content>
+	</md-tab>
+	
+	 <md-tab label="Cancelled">
+		
+	<md-content class="md-padding">
+	
+	<div ng-repeat = "item in model.inactive" style ="padding-top : 20px">
+		<md-grid-list md-cols="10" md-row-height="5:1" md-gutter="4px">
+    <md-grid-tile class="gray" md-colspan="10">
+    <div flex> <p class="md-title">Booking Id : {{item.bookingId}}<p></div>
+    </md-grid-tile>
+    
+    <md-grid-tile class="gray" md-colspan="10">
+        <div layout="row" flex>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Flight</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">From(Terminal)</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Departure Time</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">To(Terminal)</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Arrival Time</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Airline</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Aircraft</p></div>
+        </div>
+      </md-grid-tile>
+      
+    
+    <md-grid-tile class="gray"  ng-repeat="flight in item.flights" md-colspan="10">
+        <div layout="row" flex>
+            <div flex><p class="md-body-1">{{flight.flight}}</p></div>
+            <div flex><p class="md-body-1">{{flight.origin}}({{flight.originTerminal}})</p></div>
+            <div flex><p class="md-body-1">{{flight.departure | date : 'medium'}}</p></div>
+            <div flex><p class="md-body-1">{{flight.destination}}({{flight.destinationTerminal}})</p></div>
+            <div flex><p class="md-body-1">{{flight.arrival | date : 'medium'}}</p></div>
+            <div flex><p class="md-body-1">{{flight.airline}}</p></div>
+            <div flex><p class="md-body-1">{{flight.aircraft}}</p></div>
+        </div>
+      </md-grid-tile>
+      
+      
+</md-grid-list>
+ <md-divider></md-divider>
+</div>
+	
+	</md-content>
+	</md-tab>  
+	
+	</md-tabs>
+	
+		
+</div>
+</md-content>
 
 <nav>
 	<ul class="main">
 		<li><a href="#0">Home</a></li>
-		<li ng-show= "model.loggedin && model.user"><a href="tickets">My Tickets</a></li>
-		<li ng-show= "model.loggedin && model.admin"><a href="tickets">Admin Dashboard</a></li>
+		<li ng-show="model.loggedin && model.user"><a href="tickets">My
+				Tickets</a></li>
+		<li ng-show="model.loggedin && model.admin"><a href="tickets">Admin
+				Dashboard</a></li>
 		<li ng-hide="model.loggedin"><a href="#0">About</a></li>
 		<li ng-hide="model.loggedin"><a href="#0">Contact</a></li>
-		<li ng-show= "model.loggedin && model.user"><a href="#0">My Cards</a></li>
-		<li ng-show= "model.loggedin"><a href="#0">Profile</a></li>
+		<li ng-show="model.loggedin && model.user"><a href="cards">My
+				Cards</a></li>
+		<li ng-show="model.loggedin"><a href="#0">Profile</a></li>
 		<li ng-hide="model.loggedin"><a href="login">Sign In</a></li>
-		<li ng-show="model.loggedin"><a href="logout">Sign Out</a></li>
+		<li ng-click = "model.logout()" ng-show="model.loggedin"><a href="logout">Sign Out</a></li>
 	</ul>
 
 

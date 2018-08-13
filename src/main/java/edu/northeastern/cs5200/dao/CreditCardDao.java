@@ -14,4 +14,8 @@ public interface CreditCardDao {
 
 	public int deleteCard(int id, String username);
 
+	public void updateCard(CreditCard card);
+
+	public String getUserId(int id);
+
 }

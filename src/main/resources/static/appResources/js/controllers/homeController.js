@@ -14,6 +14,7 @@ define(['jquery', 'angular', 'app', 'homeService'], function(jquery, angular, ap
 		self.admin         = null;
 		self.querySearch   = querySearch;
 		self.searchFlight  = searchFlight;
+		self.logout        = logout;
 		
 
 		function init() {
@@ -58,6 +59,14 @@ define(['jquery', 'angular', 'app', 'homeService'], function(jquery, angular, ap
 		function searchFlight(){
 			HomeService.saveSearch(self.from.value, self.to.value, self.dDate, self.rDate, self.nonstop);
 			$location.path('/search/results');
+		}
+		
+		function logout() {
+			HomeService.logout().then(function (response) {
+				if(response == 200) {
+					$location.path('/login');
+				}
+			});
 		}
 
 		init();

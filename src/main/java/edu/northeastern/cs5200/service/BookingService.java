@@ -15,4 +15,6 @@ public interface BookingService {
 
 	public ResponseResource getMyItineraries();
 
+	public ResponseResource cancel(int id);
+
 }

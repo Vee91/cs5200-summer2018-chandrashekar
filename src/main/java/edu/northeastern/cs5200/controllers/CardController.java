@@ -33,20 +33,21 @@ public class CardController {
 		return creditService.addCreditCard(c);
 	}
 
-	// TODO authentication
 	@RequestMapping(value = { "/card" }, method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseResource getAllCreditCard() {
 		return creditService.getAllCreditCard();
 	}
 
-	// TODO authentication
-	@RequestMapping(value = { "/card/delete" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/card/delete" }, method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseResource deleteCard() {
-		// TODO
-		int id = 0;
-		int securityCode = 0;
-		return creditService.deleteCard(id, securityCode);
+	public ResponseResource deleteCard(@RequestBody int id) {
+		return creditService.deleteCard(id);
+	}
+	
+	@RequestMapping(value = { "/card/update" }, method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseResource updateCard(@RequestBody CreditCard card) {
+		return creditService.updateCard(card);
 	}
 }

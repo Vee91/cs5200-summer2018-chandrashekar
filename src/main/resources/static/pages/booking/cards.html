@@ -2,6 +2,8 @@
 	<span></span>
 </div>
 
+
+
 <md-content class="md-padding" layout-xs="column" layout="row"
 	layout-align="center" layout-fill>
 <div flex-xs flex layout="column" style="padding-right: 50px">
@@ -10,109 +12,82 @@
 	<div class="md-toolbar-tools">
 		<md-button aria-label="Go Back" ng-href="/travelbooking">
 		Back </md-button>
-		<h2 md-truncate style="padding-right: 25px">Profile</h2>
+		<h2 md-truncate style="padding-right: 25px">My Cards</h2>
 	</div>
 	</md-toolbar>
 	
 	<div class="alert alert-danger" ng-show="model.message">
 	{{model.message}}</div>
 
-<div class="alert alert-success" ng-show="model.username">{{model.success}}</div>
-
-<md-card> 
+	<md-card> 
 	<md-card-title>
 	 <md-card-title-text>
-		<span class="md-headline">Profile</span>
+		<span class="md-headline">Cards</span>
 	 </md-card-title-text> 
 	</md-card-title> 
 	
 	<md-card-content>
 	
-	<div flex-sm flex-gt-sm="100" layout="column" layout-align="center center">
-	<form name = "profileForm">
+	<md-input-container>
+	<label>Select</label>
+	<md-select ng-model="model.selectedCard" style="min-width: 200px;">
+            <md-option ng-repeat="(index, card) in model.cards" ng-value="index" >
+              {{card.cardNumber}}
+            </md-option>
+          </md-select>
+	</md-input-container>
+	
+	<form name = "crediForm">
+	<div ng-show = "model.selectedCard" layout="column" layout-align="center center">
 	<div layout-gt-sm="row">
-	<md-input-container > 
-		<label>First Name</label> 
-		<input required ng-model="model.profile.firstname" md-input-name="firstname">
-		<div ng-messages="profileForm.firstname.$error"
-				ng-if="profileForm.firstname.$touched">
-			<div ng-message="required">
-				You <b>must</b> enter your firstname.
-			</div>
-		</div>
-	</md-input-container>
-	<md-input-container > 
-		<label>Last Name</label> 
-		<input required ng-model="model.profile.lastname" md-input-name="lastname">
-		<div ng-messages="profileForm.lastname.$error"
-				ng-if="profileForm.lastname.$touched">
-			<div ng-message="required">
-				You <b>must</b> enter your lastname.
-			</div>
-		</div>
-	</md-input-container>
+		<md-input-container>
+		<label>Card Number</label>
+		<input ng-model="model.cards[model.selectedCard].cardNumber" required>
+		</md-input-container>
+	</div>
+	<div layout-gt-sm="row">
+		<md-input-container>
+		<label>Full Name</label>
+		<input ng-model="model.cards[model.selectedCard].fullName" required>
+		</md-input-container>
+	</div>
+	<div layout-gt-sm="row">
+		<md-input-container>
+		<label>Exp Month</label>
+		<input name = "month" ng-model="model.cards[model.selectedCard].expMonth" type="number" required min = "1" max = "12">
+		<div ng-messages="crediForm.month.$error" >
+            <div ng-message="pattern">Please enter a valid month.</div>
+          </div>
+		</md-input-container>
+		<md-input-container>
+		<label>Exp Year</label>
+		<input name = "year" ng-model="model.cards[model.selectedCard].expYear" type="number" required min = "2018" max = "2025">
+		<div ng-messages="crediForm.year.$error" >
+            <div ng-message="pattern">Please enter a valid year.</div>
+          </div>
+		</md-input-container>
+	</div>
+	<div layout-gt-sm="row">
+		<md-input-container>
+		<label>Security Code</label>
+		<input name = "cvv" ng-model="model.cards[model.selectedCard].securityCode" type="number" required ng-pattern="/^[0-9]{3}$/">
+		<div ng-messages="crediForm.cvv.$error" >
+            <div ng-message="pattern">Please enter a valid security code</div>
+          </div>
+		</md-input-container>
 	</div>
 	
 	<div layout-gt-sm="row">
-	<md-input-container > 
-		<label>Phone</label> 
-		<input required ng-model="model.profile.phone" md-input-name="phone">
-		<div ng-messages="profileForm.phone.$error"
-				ng-if="profileForm.phone.$touched">
-			<div ng-message="required">
-				You <b>must</b> enter your phone number.
-			</div>
-		</div>
-	</md-input-container>
-	<md-input-container > 
-		<label>Email</label> 
-		<input required ng-model="model.profile.email" md-input-name="email">
-		<div ng-messages="profileForm.email.$error"
-				ng-if="profileForm.email.$touched">
-			<div ng-message="required">
-				You <b>must</b> enter your email.
-			</div>
-		</div>
-	</md-input-container>
+		<md-button class="md-raised md-primary" ng-click = "model.update($event, model.cards[model.selectedCard])"> Update </md-button>
+		<md-button class="md-accent md-raised md-hue-3" ng-click="model.deleteCard($event, model.cards[model.selectedCard].id)"> Delete </md-button>
 	</div>
-	
-	<div layout-gt-sm="row">
-	<md-input-container > 
-		<label>Username</label> 
-		<input required ng-model="model.profile.username" md-input-name="username">
-		<div ng-messages="profileForm.username.$error"
-				ng-if="profileForm.username.$touched">
-			<div ng-message="required">
-				You <b>must</b> enter your username.
-			</div>
-		</div>
-	</md-input-container>
-	<md-input-container > 
-		<label>Current Password</label> 
-		<input required ng-model="model.profile.password" md-input-name="password" type = "password">
-		<div ng-messages="profileForm.password.$error"
-				ng-if="profileForm.password.$touched">
-			<div ng-message="required">
-				You <b>must</b> enter your current password to update your profile
-			</div>
-		</div>
-	</md-input-container>
 	</div>
-	
-	<div layout-gt-sm="row">
-		<md-button class="md-raised md-primary" ng-click = "model.updateProfile($event, model.profile)"> Update </md-button>
-	</div>
-	
 	</form>
-	</div>
-	
 	</md-card-content>
 	</md-card>
-	
 
 </div>
 </md-content>
-
 
 <nav>
 	<ul class="main">
@@ -157,4 +132,3 @@
 	</ul>
 </nav>
 <div class="overlay"></div>
-

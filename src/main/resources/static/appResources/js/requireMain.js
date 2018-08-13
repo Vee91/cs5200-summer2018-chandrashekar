@@ -23,6 +23,7 @@ require.config({
 		'registerController' : 'appResources/js/controllers/registerController',
 		'registerService': 'appResources/js/services/registerService',
 		'profileController' : 'appResources/js/controllers/profileController',
+		'profileService': 'appResources/js/services/profileService',
 		'adminController' : 'appResources/js/controllers/adminController',
 		'adminService': 'appResources/js/services/adminService',
 		'searchController' : 'appResources/js/controllers/searchController',
@@ -31,6 +32,8 @@ require.config({
 		'bookingService' : 'appResources/js/services/bookingService',
 		'ticketController' : 'appResources/js/controllers/ticketController',
 		'ticketService' : 'appResources/js/services/ticketService',
+		'cardController' : 'appResources/js/controllers/cardController',
+		'cardService' : 'appResources/js/services/cardService',
 	},
 	// shim: makes external libraries reachable
 	shim : {
@@ -51,21 +54,21 @@ require.config({
 			'deps' : [ 'angular' ]
 		},
 		'angularAnimate': {
-            deps: ['angular']
-        },
-        'angularAria': {
-            deps:[ 'angular']
-        },
-        'angularMessage' : {
-                deps: ['angular']
-        },
-        'angularMaterial': {
-            deps: ['angular', 'angularAnimate', 'angularAria']
-        }
+			deps: ['angular']
+		},
+		'angularAria': {
+			deps:[ 'angular']
+		},
+		'angularMessage' : {
+			deps: ['angular']
+		},
+		'angularMaterial': {
+			deps: ['angular', 'angularAnimate', 'angularAria']
+		}
 	}
 });
 
-// Angular Bootstrap
+//Angular Bootstrap
 require([ 'angular', 'app' ], function(angular, app) {
 	angular.element().ready(function() {
 		// bootstrap the app manually

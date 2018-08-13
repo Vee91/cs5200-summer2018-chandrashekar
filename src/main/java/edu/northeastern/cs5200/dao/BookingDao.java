@@ -23,7 +23,7 @@ public interface BookingDao {
 
 	public int getSecurityCode(int cardId, String username);
 
-	public int makeTransaction(int bookingid, int cardId);
+	public int makeTransaction(int bookingid, int cardId, double d);
 
 	public boolean checkIfFlightExist(Flight f);
 
@@ -38,4 +38,8 @@ public interface BookingDao {
 	public void getBookedFlights(Booking next, String username, boolean b);
 
 	public void getBookedPassengers(Booking b);
+
+	public void deletePassengerForBookingId(int id);
+
+	public void inactivateBooking(int id);
 }

@@ -5,10 +5,12 @@ import edu.northeastern.cs5200.util.ResponseResource;
 
 public interface CreditCardService {
 
-	ResponseResource addCreditCard(CreditCard c);
+	public ResponseResource addCreditCard(CreditCard c);
 
-	ResponseResource getAllCreditCard();
+	public ResponseResource getAllCreditCard();
 
-	ResponseResource deleteCard(int id, int securityCode);
+	public ResponseResource deleteCard(int id);
+
+	public ResponseResource updateCard(CreditCard card);
 
 }

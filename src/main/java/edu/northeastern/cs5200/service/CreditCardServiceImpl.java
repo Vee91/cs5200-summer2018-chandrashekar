@@ -69,23 +69,40 @@ public class CreditCardServiceImpl implements CreditCardService {
 	}
 
 	@Override
-	public ResponseResource deleteCard(int id, int securityCode) {
+	public ResponseResource deleteCard(int id) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
-		int dbSecCode = creditDao.getSecurityCode(id, username);
+		String userId = creditDao.getUserId(id);
 		ResponseResource out = new ResponseResource();
-		if (dbSecCode == securityCode) {
+		if (username.equalsIgnoreCase(userId)) {
 			int success = creditDao.deleteCard(id, username);
 			if (success > 0) {
 				out.setCode("200");
-				out.setMessage("Incorrect Security Code. Cannot verify your card. Please try again");
+				out.setMessage("Card Deleted");
 			} else {
 				out.setCode("400");
 				out.setMessage("Something went wrong. Please try again");
 			}
 		} else {
 			out.setCode("400");
-			out.setMessage("Incorrect Security Code. Cannot verify your card. Please try again");
+			out.setMessage("Only owners can delete the card");
+		}
+
+		return out;
+	}
+
+	@Override
+	public ResponseResource updateCard(CreditCard card) {
+		ResponseResource out = new ResponseResource();
+		String userId = creditDao.getUserId(card.getId());
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		if (username.equalsIgnoreCase(userId)) {
+			creditDao.updateCard(card);
+			out.setCode("200");
+		} else {
+			out.setCode("400");
+			out.setMessage("Only card owners can update the card");
 		}
 		return out;
 	}

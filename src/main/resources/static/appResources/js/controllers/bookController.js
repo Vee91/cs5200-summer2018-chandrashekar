@@ -12,7 +12,8 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService', 'bookingServ
 		vm.admin         = null;
 		vm.loggedin      = false;
 		vm.confirmBook = confirmBook;
-		
+		vm.logout = logout;
+
 		function init() {
 			vm.query = SearchService.getQuery();
 			$('.burger, .overlay').click(function(){
@@ -21,7 +22,7 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService', 'bookingServ
 				$('nav').toggleClass('show');
 				$('body').toggleClass('overflow');
 			});
-			
+
 			HomeService.startApp()
 			.then(function (response) {
 				vm.loggedin = response.loggedin;
@@ -32,7 +33,7 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService', 'bookingServ
 					vm.admin = true;
 			});
 		}
-		
+
 		function confirmBook() {
 			vm.disabled = true;
 			var passengers = [];
@@ -53,10 +54,18 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService', 'bookingServ
 					vm.message = response.message;
 				}
 			}, function(error) {
-				vm.disabled = false;
+				vm.message = "We are not able to book that flight at this moment. Please try another one"
 			});
 		}
-		
+
+		function logout() {
+			HomeService.logout().then(function (response) {
+				if(response == 200) {
+					$location.path('/login');
+				}
+			});
+		}
+
 		init();
 
 	}]);

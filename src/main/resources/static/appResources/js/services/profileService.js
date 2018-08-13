@@ -1,27 +1,26 @@
 define([ 'app'], function(app) {
-	app.factory('TicketService', function($http) {
+	app.factory('ProfileService', function($http) {
 		var factory = {
-				tickets : tickets,
-				cancel : cancel
+				profile : profile,
+				update  : update
 		};
 
-		
-		function tickets() {
-			var url = "api/itinerary";
+		function profile() {
+			var url = "api/profile";
 			return $http.get(url)
 			.then(function (response) {
 				return response.data;
 			});
 		};
 		
-		function cancel(id) {
-			var url = "api/ticket/cancel";
-			return $http.post(url, id)
+		function update(profile) {
+			var url = "api/update/profile";
+			return $http.post(url, profile)
 			.then(function (response) {
 				return response.data;
 			});
 		};
-		
+
 
 		return factory;
 	});
