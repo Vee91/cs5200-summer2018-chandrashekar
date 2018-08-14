@@ -27,7 +27,7 @@
 	</md-card-title> 
 	
 	<md-card-content>
-	
+	<div layout-gt-sm="row">
 	<md-input-container>
 	<label>Select</label>
 	<md-select ng-model="model.selectedCard" style="min-width: 200px;">
@@ -37,12 +37,19 @@
           </md-select>
 	</md-input-container>
 	
+	<md-button class="md-primary" ng-click = "model.addCard()">Add new</md-button>
+	</div>
+	
 	<form name = "crediForm">
 	<div ng-show = "model.selectedCard" layout="column" layout-align="center center">
 	<div layout-gt-sm="row">
 		<md-input-container>
 		<label>Card Number</label>
-		<input ng-model="model.cards[model.selectedCard].cardNumber" required>
+		<input name="credit" ng-model="model.cards[model.selectedCard].cardNumber" required ng-pattern="/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/">
+		<div class="hint">1234-5678-1234-4444</div>
+		<div ng-messages="crediForm.credit.$error" >
+            <div ng-message="pattern">Please enter a valid credit card number with the format shown.</div>
+          </div>
 		</md-input-container>
 	</div>
 	<div layout-gt-sm="row">
@@ -83,6 +90,57 @@
 	</div>
 	</div>
 	</form>
+	
+	<form name = "crediAddForm">
+	<div ng-show = "model.add && !model.selectedCard" layout="column" layout-align="center center">
+	<div layout-gt-sm="row">
+		<md-input-container>
+		<label>Card Number</label>
+		<input name="credit" ng-model="model.cards.cardNumber" required ng-pattern="/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/">
+		<div class="hint">1234-5678-1234-4444</div>
+		<div ng-messages="crediAddForm.credit.$error" >
+            <div ng-message="pattern">Please enter a valid credit card number with the format shown.</div>
+          </div>
+		</md-input-container>
+	</div>
+	<div layout-gt-sm="row">
+		<md-input-container>
+		<label>Full Name</label>
+		<input ng-model="model.cards.fullName" required>
+		</md-input-container>
+	</div>
+	<div layout-gt-sm="row">
+		<md-input-container>
+		<label>Exp Month</label>
+		<input name = "month" ng-model="model.cards.expMonth" type="number" required min = "1" max = "12">
+		<div ng-messages="crediAddForm.month.$error" >
+            <div ng-message="pattern">Please enter a valid month.</div>
+          </div>
+		</md-input-container>
+		<md-input-container>
+		<label>Exp Year</label>
+		<input name = "year" ng-model="model.cards.expYear" type="number" required min = "2018" max = "2025">
+		<div ng-messages="crediAddForm.year.$error" >
+            <div ng-message="pattern">Please enter a valid year.</div>
+          </div>
+		</md-input-container>
+	</div>
+	<div layout-gt-sm="row">
+		<md-input-container>
+		<label>Security Code</label>
+		<input name = "cvv" ng-model="model.cards.securityCode" type="number" required ng-pattern="/^[0-9]{3}$/">
+		<div ng-messages="crediAddForm.cvv.$error" >
+            <div ng-message="pattern">Please enter a valid security code</div>
+          </div>
+		</md-input-container>
+	</div>
+	
+	<div layout-gt-sm="row">
+		<md-button class="md-raised md-primary" ng-click = "model.addNewCard($event, model.cards)"> Add </md-button>
+		<md-button class="md-accent md-raised md-hue-3" ng-click="model.cancel()"> Cancel </md-button>
+	</div>
+	</div>
+	</form>
 	</md-card-content>
 	</md-card>
 
@@ -100,7 +158,7 @@
 		<li ng-hide="model.loggedin"><a href="#0">Contact</a></li>
 		<li ng-show="model.loggedin && model.user"><a href="cards">My
 				Cards</a></li>
-		<li ng-show="model.loggedin"><a href="#0">Profile</a></li>
+		<li ng-show="model.loggedin"><a href="profile">Profile</a></li>
 		<li ng-hide="model.loggedin"><a href="login">Sign In</a></li>
 		<li ng-click="model.logout()" ng-show="model.loggedin"><a>Sign
 				Out</a></li>

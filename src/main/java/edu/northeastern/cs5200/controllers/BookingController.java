@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.northeastern.cs5200.dto.CardWrapper;
 import edu.northeastern.cs5200.dto.Wrapper;
 import edu.northeastern.cs5200.service.BookingService;
 import edu.northeastern.cs5200.util.ResponseResource;
@@ -23,11 +24,16 @@ public class BookingController {
 	@Autowired
 	private BookingService bookingService;
 
-	// TODO authentication
 	@RequestMapping(value = { "/book/itinerary" }, method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseResource bookItinerary(@RequestBody Wrapper map) {
 		return bookingService.bookItinerary(map.getItinerary(), map.getPassengers(), map.getCard());
+	}
+	
+	@RequestMapping(value = { "/book/card/itinerary" }, method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseResource bookItineraryWithCard(@RequestBody CardWrapper map) {
+		return bookingService.bookItinerary(map.getItinerary(), map.getPassengers(), map.getCardId());
 	}
 	
 	@RequestMapping(value = { "/itinerary" }, method = RequestMethod.GET)

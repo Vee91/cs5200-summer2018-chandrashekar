@@ -3,7 +3,8 @@ define([ 'app'], function(app) {
 		var factory = {
 				findAllCards : findAllCards,
 				update : update,
-				deleteCard : deleteCard
+				deleteCard : deleteCard,
+				addNewCard : addNewCard
 		};
 
 		function findAllCards() {
@@ -13,7 +14,7 @@ define([ 'app'], function(app) {
 				return response.data;
 			});
 		};
-		
+
 		function update(card) {
 			var url = "api/card/update";
 			return $http.post(url, card)
@@ -21,7 +22,7 @@ define([ 'app'], function(app) {
 				return response.data;
 			});
 		};
-		
+
 		function deleteCard(id) {
 			var url = "api/card/delete";
 			return $http.post(url, id)
@@ -29,6 +30,21 @@ define([ 'app'], function(app) {
 				return response.data;
 			});
 		};
+
+		function addNewCard(cardNumber, fullname, expMonth, expYear, securityCode){
+			var card = {"fullName" : fullname,
+					"cardNumber" : cardNumber,
+					"expMonth" : expMonth,
+					"expYear" : expYear,
+					"securityCode" : securityCode};
+			console.log(card);
+			var url = "api/card/add";
+			return $http.post(url, card)
+			.then(function (response) {
+				return response.data;
+			});
+		}
+
 
 		return factory;
 	});

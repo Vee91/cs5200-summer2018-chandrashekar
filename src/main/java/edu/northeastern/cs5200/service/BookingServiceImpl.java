@@ -95,8 +95,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Transactional
 	@Override
-	public ResponseResource bookItinerary(FlightSearchResult itinerary, List<Passenger> passengers, int cardId,
-			int securityCode) {
+	public ResponseResource bookItinerary(FlightSearchResult itinerary, List<Passenger> passengers, int cardId) {
 		// TODO validations
 		LOG.info("BookingService | bookItinerary | Successful :: Validation Success");
 		ResponseResource out = new ResponseResource();
@@ -130,20 +129,19 @@ public class BookingServiceImpl implements BookingService {
 			}
 		}
 
-		if (validateTransaction(bookingid, cardId, securityCode) == 0) {
+		if (bookingDao.makeTransaction(bookingid, cardId,
+				passengers.size() * Math.round((itinerary.getPrice() + itinerary.getTax()) * 100.0) / 100.0) == 0) {
 			out.setCode("400");
 			out.setMessage(
 					"There was a problem while charging your card. Your card will not be charged. Please try aggin.");
 			return out;
 		}
-
-		if (inboundBookingid != -1) {
-			if (validateTransaction(inboundBookingid, cardId, securityCode) == 0) {
-				out.setCode("400");
-				out.setMessage(
-						"There was a problem while charging your card. Your card will not be charged. Please try aggin.");
-				return out;
-			}
+		if (inboundBookingid != -1 && bookingDao.makeTransaction(inboundBookingid, cardId,
+				passengers.size() * Math.round((itinerary.getPrice() + itinerary.getTax()) * 100.0) / 100.0) == 0) {
+			out.setCode("400");
+			out.setMessage(
+					"There was a problem while charging your card. Your card will not be charged. Please try aggin.");
+			return out;
 		}
 
 		out.setCode("200");

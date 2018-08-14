@@ -2,6 +2,10 @@ define(['jquery', 'app', 'homeService', 'profileService'], function(jquery, app)
 	app.controller('profileController', ['$location', '$route', '$mdDialog', '$routeParams', 'HomeService', 'ProfileService', function($location, $route, $mdDialog, $routeParams, HomeService, ProfileService) {
 		var vm = this;
 		vm.profile = null;
+		vm.user          = null;
+		vm.admin         = null;
+		vm.loggedin      = false;
+		vm.logout = logout;
 		vm.updateProfile = updateProfile;
 
 		function init() {
@@ -60,6 +64,14 @@ define(['jquery', 'app', 'homeService', 'profileService'], function(jquery, app)
 				});
 			}, function() {
 				
+			});
+		}
+		
+		function logout() {
+			HomeService.logout().then(function (response) {
+				if(response == 200) {
+					$location.path('/login');
+				}
 			});
 		}
 

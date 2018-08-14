@@ -18,19 +18,16 @@ import edu.northeastern.cs5200.util.ResponseResource;
 @RequestMapping("/api")
 public class CardController {
 
-	// TODO convert to post
 	private static final Logger LOG = LoggerFactory.getLogger(CardController.class);
 
 	@Autowired
 	private CreditCardService creditService;
 
 	// TODO authentication
-	@RequestMapping(value = { "/card/add" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/card/add" }, method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseResource addCreditCard() {
-		// TODO
-		CreditCard c = new CreditCard();
-		return creditService.addCreditCard(c);
+	public ResponseResource addCreditCard(@RequestBody CreditCard card) {
+		return creditService.addCreditCard(card);
 	}
 
 	@RequestMapping(value = { "/card" }, method = RequestMethod.GET)

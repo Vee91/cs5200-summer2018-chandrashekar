@@ -44,7 +44,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		List<CreditCard> credits = creditDao.getAllCreditCard(username);
-		maskNumber(credits);
+		//maskNumber(credits);
 		ResponseResource out = new ResponseResource();
 		out.setCode("200");
 		out.setSuccess("cards", credits);

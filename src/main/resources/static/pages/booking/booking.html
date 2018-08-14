@@ -271,8 +271,19 @@
 	 <md-tab label="Payment">
 		
 	<md-content class="md-padding">
+	<div layout-gt-sm="row"> 
+	<md-input-container>
+	<label>Select Existing Card</label>
+	<md-select ng-model="model.selectedCard" style="min-width: 200px;">
+            <md-option ng-repeat="(index, card) in model.cards" ng-value="index" >
+              {{card.cardNumber}}
+            </md-option>
+          </md-select>
+	</md-input-container>
 	
-	<form name = "crediForm">
+	<md-button ng-show = "model.selectedCard != null" class="md-primary" ng-disabled = "model.disabled" ng-click = "model.bookWithCard($event, model.cards[model.selectedCard].id)">Confirm Payment and Book</md-button>
+	</div>
+	<form ng-hide = "model.selectedCard != null" name = "crediForm">
 	<div layout-gt-sm="row"> 
 	<md-input-container class="md-block">
           <label>Credit Card Number</label>
@@ -319,7 +330,7 @@
      </md-input-container>
      </div>
      
-     <md-button class="md-raised md-primary" ng-disabled = "model.disabled" ng-click = "model.confirmBook()"> Book </md-button>
+     <md-button class="md-raised md-primary" ng-disabled = "model.disabled" ng-click = "model.confirmBook($event)"> Book </md-button>
 	
 	</form>
 	
@@ -338,7 +349,7 @@
 		<li ng-hide="model.loggedin"><a href="#0">About</a></li>
 		<li ng-hide="model.loggedin"><a href="#0">Contact</a></li>
 		<li ng-show= "model.loggedin && model.user"><a href="cards">My Cards</a></li>
-		<li ng-show= "model.loggedin"><a href="#0">Profile</a></li>
+		<li ng-show= "model.loggedin"><a href="profile">Profile</a></li>
 		<li ng-hide="model.loggedin"><a href="login">Sign In</a></li>
 		<li ng-click = "model.logout()" ng-show="model.loggedin"><a href="logout">Sign Out</a></li>
 	</ul>

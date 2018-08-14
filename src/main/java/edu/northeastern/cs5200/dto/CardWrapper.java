@@ -2,10 +2,10 @@ package edu.northeastern.cs5200.dto;
 
 import java.util.List;
 
-public class Wrapper {
+public class CardWrapper {
 
 	private List<Passenger> passengers;
-	private CreditCard card;
+	private int cardId;
 	private FlightSearchResult itinerary;
 
 	public List<Passenger> getPassengers() {
@@ -16,12 +16,12 @@ public class Wrapper {
 		this.passengers = passengers;
 	}
 
-	public CreditCard getCard() {
-		return card;
+	public int getCardId() {
+		return cardId;
 	}
 
-	public void setCard(CreditCard card) {
-		this.card = card;
+	public void setCardId(int cardId) {
+		this.cardId = cardId;
 	}
 
 	public FlightSearchResult getItinerary() {
