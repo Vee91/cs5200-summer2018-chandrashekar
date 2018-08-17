@@ -25,14 +25,6 @@ public class PersonController {
 		HelloObject obj = new HelloObject("Hello Vikas Chandrashekar User!");
 		return obj;
     }
-
-    @GetMapping("/admin")
-    public ResponseResource securedUser(){
-    	ResponseResource out = new ResponseResource();
-    	out.setCode("200");
-    	out.setMessage("This is default admin log in page");
-    	return out;
-    }
     
     @RequestMapping(value = { "/profile" }, method = RequestMethod.GET)
    	@ResponseBody

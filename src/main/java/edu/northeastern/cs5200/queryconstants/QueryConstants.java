@@ -21,6 +21,7 @@ public class QueryConstants {
 	public static final StringBuilder INSERT_EMPLOYEE = new StringBuilder();
 	public static final StringBuilder INSERT_FLIGHT = new StringBuilder();
 	public static final StringBuilder INSERT_TRANSACTION = new StringBuilder();
+	public static final StringBuilder INSERT_PERSON_WITH_USERNAME = new StringBuilder();
 
 	public static final StringBuilder SELECT_AIRLINE = new StringBuilder();
 	public static final StringBuilder SELECT_AIRCRAFT = new StringBuilder();
@@ -36,6 +37,7 @@ public class QueryConstants {
 	public static final StringBuilder FIND_BOOKED_PASSENGERS = new StringBuilder();
 	public static final StringBuilder CARD_USER_ID = new StringBuilder();
 	public static final StringBuilder SELECT_PASSWORD = new StringBuilder();
+	public static final StringBuilder SELECT_ADMIN_FLIGHTS = new StringBuilder();
 
 	public static final StringBuilder SCHEDULE_EXIST = new StringBuilder();
 	public static final StringBuilder ITINERARY_EXIST = new StringBuilder();
@@ -48,6 +50,14 @@ public class QueryConstants {
 	public static final StringBuilder UPDATE_USERNAME = new StringBuilder();
 	public static final StringBuilder UPDATE_CARD = new StringBuilder();
 	public static final StringBuilder UPDATE_PROFILE = new StringBuilder();
+	public static final StringBuilder UPDATE_PROFILE_BY_ID = new StringBuilder();
+	public static final StringBuilder UPDATE_FLIGHT = new StringBuilder();
+
+	public static final StringBuilder GET_ALL_USERS = new StringBuilder();
+	public static final StringBuilder GET_ALL_BOOKING_ID = new StringBuilder();
+	public static final StringBuilder GET_AIRPORT_AUTOCOMPLETE = new StringBuilder();
+	public static final StringBuilder GET_AIRLINE_AUTOCOMPLETE = new StringBuilder();
+	public static final StringBuilder GET_AIRCRAFT_AUTOCOMPLETE = new StringBuilder();
 
 	static {
 		INSERT_AIRCRAFT.append("INSERT INTO `cs5200_summer2018_chandrashekar`.`aircrafts` ");
@@ -270,6 +280,73 @@ public class QueryConstants {
 		UPDATE_PROFILE.append(" `email` = ?, ");
 		UPDATE_PROFILE.append(" `username` = ? ");
 		UPDATE_PROFILE.append(" WHERE `username` = ? ");
+
+		UPDATE_PROFILE_BY_ID.append(" UPDATE `cs5200_summer2018_chandrashekar`.`person` ");
+		UPDATE_PROFILE_BY_ID.append(" SET ");
+		UPDATE_PROFILE_BY_ID.append(" `firstname` = ?, ");
+		UPDATE_PROFILE_BY_ID.append(" `lastname` = ?, ");
+		UPDATE_PROFILE_BY_ID.append(" `phone` = ?, ");
+		UPDATE_PROFILE_BY_ID.append(" `email` = ?, ");
+		UPDATE_PROFILE_BY_ID.append(" `username` = ? ");
+		UPDATE_PROFILE_BY_ID.append(" WHERE `id` = ? ");
+
+		GET_ALL_USERS.append(" SELECT * FROM cs5200_summer2018_chandrashekar.person ");
+
+		INSERT_PERSON_WITH_USERNAME.append(" INSERT INTO `cs5200_summer2018_chandrashekar`.`person` ");
+		INSERT_PERSON_WITH_USERNAME.append(" (`firstname`, ");
+		INSERT_PERSON_WITH_USERNAME.append(" `lastname`, ");
+		INSERT_PERSON_WITH_USERNAME.append(" `phone`, ");
+		INSERT_PERSON_WITH_USERNAME.append(" `email`, ");
+		INSERT_PERSON_WITH_USERNAME.append(" `username`, ");
+		INSERT_PERSON_WITH_USERNAME.append(" `password`, ");
+		INSERT_PERSON_WITH_USERNAME.append(" `role`) ");
+		INSERT_PERSON_WITH_USERNAME.append(" VALUES ");
+		INSERT_PERSON_WITH_USERNAME.append(" (?,?,?,?,?,?,?) ");
+
+		SELECT_ADMIN_FLIGHTS.append(" SELECT  ");
+		SELECT_ADMIN_FLIGHTS.append(" 	    f.flight_number, ");
+		SELECT_ADMIN_FLIGHTS.append(" origin.name AS originName, ");
+		SELECT_ADMIN_FLIGHTS.append(" origin.code AS originCode, ");
+		SELECT_ADMIN_FLIGHTS.append(" f.origin_terminal, ");
+		SELECT_ADMIN_FLIGHTS.append(" destination.code AS destinationCode, ");
+		SELECT_ADMIN_FLIGHTS.append(" destination.name AS destinationName, ");
+		SELECT_ADMIN_FLIGHTS.append(" f.destination_terminal, ");
+		SELECT_ADMIN_FLIGHTS.append(" craft.code AS aircraftCode, ");
+		SELECT_ADMIN_FLIGHTS.append(" craft.name AS aircraftName, ");
+		SELECT_ADMIN_FLIGHTS.append(" line.code AS airlineCode, ");
+		SELECT_ADMIN_FLIGHTS.append(" line.name AS airlineName ");
+		SELECT_ADMIN_FLIGHTS.append(" FROM ");
+		SELECT_ADMIN_FLIGHTS.append(" cs5200_summer2018_chandrashekar.flights f, ");
+		SELECT_ADMIN_FLIGHTS.append(" cs5200_summer2018_chandrashekar.cities origin, ");
+		SELECT_ADMIN_FLIGHTS.append(" cs5200_summer2018_chandrashekar.cities destination, ");
+		SELECT_ADMIN_FLIGHTS.append(" cs5200_summer2018_chandrashekar.aircrafts craft, ");
+		SELECT_ADMIN_FLIGHTS.append(" cs5200_summer2018_chandrashekar.airlines line ");
+		SELECT_ADMIN_FLIGHTS.append(" WHERE ");
+		SELECT_ADMIN_FLIGHTS.append(" origin.code = f.origin_airport ");
+		SELECT_ADMIN_FLIGHTS.append(" AND destination.code = f.destination_airport ");
+		SELECT_ADMIN_FLIGHTS.append(" AND craft.code = f.aircraft ");
+		SELECT_ADMIN_FLIGHTS.append("  AND line.code = f.airline ");
+
+		GET_AIRPORT_AUTOCOMPLETE.append(
+				" SELECT code as airport, name as label FROM cs5200_summer2018_chandrashekar.cities where name like ? ");
+
+		GET_AIRLINE_AUTOCOMPLETE
+				.append(" SELECT code, name FROM cs5200_summer2018_chandrashekar.airlines where name like ? ");
+
+		GET_AIRCRAFT_AUTOCOMPLETE
+				.append(" SELECT code, name FROM cs5200_summer2018_chandrashekar.aircrafts where name like ? ");
+
+		UPDATE_FLIGHT.append(" UPDATE `cs5200_summer2018_chandrashekar`.`flights` ");
+		UPDATE_FLIGHT.append(" SET ");
+		UPDATE_FLIGHT.append(" `origin_airport` = ?, ");
+		UPDATE_FLIGHT.append(" `origin_terminal` = ?, ");
+		UPDATE_FLIGHT.append(" `destination_airport` = ?, ");
+		UPDATE_FLIGHT.append(" `destination_terminal` = ?, ");
+		UPDATE_FLIGHT.append(" `airline` = ?, ");
+		UPDATE_FLIGHT.append(" `aircraft` = ? ");
+		UPDATE_FLIGHT.append(" WHERE `flight_number` = ? ");
+		
+		GET_ALL_BOOKING_ID.append(" SELECT id FROM cs5200_summer2018_chandrashekar.booking_details ");
 
 	}
 

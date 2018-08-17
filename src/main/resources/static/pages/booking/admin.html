@@ -1,1 +1,457 @@
-<div>   {{model.message}}</div>
+<div class="burger">
+	<span></span>
+</div>
+
+<md-content class="md-padding" layout-xs="column" layout="row"
+	layout-align="center" layout-fill>
+<div flex-xs flex layout="column" style="padding-right: 50px">
+
+
+<md-toolbar>
+	<div class="md-toolbar-tools">
+		<md-button aria-label="Go Back" ng-href="/travelbooking">
+		Back </md-button>
+		<h2 md-truncate style="padding-right: 25px">Admin</h2>
+	</div>
+</md-toolbar>
+
+<div class="alert alert-danger" ng-show="model.message">
+	{{model.message}}</div>
+	
+	<div class="alert alert-success" ng-show="model.success">
+	{{model.message}}</div>
+	
+	<md-card> 
+	<md-card-title>
+	 <md-card-title-text>
+		<span class="md-headline">Manage</span>
+	 </md-card-title-text> 
+	</md-card-title>
+	
+	<md-card-content>
+	
+	<div layout-gt-md="row">
+	<md-input-container class="md-block">
+	<label>Select</label>
+	<md-select ng-model="model.selectedChoice" style="min-width: 200px;" ng-change = "model.handleChange()">
+            <md-option ng-repeat="(index, option) in model.options" ng-value="index" >
+              {{option.abbrev}}
+            </md-option>
+          </md-select>
+	</md-input-container>
+	
+	<md-input-container class="md-block" ng-show = "model.manageUser">
+	<label>Select user to update</label>
+	<md-select ng-model="model.selectedUser" style="min-width: 200px;">
+            <md-option ng-repeat="(index, user) in model.users" ng-value="index" >
+              {{user.username}}
+            </md-option>
+          </md-select>
+	</md-input-container>
+	
+	<md-input-container class="md-block" ng-show = "model.manageFlight">
+	<label>Select flight to update</label>
+	<md-select ng-model="model.selectedFlight" style="min-width: 200px;">
+            <md-option ng-repeat="(index, flight) in model.flights" ng-value="index" >
+              {{flight.flightNumber}}
+            </md-option>
+          </md-select>
+	</md-input-container>
+	
+	<md-input-container class="md-block" ng-show = "model.manageCard">
+	<label>Select user to whom you want to add card</label>
+	<md-select ng-model="model.card.user" style="min-width: 200px;">
+            <md-option ng-repeat="(index, user) in model.users" ng-value="user.username" >
+              {{user.username}}
+            </md-option>
+          </md-select>
+	</md-input-container>
+	
+	<md-input-container class="md-block" ng-show = "model.managePassenger">
+	<label>Select booking to which you want to add passenger</label>
+	<md-select ng-model="model.selectedBooking" style="min-width: 200px;">
+            <md-option ng-repeat="booking in model.bookings" ng-value="booking" >
+              {{booking}}
+            </md-option>
+          </md-select>
+	</md-input-container>
+		
+	</div>
+	
+	<form name = "userForm" ng-show = "model.manageUser">
+	<div layout-gt-sm="row">
+	<span class="md-subhead">Select user to update or fill the form to add new user</span>
+	</div>
+		<div layout-gt-sm="row">
+		<md-input-container class="md-block" ng-show = "model.selectedUser != null" >
+		<label>First Name</label>
+		<input name="fname" ng-model="model.users[model.selectedUser].firstname"  required>
+		
+		<div ng-messages="userForm.fname.$error" >
+            <div ng-message="required">You must enter first name</div>
+          </div>
+		</md-input-container>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedUser == null" >
+		<label>First Name</label>
+		<input name="fname" ng-model="model.users.firstname"  required>
+		<div ng-messages="userForm.fname.$error" >
+            <div ng-message="required">You must enter first name</div>
+          </div>
+		</md-input-container>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedUser != null">
+		<label>Last Name</label>
+		<input  name="lname" ng-model="model.users[model.selectedUser].lastname"  required>
+		<div ng-messages="userForm.lname.$error" >
+            <div ng-message="required">You must enter last name</div>
+          </div>
+		</md-input-container>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedUser == null">
+		<label>Last Name</label>
+		<input name="lname" ng-model="model.users.lastname"  required>
+		<div ng-messages="userForm.lname.$error" >
+            <div ng-message="required">You must enter last name</div>
+          </div>
+		</md-input-container>
+		</div>
+		
+		<div layout-gt-sm="row">
+		<md-input-container class="md-block" ng-show = "model.selectedUser != null">
+		<label>Phone</label>
+		<input  name="phone" ng-model="model.users[model.selectedUser].phone"  required ng-pattern="/^[0-9]{10}$/">
+		<div ng-messages="userForm.phone.$error" >
+            <div ng-message="required">You must enter phone</div>
+          </div>
+		</md-input-container>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedUser == null">
+		<label>Phone</label>
+		<input  name="phone" ng-model="model.users.phone"  required ng-pattern="/^[0-9]{10}$/">
+		<div ng-messages="userForm.phone.$error" >
+            <div ng-message="required">You must enter phone</div>
+          </div>
+		</md-input-container>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedUser != null">
+		<label>E-mail</label>
+		<input type="email" name="email" ng-model="model.users[model.selectedUser].email"  required>
+		<div ng-messages="userForm.email.$error" >
+            <div ng-message="required">You must enter email</div>
+          </div>
+		</md-input-container>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedUser == null">
+		<label>E-mail</label>
+		<input type="email" name="email" ng-model="model.users.email"  required>
+		<div ng-messages="userForm.email.$error" >
+            <div ng-message="required">You must enter email</div>
+          </div>
+		</md-input-container>
+		</div>
+		
+		<div layout-gt-sm="row">
+		<md-input-container class="md-block" ng-show = "model.selectedUser != null">
+		<label>Username</label>
+		<input name="uname" ng-model="model.users[model.selectedUser].username"  required>
+		<div ng-messages="userForm.uname.$error" >
+            <div ng-message="required">You must enter user name</div>
+          </div>
+		</md-input-container>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedUser == null">
+		<label>Username</label>
+		<input name="uname" ng-model="model.users.username"  required>
+		<div ng-messages="userForm.uname.$error" >
+            <div ng-message="required">You must enter user name</div>
+          </div>
+		</md-input-container>
+		
+		<md-input-container class="md-block">
+		<md-select name="role" placeholder="Role" ng-model="model.users.role" required>
+          <md-option value="USER">User</md-option>
+          <md-option value="ADMIN">Admin</md-option>
+          <md-option value="EMPLOYEE">Employee</md-option>
+        </md-select>
+		</md-input-container>
+		</div>
+		
+		<div layout-gt-sm="row">
+		<md-input-container class="md-block" ng-show = "model.selectedUser == null">
+		<label>Password</label>
+		<input name="pwd" ng-model="model.users.password"  required>
+		<div ng-messages="userForm.pwd.$error" >
+            <div ng-message="required">You must enter password</div>
+          </div>
+		</div>
+		
+		<md-button type = "submit" class="md-raised md-primary" ng-show = "model.selectedUser != null" ng-click = "model.updateUser($event, model.users[model.selectedUser])"> Update User </md-button>
+		<md-button type = "submit" class="md-raised md-primary" ng-show = "model.selectedUser == null" ng-click = "model.addNewUser($event)"> Add User </md-button>
+		<md-button class="md-accent md-raised md-hue-3" ng-click="model.cancel()"> Cancel </md-button>
+	</form>
+	
+	<form name = "flightForm" ng-show = "model.manageFlight">
+	<div layout-gt-sm="row">
+	<span class="md-subhead">Select Flight to update or fill the form to add new flight</span>
+	</div>
+	
+		<div layout-gt-sm="row">
+		<md-input-container class="md-block" ng-show = "model.selectedFlight != null" >
+		<label>Flight Number</label>
+		<input ng-readonly="true" name="fnum" ng-model="model.flights[model.selectedFlight].flightNumber" >
+		</md-input-container>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedFlight == null" >
+		<label>Flight Number</label>
+		<input name="fnum" ng-model="model.flights.flightNumber"  required>
+		<div ng-messages="flightForm.fnum.$error" >
+            <div ng-message="required">You must enter flight number</div>
+          </div>
+		</md-input-container>
+		
+		</div>
+		
+		<div layout-gt-sm="row">
+		
+		<md-input-container class="md-block" ng-show = "model.selectedFlight != null">
+		<label>Origin Airport</label>
+		<input ng-readonly="true" name="oa" ng-model="model.flights[model.selectedFlight].origin.label" >
+		</md-input-container>
+		
+		<md-autocomplete ng-show = "model.selectedFlight == null" required md-input-name="oa"
+				md-input-minlength="3" md-input-maxlength="70" md-no-cache="true"
+				md-selected-item="model.origin" md-search-text="model.originSearch"
+				md-items="origin in model.querySearch(model.originSearch)"
+				md-item-text="origin.label" md-require-match md-floating-label="Origin" required>
+			<md-item-template> <span>{{origin.label}}</span> </md-item-template>
+		</md-autocomplete>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedFlight != null">
+		<label>Destination Airport</label>
+		<input ng-readonly="true" name="da" ng-model="model.flights[model.selectedFlight].destination.label" >
+		</md-input-container>
+		
+		<md-autocomplete ng-show = "model.selectedFlight == null" required md-input-name="da"
+				md-input-minlength="3" md-input-maxlength="70" md-no-cache="true"
+				md-selected-item="model.destination" md-search-text="model.destinationSearch"
+				md-items="destination in model.querySearch(model.destinationSearch)"
+				md-item-text="destination.label" md-require-match md-floating-label="Destination" required>
+			<md-item-template> <span>{{destination.label}}</span> </md-item-template>
+		</md-autocomplete>
+		
+		</div>
+		
+		<div layout-gt-sm="row">
+		
+		<md-input-container class="md-block" ng-show = "model.selectedFlight != null">
+		<label>Origin Terminal</label>
+		<input name="ot" md-maxlength="4" ng-model="model.flights[model.selectedFlight].originTerminal">
+		<div ng-messages="flightForm.ot.$error" role="alert">
+		<div ng-message="md-maxlength">
+        	Please do not exceed max length   
+        </div>
+		</div>
+		</md-input-container>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedFlight == null">
+		<label>Origin Terminal</label>
+		<input name="ot" ng-model="model.flights.originTerminal" md-maxlength="4">
+		<div ng-messages="flightForm.ot.$error" role="alert">
+		<div ng-message="md-maxlength">
+        	Please do not exceed max length   
+        </div>
+		</div>
+		</md-input-container>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedFlight != null">
+		<label>Destination Terminal</label>
+		<input name="dt" md-maxlength="4" ng-model="model.flights[model.selectedFlight].destinationTerminal">
+		<div ng-messages="flightForm.dt.$error" role="alert">
+		<div ng-message="md-maxlength">
+        	Please do not exceed max length   
+        </div>
+		</div>
+		</md-input-container>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedFlight == null">
+		<label>Destination Terminal</label>
+		<input name="dt" ng-model="model.flights.destinationTerminal" md-maxlength="4">
+		<div ng-messages="flightForm.dt.$error" role="alert">
+		<div ng-message="md-maxlength">
+        	Please do not exceed max length   
+        </div>
+		</div>
+		</md-input-container>
+		
+		</div>
+		
+		<div layout-gt-sm="row">
+		
+		<md-input-container class="md-block" ng-show = "model.selectedFlight != null">
+		<label>Airline</label>
+		<input name="airline" ng-model="model.flights[model.selectedFlight].airline.name" >
+		</md-input-container>
+		
+		<md-autocomplete ng-show = "model.selectedFlight == null" required md-input-name="airline"
+				md-no-cache="true"
+				md-selected-item="model.airline" md-search-text="model.airlineSearch"
+				md-items="airline in model.searchAirline(model.airlineSearch)"
+				md-item-text="airline.name" md-require-match md-floating-label="Airline" required>
+			<md-item-template> <span>{{airline.name}}</span> </md-item-template>
+		</md-autocomplete>
+		
+		<md-input-container class="md-block" ng-show = "model.selectedFlight != null">
+		<label>Aircraft</label>
+		<input name="aircraft" ng-model="model.flights[model.selectedFlight].aircraft.name" >
+		</md-input-container>
+		
+		<md-autocomplete ng-show = "model.selectedFlight == null" required md-input-name="aircraft"
+				md-input-minlength="3" md-input-maxlength="70" md-no-cache="true"
+				md-selected-item="model.aircraft" md-search-text="model.aircraftSearch"
+				md-items="aircraft in model.searchAircraft(model.aircraftSearch)"
+				md-item-text="aircraft.name" md-require-match md-floating-label="Aircraft" required>
+			<md-item-template> <span>{{aircraft.name}}</span> </md-item-template>
+		</md-autocomplete>
+		
+		</div>
+		
+		<md-button type = "submit" class="md-raised md-primary" ng-show = "model.selectedFlight != null" ng-click = "model.updateFlight($event, model.flights[model.selectedFlight])"> Update Flight </md-button>
+		<md-button type = "submit" class="md-raised md-primary" ng-show = "model.selectedFlight == null" ng-click = "model.addNewFlight($event)"> Add Flight </md-button>
+		<md-button class="md-accent md-raised md-hue-3" ng-click="model.cancel()"> Cancel </md-button>
+		
+	</form>
+	
+	<form name = "passengerForm" ng-show = "model.managePassenger && model.selectedBooking">
+	<div layout-gt-sm="row">
+	<h2 class = "md-body-2"> Passenger  </h2>
+	</div>
+	
+	<div layout-gt-sm="row">
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>First name</label>
+            <input ng-model="passenger.firstname">
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Last name</label>
+            <input ng-model = "passenger.lastname">
+          </md-input-container>
+          
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Phone no</label>
+            <input ng-model = "passenger.phoneNo" ng-pattern="/^[0-9]{10}$/">
+          </md-input-container>
+        </div>
+        
+        <div layout-gt-sm="row">
+     <md-radio-group ng-model = "passenger.gender" flex>
+      <md-radio-button value="1" class="md-primary">Male</md-radio-button>
+      <md-radio-button value="0"> Female </md-radio-button>
+    </md-radio-group>
+    
+     <md-radio-group ng-model = "passenger.adult" flex>
+      <md-radio-button value="1" class="md-primary">Adult</md-radio-button>
+      <md-radio-button value="0"> child </md-radio-button>
+    </md-radio-group>
+    
+    </div>
+    <md-button type = "submit" class="md-raised md-primary" ng-click = "model.addNewPassenger($event, passenger)"> Add Passenger </md-button>
+	<md-button class="md-accent md-raised md-hue-3" ng-click="model.cancel()"> Cancel </md-button>
+	</form>
+	
+	<form name = "cardForm" ng-show = "model.manageCard">
+	<div layout-gt-sm="row">
+		<md-input-container class="md-block">
+		<label>Card Number</label>
+		<input name="credit" ng-model="model.card.cardNumber" required ng-pattern="/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/">
+		<div class="hint">1234-5678-1234-4444</div>
+		<div ng-messages="cardForm.credit.$error" >
+            <div ng-message="pattern">Please enter a valid credit card number with the format shown.</div>
+          </div>
+		</md-input-container>
+	</div>
+	<div layout-gt-sm="row">
+		<md-input-container class="md-block">
+		<label>Full Name</label>
+		<input ng-model="model.card.fullName" required>
+		</md-input-container>
+	</div>
+	<div layout-gt-sm="row">
+		<md-input-container class="md-block">
+		<label>Exp Month</label>
+		<input name = "month" ng-model="model.card.expMonth" type="number" required min = "1" max = "12">
+		<div ng-messages="cardForm.month.$error" >
+            <div ng-message="pattern">Please enter a valid month.</div>
+          </div>
+		</md-input-container>
+		<md-input-container class="md-block">
+		<label>Exp Year</label>
+		<input name = "year" ng-model="model.card.expYear" type="number" required min = "2018" max = "2025">
+		<div ng-messages="cardForm.year.$error" >
+            <div ng-message="pattern">Please enter a valid year.</div>
+          </div>
+		</md-input-container>
+	</div>
+	<div layout-gt-sm="row">
+		<md-input-container class="md-block">
+		<label>Security Code</label>
+		<input name = "cvv" ng-model="model.card.securityCode" type="number" required ng-pattern="/^[0-9]{3}$/">
+		<div ng-messages="cardForm.cvv.$error" >
+            <div ng-message="pattern">Please enter a valid security code</div>
+          </div>
+		</md-input-container>
+	</div>
+	<md-button type = "submit" class="md-raised md-primary" ng-click = "model.addNewCard($event)"> Add Card </md-button>
+	<md-button class="md-accent md-raised md-hue-3" ng-click="model.cancel()"> Cancel </md-button>
+	</form>
+	
+	<form name = "scheduleForm" ng-show = "model.manageSchedule">
+		schedule form
+	</form>
+	</md-card-content>
+	</md-card>
+
+</div>
+</md-content>
+
+<nav>
+	<ul class="main">
+		<li><a href="#0">Home</a></li>
+		<li ng-show= "model.loggedin && model.user"><a href="tickets">My Tickets</a></li>
+		<li ng-show= "model.loggedin && model.admin"><a href="tickets">Admin Dashboard</a></li>
+		<li ng-hide="model.loggedin"><a href="#0">About</a></li>
+		<li ng-hide="model.loggedin"><a href="#0">Contact</a></li>
+		<li ng-show= "model.loggedin && model.user"><a href="cards">My Cards</a></li>
+		<li ng-show= "model.loggedin"><a href="profile">Profile</a></li>
+		<li ng-hide="model.loggedin"><a href="login">Sign In</a></li>
+		<li ng-click = "model.logout()" ng-show="model.loggedin"><a>Sign Out</a></li>
+	</ul>
+
+
+	<div class="social">
+		<a href="https://twitter.com/?lang=en" target="_blank"><svg
+				xmlns="http://www.w3.org/2000/svg"
+				xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+				width="64px" height="64px" viewBox="0 0 64 64">
+				<g transform="translate(0, 0)">
+				<path
+					d="M64,12.2c-2.4,1-4.9,1.8-7.5,2.1c2.7-1.6,4.8-4.2,5.8-7.3c-2.5,1.5-5.3,2.6-8.3,3.2C51.5,7.6,48.1,6,44.3,6 c-7.3,0-13.1,5.9-13.1,13.1c0,1,0.1,2,0.3,3C20.6,21.6,10.9,16.3,4.5,8.4c-1.1,1.9-1.8,4.2-1.8,6.6c0,4.6,2.3,8.6,5.8,10.9 c-2.2-0.1-4.2-0.7-5.9-1.6c0,0.1,0,0.1,0,0.2c0,6.4,4.5,11.7,10.5,12.9c-1.1,0.3-2.3,0.5-3.5,0.5c-0.8,0-1.7-0.1-2.5-0.2 c1.7,5.2,6.5,9,12.3,9.1c-4.5,3.5-10.2,5.6-16.3,5.6c-1.1,0-2.1-0.1-3.1-0.2C5.8,55.8,12.7,58,20.1,58c24.2,0,37.4-20,37.4-37.4 c0-0.6,0-1.1,0-1.7C60,17.1,62.2,14.8,64,12.2z"></path></g></svg></a>
+		<a href="https://www.instagram.com/?hl=en" target="_blank"><svg
+				xmlns="http://www.w3.org/2000/svg"
+				xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+				width="64px" height="64px" viewBox="0 0 64 64">
+				<g transform="translate(0, 0)">
+				<path
+					d="M32,5.766c8.544,0,9.556,0.033,12.931,0.187c3.642,0.166,7.021,0.895,9.621,3.496 c2.6,2.6,3.329,5.979,3.496,9.621c0.154,3.374,0.187,4.386,0.187,12.931s-0.033,9.556-0.187,12.931 c-0.166,3.642-0.895,7.021-3.496,9.621c-2.6,2.6-5.98,3.329-9.621,3.496c-3.374,0.154-4.386,0.187-12.931,0.187 s-9.557-0.033-12.931-0.187c-3.642-0.166-7.021-0.895-9.621-3.496c-2.6-2.6-3.329-5.979-3.496-9.621 C5.798,41.556,5.766,40.544,5.766,32s0.033-9.556,0.187-12.931c0.166-3.642,0.895-7.021,3.496-9.621 c2.6-2.6,5.979-3.329,9.621-3.496C22.444,5.798,23.456,5.766,32,5.766 M32,0c-8.691,0-9.78,0.037-13.194,0.193 c-5.2,0.237-9.768,1.511-13.436,5.178C1.705,9.037,0.43,13.604,0.193,18.806C0.037,22.22,0,23.309,0,32 c0,8.691,0.037,9.78,0.193,13.194c0.237,5.2,1.511,9.768,5.178,13.436c3.666,3.666,8.234,4.941,13.436,5.178 C22.22,63.963,23.309,64,32,64s9.78-0.037,13.194-0.193c5.199-0.237,9.768-1.511,13.436-5.178c3.666-3.666,4.941-8.234,5.178-13.436 C63.963,41.78,64,40.691,64,32s-0.037-9.78-0.193-13.194c-0.237-5.2-1.511-9.768-5.178-13.436 c-3.666-3.666-8.234-4.941-13.436-5.178C41.78,0.037,40.691,0,32,0L32,0z"></path> <path
+					data-color="color-2"
+					d="M32,15.568c-9.075,0-16.432,7.357-16.432,16.432c0,9.075,7.357,16.432,16.432,16.432 S48.432,41.075,48.432,32C48.432,22.925,41.075,15.568,32,15.568z M32,42.667c-5.891,0-10.667-4.776-10.667-10.667 c0-5.891,4.776-10.667,10.667-10.667c5.891,0,10.667,4.776,10.667,10.667C42.667,37.891,37.891,42.667,32,42.667z"></path> <circle
+					data-color="color-2" cx="49.082" cy="14.918" r="3.84"></circle></g></svg></a>
+	</div>
+
+	<ul class="sub">
+		<li><a href="#0">FAQ</a></li>
+		<li><a href="#0">Terms &amp; Conditions</li>
+	</ul>
+</nav>
+<div class="overlay"></div>

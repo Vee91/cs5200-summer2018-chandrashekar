@@ -1,5 +1,8 @@
 package edu.northeastern.cs5200.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Person {
 
 	private int id;
@@ -8,7 +11,7 @@ public class Person {
 	private String username;
 	private String password;
 	private String role;
-	private String phone;
+	private int phone;
 	private String email;
 
 	public Person() {
@@ -28,7 +31,7 @@ public class Person {
 
 	
 	public Person(int id, String firstname, String lastname, String username, String password, String role,
-			String phone, String email) {
+			int phone, String email) {
 		super();
 		this.id = id;
 		this.firstname = firstname;
@@ -88,11 +91,11 @@ public class Person {
 		this.role = role;
 	}
 
-	public String getPhone() {
+	public int getPhone() {
 		return phone;
 	}
 
-	public void setPhone(String phone) {
+	public void setPhone(int phone) {
 		this.phone = phone;
 	}
 

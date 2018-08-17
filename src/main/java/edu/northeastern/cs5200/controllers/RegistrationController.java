@@ -42,7 +42,7 @@ public class RegistrationController {
 
 	@RequestMapping(value = { "/register" }, method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseResource autoComplete(@RequestBody Person person) {
+	public ResponseResource register(@RequestBody Person person) {
 		return registerService.register(person);
 	}
 
