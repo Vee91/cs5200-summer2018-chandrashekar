@@ -32,4 +32,10 @@ public interface AdminService {
 
 	public ResponseResource addPassengerToBooking(int bookingId, Passenger pass);
 
+	public ResponseResource getSchedules();
+
+	public ResponseResource getEmployees();
+
+	public ResponseResource assignCrew(int scheduleId, String employee);
+
 }

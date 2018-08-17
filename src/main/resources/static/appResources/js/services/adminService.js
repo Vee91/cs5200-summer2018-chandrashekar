@@ -12,7 +12,10 @@ define([ 'app'], function(app) {
 				updateFlight : updateFlight,
 				addNewCard : addNewCard,
 				getAllBookings : getAllBookings,
-				addNewPassenger : addNewPassenger
+				addNewPassenger : addNewPassenger,
+				getAllSchedules : getAllSchedules,
+				getAllEmployees : getAllEmployees,
+				assignCrew : assignCrew
 		};
 
 		function getAllUsers() {
@@ -123,6 +126,30 @@ define([ 'app'], function(app) {
 		function addNewPassenger (passenger, bookingId) {
 			var url = "api/admin/booking/"+bookingId+"/passenger";
 			return $http.post(url, passenger)
+			.then(function (response) {
+				return response.data;
+			});
+		}
+		
+		function getAllSchedules(){
+			var url = "api/admin/schedule";
+			return $http.get(url)
+			.then(function (response) {
+				return response.data;
+			});
+		}
+		
+		function getAllEmployees() {
+			var url = "api/admin/employees";
+			return $http.get(url)
+			.then(function (response) {
+				return response.data;
+			});
+		}
+		
+		function assignCrew(crew, schedule) {
+			var url = "api/admin/schedule/"+schedule+"/crew";
+			return $http.post(url, crew)
 			.then(function (response) {
 				return response.data;
 			});

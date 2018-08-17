@@ -22,6 +22,7 @@ public class QueryConstants {
 	public static final StringBuilder INSERT_FLIGHT = new StringBuilder();
 	public static final StringBuilder INSERT_TRANSACTION = new StringBuilder();
 	public static final StringBuilder INSERT_PERSON_WITH_USERNAME = new StringBuilder();
+	public static final StringBuilder ASSIGN_CREW = new StringBuilder();
 
 	public static final StringBuilder SELECT_AIRLINE = new StringBuilder();
 	public static final StringBuilder SELECT_AIRCRAFT = new StringBuilder();
@@ -55,6 +56,8 @@ public class QueryConstants {
 
 	public static final StringBuilder GET_ALL_USERS = new StringBuilder();
 	public static final StringBuilder GET_ALL_BOOKING_ID = new StringBuilder();
+	public static final StringBuilder GET_ALL_SCHEDULES = new StringBuilder();
+	public static final StringBuilder GET_ALL_EMPLOYEES = new StringBuilder();
 	public static final StringBuilder GET_AIRPORT_AUTOCOMPLETE = new StringBuilder();
 	public static final StringBuilder GET_AIRLINE_AUTOCOMPLETE = new StringBuilder();
 	public static final StringBuilder GET_AIRCRAFT_AUTOCOMPLETE = new StringBuilder();
@@ -347,6 +350,17 @@ public class QueryConstants {
 		UPDATE_FLIGHT.append(" WHERE `flight_number` = ? ");
 		
 		GET_ALL_BOOKING_ID.append(" SELECT id FROM cs5200_summer2018_chandrashekar.booking_details ");
+		
+		GET_ALL_SCHEDULES.append(" SELECT id as scheduleId, flight as flightNumber, departure as departsAt, arrival as arrivesAt FROM cs5200_summer2018_chandrashekar.schedule ");
+		
+		GET_ALL_EMPLOYEES.append("SELECT username FROM cs5200_summer2018_chandrashekar.person where role = 'EMPLOYEE' ");
+		
+		ASSIGN_CREW.append(" INSERT INTO `cs5200_summer2018_chandrashekar`.`fight_crew` ");
+		ASSIGN_CREW.append(" (`schedule`, ");
+		ASSIGN_CREW.append(" `employee`) ");
+		ASSIGN_CREW.append(" VALUES ");
+		ASSIGN_CREW.append(" (?,?) ");
+
 
 	}
 

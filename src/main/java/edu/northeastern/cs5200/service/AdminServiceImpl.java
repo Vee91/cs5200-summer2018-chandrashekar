@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.northeastern.cs5200.dao.AdminDao;
 import edu.northeastern.cs5200.dto.AdminFlight;
 import edu.northeastern.cs5200.dto.CreditCard;
+import edu.northeastern.cs5200.dto.Flight;
 import edu.northeastern.cs5200.dto.Passenger;
 import edu.northeastern.cs5200.dto.Person;
 import edu.northeastern.cs5200.util.ResponseResource;
@@ -130,6 +131,33 @@ public class AdminServiceImpl implements AdminService {
 		adminDao.insertPassengerToDB(bookingId, pass);
 		out.setCode("200");
 		out.setMessage("Card created successfully");
+		return out;
+	}
+
+	@Override
+	public ResponseResource getSchedules() {
+		ResponseResource out = new ResponseResource();
+		List<Flight> schedules = adminDao.getSchedules();
+		out.setCode("200");
+		out.setSuccess("flights", schedules);
+		return out;
+	}
+
+	@Override
+	public ResponseResource getEmployees() {
+		ResponseResource out = new ResponseResource();
+		List<String> schedules = adminDao.getEmployees();
+		out.setCode("200");
+		out.setSuccess("employees", schedules);
+		return out;
+	}
+
+	@Override
+	public ResponseResource assignCrew(int scheduleId, String employee) {
+		ResponseResource out = new ResponseResource();
+		adminDao.assignCrew(scheduleId, employee);
+		out.setCode("200");
+		out.setMessage("Crew added successfully");
 		return out;
 	}
 

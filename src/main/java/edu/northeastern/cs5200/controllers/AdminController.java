@@ -93,4 +93,22 @@ public class AdminController {
 	public ResponseResource addPassengerToBooking(@PathVariable(value = "value") int bookingId, @RequestBody Passenger pass) {
 		return adminService.addPassengerToBooking(bookingId, pass);
 	}
+	
+	@RequestMapping(value = { "/schedule" }, method = RequestMethod.GET)
+   	@ResponseBody
+   	public ResponseResource getSchedules() {
+   		return adminService.getSchedules();
+   	}
+	
+	@RequestMapping(value = { "/employees" }, method = RequestMethod.GET)
+   	@ResponseBody
+   	public ResponseResource getEmployees() {
+   		return adminService.getEmployees();
+   	}
+	
+	@RequestMapping(value = { "/schedule/{value}/crew" }, method = RequestMethod.POST)
+   	@ResponseBody
+   	public ResponseResource assignCrew(@PathVariable(value = "value") int scheduleId, @RequestBody String employee) {
+   		return adminService.assignCrew(scheduleId, employee);
+   	}
 }

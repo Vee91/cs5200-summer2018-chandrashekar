@@ -25,9 +25,12 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 		vm.addNewFlight = addNewFlight;
 		vm.addNewCard = addNewCard;
 		vm.addNewPassenger = addNewPassenger;
+		vm.assignCrew = assignCrew;
 
 		vm.users = null;
 		vm.flights = null;
+		vm.schedules = null;
+		vm.employees = null;
 		vm.selectedUser = null;
 		vm.selectedFlight = null;
 		vm.origin = null;
@@ -40,6 +43,7 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 		vm.aircraftSearch = null;
 		vm.bookings = null;
 		vm.selectedBooking = null;
+		vm.selectedSchedule = null;
 
 		function init() {
 			$('.burger, .overlay').click(function(){
@@ -51,7 +55,7 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 
 			HomeService.startApp()
 			.then(function (response) {
-				vm.options = ('Manage User, Manage Passenger, Manage Card, Manage Flight').split(',').map(function (option) { return { abbrev: option }; });
+				vm.options = ('Manage User, Manage Passenger, Manage Card, Manage Flight, Assign Crew').split(',').map(function (option) { return { abbrev: option }; });
 				vm.loggedin = response.loggedin;
 				var role = response.message;
 				if(role == 'ROLE_USER')
@@ -138,7 +142,7 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 				}, function(error) {
 					vm.message = "We are not able to fetch flights at this moment. Please try again later"
 				});
-				
+
 			}
 			else if(vm.selectedChoice == 4) {
 				vm.manageUser    = null;
@@ -146,6 +150,27 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 				vm.managePassenger = null;
 				vm.manageCard = null;
 				vm.manageSchedule = true;
+				AdminService.getAllSchedules()
+				.then(function (response) {
+					if(response.code == 200) {
+						vm.schedules = response.success.flights;
+					} else {
+						vm.message = response.message;
+					}
+				}, function(error) {
+					vm.message = "We are not able to fetch schedules at this moment. Please try again later"
+				});
+
+				AdminService.getAllEmployees()
+				.then(function (response) {
+					if(response.code == 200) {
+						vm.employees = response.success.employees;
+					} else {
+						vm.message = response.message;
+					}
+				}, function(error) {
+					vm.message = "We are not able to fetch employees at this moment. Please try again later"
+				});
 			}
 		}
 
@@ -159,15 +184,15 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 			.cancel('Cancel');
 
 			$mdDialog.show(confirm).then(function() {
-				vm.manageUser    = null;
-				vm.manageFlight  = null;
-				vm.managePassenger = null;
-				vm.manageCard = null;
-				vm.manageSchedule = null;
-				vm.selectedChoice = null;
 				AdminService.addNewUser(vm.users.firstname, vm.users.lastname, vm.users.username, vm.users.phone, vm.users.email, vm.users.password, vm.users.role)
 				.then(function (response) {
 					if(response.code == 200) {
+						vm.manageUser    = null;
+						vm.manageFlight  = null;
+						vm.managePassenger = null;
+						vm.manageCard = null;
+						vm.manageSchedule = null;
+						vm.selectedChoice = null;
 						vm.success = "User added successfully";
 						vm.message = null;
 					} else {
@@ -191,15 +216,15 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 			.cancel('Cancel');
 
 			$mdDialog.show(confirm).then(function() {
-				vm.manageUser    = null;
-				vm.manageFlight  = null;
-				vm.managePassenger = null;
-				vm.manageCard = null;
-				vm.manageSchedule = null;
-				vm.selectedChoice = null;
 				AdminService.updateUser(u)
 				.then(function (response) {
 					if(response.code == 200) {
+						vm.manageUser    = null;
+						vm.manageFlight  = null;
+						vm.managePassenger = null;
+						vm.manageCard = null;
+						vm.manageSchedule = null;
+						vm.selectedChoice = null;
 						vm.success = "User updated successfully";
 						vm.message = null;
 					} else {
@@ -245,7 +270,7 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 				return [];
 			}
 		}
-		
+
 		function updateFlight(ev, f) {
 			var confirm = $mdDialog.confirm()
 			.title('Update flight?')
@@ -256,15 +281,15 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 			.cancel('Cancel');
 
 			$mdDialog.show(confirm).then(function() {
-				vm.manageUser    = null;
-				vm.manageFlight  = null;
-				vm.managePassenger = null;
-				vm.manageCard = null;
-				vm.manageSchedule = null;
-				vm.selectedChoice = null;
 				AdminService.updateFlight(f)
 				.then(function (response) {
 					if(response.code == 200) {
+						vm.manageUser    = null;
+						vm.manageFlight  = null;
+						vm.managePassenger = null;
+						vm.manageCard = null;
+						vm.manageSchedule = null;
+						vm.selectedChoice = null;
 						vm.success = "Flight updated successfully";
 						vm.message = null;
 					} else {
@@ -277,7 +302,7 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 			}, function() {
 			});
 		}
-		
+
 		function addNewFlight(ev) {
 			var confirm = $mdDialog.confirm()
 			.title('Add new flight?')
@@ -288,15 +313,15 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 			.cancel('Cancel');
 
 			$mdDialog.show(confirm).then(function() {
-				vm.manageUser    = null;
-				vm.manageFlight  = null;
-				vm.managePassenger = null;
-				vm.manageCard = null;
-				vm.manageSchedule = null;
-				vm.selectedChoice = null;
 				AdminService.addNewFlight(vm.flights.flightNumber, vm.flights.originTerminal, vm.flights.destinationTerminal, vm.origin, vm.destination, vm.airline, vm.aircraft)
 				.then(function (response) {
 					if(response.code == 200) {
+						vm.manageUser    = null;
+						vm.manageFlight  = null;
+						vm.managePassenger = null;
+						vm.manageCard = null;
+						vm.manageSchedule = null;
+						vm.selectedChoice = null;
 						vm.success = "Flight added successfully";
 						vm.message = null;
 					} else {
@@ -309,7 +334,7 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 			}, function() {
 			});
 		}
-		
+
 		function addNewCard(ev) {
 			var confirm = $mdDialog.confirm()
 			.title('Add new card?')
@@ -320,15 +345,15 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 			.cancel('Cancel');
 
 			$mdDialog.show(confirm).then(function() {
-				vm.manageUser    = null;
-				vm.manageFlight  = null;
-				vm.managePassenger = null;
-				vm.manageCard = null;
-				vm.manageSchedule = null;
-				vm.selectedChoice = null;
 				AdminService.addNewCard(vm.card)
 				.then(function (response) {
 					if(response.code == 200) {
+						vm.manageUser    = null;
+						vm.manageFlight  = null;
+						vm.managePassenger = null;
+						vm.manageCard = null;
+						vm.manageSchedule = null;
+						vm.selectedChoice = null;
 						vm.success = "Card added successfully";
 						vm.message = null;
 					} else {
@@ -341,7 +366,7 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 			}, function() {
 			});
 		}
-		
+
 		function addNewPassenger(ev, pass) {
 			var confirm = $mdDialog.confirm()
 			.title('Add new passenger?')
@@ -352,15 +377,15 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 			.cancel('Cancel');
 
 			$mdDialog.show(confirm).then(function() {
-				vm.manageUser    = null;
-				vm.manageFlight  = null;
-				vm.managePassenger = null;
-				vm.manageCard = null;
-				vm.manageSchedule = null;
-				vm.selectedChoice = null;
 				AdminService.addNewPassenger(pass, vm.selectedBooking)
 				.then(function (response) {
 					if(response.code == 200) {
+						vm.manageUser    = null;
+						vm.manageFlight  = null;
+						vm.managePassenger = null;
+						vm.manageCard = null;
+						vm.manageSchedule = null;
+						vm.selectedChoice = null;
 						vm.success = "Passenger added successfully";
 						vm.message = null;
 					} else {
@@ -369,6 +394,39 @@ define([ 'app', 'adminService', 'homeService' ], function(app) {
 					}
 				}, function(error) {
 					vm.message = "We are not able to add the passenger at this moment. Please try again later"
+				});
+			}, function() {
+			});
+		}
+
+		function assignCrew(ev, emp) {
+			var confirm = $mdDialog.confirm()
+			.title('Assign the crew?')
+			.textContent('Are you sure you want to add the crew to the flight?')
+			.ariaLabel('add crew')
+			.targetEvent(ev)
+			.ok('Add')
+			.cancel('Cancel');
+
+			$mdDialog.show(confirm).then(function() {
+				AdminService.assignCrew(emp, vm.selectedSchedule.scheduleId)
+				.then(function (response) {
+					if(response.code == 200) {
+						vm.selectedSchedule = null;
+						vm.manageUser    = null;
+						vm.manageFlight  = null;
+						vm.managePassenger = null;
+						vm.manageCard = null;
+						vm.manageSchedule = null;
+						vm.selectedChoice = null;
+						vm.success = "Crew added successfully";
+						vm.message = null;
+					} else {
+						vm.success = null;
+						vm.message = response.message;
+					}
+				}, function(error) {
+					vm.message = "We are not able to add the crew at this moment. Please try again later"
 				});
 			}, function() {
 			});

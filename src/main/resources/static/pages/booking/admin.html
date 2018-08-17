@@ -19,7 +19,7 @@
 	{{model.message}}</div>
 	
 	<div class="alert alert-success" ng-show="model.success">
-	{{model.message}}</div>
+	{{model.success}}</div>
 	
 	<md-card> 
 	<md-card-title>
@@ -72,6 +72,15 @@
 	<md-select ng-model="model.selectedBooking" style="min-width: 200px;">
             <md-option ng-repeat="booking in model.bookings" ng-value="booking" >
               {{booking}}
+            </md-option>
+          </md-select>
+	</md-input-container>
+	
+	<md-input-container class="md-block" ng-show = "model.manageSchedule">
+	<label>Select flight to which you want to add crew</label>
+	<md-select ng-model="model.selectedSchedule" style="min-width: 200px;">
+            <md-option ng-repeat="(index, schedule) in model.schedules" ng-value="schedule" >
+              {{schedule.flight_number}}
             </md-option>
           </md-select>
 	</md-input-container>
@@ -406,8 +415,22 @@
 	<md-button class="md-accent md-raised md-hue-3" ng-click="model.cancel()"> Cancel </md-button>
 	</form>
 	
-	<form name = "scheduleForm" ng-show = "model.manageSchedule">
-		schedule form
+	<form name = "scheduleForm" ng-show = "model.selectedSchedule">
+		<div layout-gt-sm="row">
+		<p class="md-body-1"> Flight : {{model.selectedSchedule.flight_number}}, Departs At : {{ model.selectedSchedule.departs_at | date : 'medium'}}, Arrives At : {{ model.selectedSchedule.arrives_at | date : 'medium'}}</p>
+	</div>
+	<div layout-gt-sm="row">
+	<md-input-container class="md-block">
+	<label>Select employee</label>
+	<md-select ng-model="employee" style="min-width: 200px;">
+            <md-option ng-repeat="emp in model.employees" ng-value="emp" >
+              {{emp}}
+            </md-option>
+          </md-select>
+	</md-input-container>
+	</div>
+	<md-button type = "submit" class="md-raised md-primary" ng-click = "model.assignCrew($event, employee)"> Add Card </md-button>
+	<md-button class="md-accent md-raised md-hue-3" ng-click="model.cancel()"> Cancel </md-button>
 	</form>
 	</md-card-content>
 	</md-card>

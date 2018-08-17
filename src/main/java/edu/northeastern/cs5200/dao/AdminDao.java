@@ -7,6 +7,7 @@ import edu.northeastern.cs5200.dto.Aircraft;
 import edu.northeastern.cs5200.dto.Airline;
 import edu.northeastern.cs5200.dto.Airport;
 import edu.northeastern.cs5200.dto.CreditCard;
+import edu.northeastern.cs5200.dto.Flight;
 import edu.northeastern.cs5200.dto.Passenger;
 import edu.northeastern.cs5200.dto.Person;
 
@@ -39,5 +40,11 @@ public interface AdminDao {
 	public List<Integer> getBookings();
 
 	public void insertPassengerToDB(int bookingId, Passenger pass);
+
+	public List<Flight> getSchedules();
+
+	public List<String> getEmployees();
+
+	public void assignCrew(int scheduleId, String employee);
 
 }

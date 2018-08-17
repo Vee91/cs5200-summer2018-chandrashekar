@@ -23,6 +23,7 @@ import edu.northeastern.cs5200.dto.Aircraft;
 import edu.northeastern.cs5200.dto.Airline;
 import edu.northeastern.cs5200.dto.Airport;
 import edu.northeastern.cs5200.dto.CreditCard;
+import edu.northeastern.cs5200.dto.Flight;
 import edu.northeastern.cs5200.dto.Passenger;
 import edu.northeastern.cs5200.dto.Person;
 import edu.northeastern.cs5200.queryconstants.QueryConstants;
@@ -189,7 +190,23 @@ public class AdminDaoImpl implements AdminDao {
 						next.getGender(), next.getSeatNo() },
 				new int[] { Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.BIT, Types.VARCHAR, Types.BIT,
 						Types.VARCHAR });
+	}
 
+	@Override
+	public List<Flight> getSchedules() {
+		return jdbcTemplate.query(QueryConstants.GET_ALL_SCHEDULES.toString(), new Object[] {}, new int[] {},
+				BeanPropertyRowMapper.newInstance(Flight.class));
+	}
+
+	@Override
+	public List<String> getEmployees() {
+		return jdbcTemplate.queryForList(QueryConstants.GET_ALL_EMPLOYEES.toString(), String.class);
+	}
+
+	@Override
+	public void assignCrew(int scheduleId, String employee) {
+		jdbcTemplate.update(QueryConstants.ASSIGN_CREW.toString(), new Object[] { scheduleId, employee },
+				new int[] { Types.INTEGER, Types.VARCHAR });
 	}
 
 }
