@@ -4,6 +4,7 @@ define([ 'app'], function(app) {
 				book : book,
 				findAllCards : findAllCards,
 				bookWithCard : bookWithCard,
+				getQuery : getQuery
 		};
 
 
@@ -25,9 +26,9 @@ define([ 'app'], function(app) {
 				return response.data;
 			});
 		};
-		
+
 		function bookWithCard(p, c, q) {
-			var url = "api/book/card/itinerary";
+			var url = "api/book/itinerary/card";
 			var body = { "passengers" : p, 
 					"cardId" : c,
 					"itinerary" : q};
@@ -36,6 +37,14 @@ define([ 'app'], function(app) {
 				return response.data;
 			});
 		};
+
+		function getQuery() {
+			var url = "api/getSession";
+			return $http.get(url)
+			.then(function (response) {
+				return response.data;
+			});
+		}
 
 
 		return factory;

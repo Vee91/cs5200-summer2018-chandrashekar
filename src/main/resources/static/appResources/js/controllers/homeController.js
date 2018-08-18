@@ -12,6 +12,7 @@ define(['jquery', 'angular', 'app', 'homeService'], function(jquery, angular, ap
 		self.nonstop       = false;
 		self.user          = null;
 		self.admin         = null;
+		self.employee      = null;
 		self.querySearch   = querySearch;
 		self.searchFlight  = searchFlight;
 		self.logout        = logout;
@@ -27,6 +28,8 @@ define(['jquery', 'angular', 'app', 'homeService'], function(jquery, angular, ap
 					self.user = true;
 				if(role == 'ROLE_ADMIN')
 					self.admin = true;
+				if(role == 'ROLE_EMPLOYEE')
+					self.employee = true;
 			});
 
 			$('.burger, .overlay').click(function(){

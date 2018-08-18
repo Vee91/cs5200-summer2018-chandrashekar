@@ -2,19 +2,7 @@ define([ 'app'], function(app) {
 	app.factory('SearchService', function($http) {
 		var factory = {
 				searchFlights : searchFlights,
-				savequery : savequery,
-				setQuery : setQuery,
-				getQuery : getQuery
-		};
-
-		var query = null;
-
-		function setQuery(f){
-			query = f;
-		};
-
-		function getQuery(){
-			return query;
+				savequery : savequery
 		};
 
 		function searchFlights(query) {
@@ -25,7 +13,10 @@ define([ 'app'], function(app) {
 		};
 
 		function savequery(flight) {
-			setQuery(flight);
+			var url = "api/saveSession";
+			return $http.post(url, flight).then(function(response) {
+				return response.data;
+			});
 		};
 
 		return factory;

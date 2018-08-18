@@ -34,6 +34,12 @@ define([], function () {
 					cntrl: 'adminController',
 					cntrlAs: 'model'
 				},
+				'/employee': {
+					templateUrl: 'pages/booking/employee.html',
+					dependencies: ['employeeController'],
+					cntrl: 'employeeController',
+					cntrlAs: 'model'
+				},
 				'/profile/:username': {
 					templateUrl: 'pages/booking/profile.html',
 					dependencies: ['profileController'],

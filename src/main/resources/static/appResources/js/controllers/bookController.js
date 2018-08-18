@@ -18,7 +18,10 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService', 'bookingServ
 		vm.logout = logout;
 
 		function init() {
-			vm.query = SearchService.getQuery();
+			BookingService.getQuery()
+			.then(function (response) {
+				vm.query = response.success.query;
+			});
 			$('.burger, .overlay').click(function(){
 				$('.burger').toggleClass('clicked');
 				$('.overlay').toggleClass('show');

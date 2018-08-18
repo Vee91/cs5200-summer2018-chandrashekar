@@ -53,6 +53,7 @@ public class RefererAuthenticationSuccessHandler extends SavedRequestAwareAuthen
 	private String calculateRoleUrl(Authentication authentication) {
 		boolean isUser = false;
 		boolean isAdmin = false;
+		boolean isEmployee = false;
 		final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		for (final GrantedAuthority grantedAuthority : authorities) {
 			if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
@@ -61,6 +62,9 @@ public class RefererAuthenticationSuccessHandler extends SavedRequestAwareAuthen
 			} else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
 				isAdmin = true;
 				break;
+			} else if (grantedAuthority.getAuthority().equals("ROLE_EMPLOYEE")) {
+				isEmployee = true;
+				break;
 			}
 		}
 
@@ -68,11 +72,14 @@ public class RefererAuthenticationSuccessHandler extends SavedRequestAwareAuthen
 			return null;
 		} else if (isAdmin) {
 			return "/admin";
+		} else if (isEmployee) {
+			return "/employee";
 		} else {
 			throw new IllegalStateException();
 		}
 	}
 
+	@Override
 	public void setRequestCache(RequestCache requestCache) {
 		this.requestCache = requestCache;
 	}

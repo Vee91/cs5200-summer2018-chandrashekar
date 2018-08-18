@@ -34,6 +34,8 @@ require.config({
 		'ticketService' : 'appResources/js/services/ticketService',
 		'cardController' : 'appResources/js/controllers/cardController',
 		'cardService' : 'appResources/js/services/cardService',
+		'employeeController' : 'appResources/js/controllers/employeeController',
+		'employeeService' : 'appResources/js/services/employeeService',
 	},
 	// shim: makes external libraries reachable
 	shim : {

@@ -6,119 +6,53 @@
 	layout-align="center" layout-fill>
 <div flex-xs flex layout="column" style="padding-right: 50px">
 
-	<md-toolbar>
+<md-toolbar>
 	<div class="md-toolbar-tools">
-		<md-button aria-label="Go Back" ng-href="/travelbooking">
-		Back </md-button>
-		<h2 md-truncate style="padding-right: 25px">Profile</h2>
+		<md-button aria-label="Go Back" ng-href="/travelbooking">Back </md-button>
+		<h2 md-truncate style="padding-right: 25px">Crew</h2>
 	</div>
-	</md-toolbar>
-	
-	<div class="alert alert-danger" ng-show="model.message">
-	{{model.message}}</div>
+</md-toolbar>
 
-<div class="alert alert-success" ng-show="model.username">{{model.success}}</div>
+<div class="alert alert-danger" ng-show="model.message">{{model.message}}</div>
+			
+<div ng-repeat = "item in model.flights" style ="padding-top : 20px">
+<md-grid-list md-cols="10" md-row-height="5:1" md-gutter="4px">
 
-<md-card> 
-	<md-card-title>
-	 <md-card-title-text>
-		<span class="md-headline">Profile</span>
-	 </md-card-title-text> 
-	</md-card-title> 
-	
-	<md-card-content>
-	
-	<div flex-sm flex-gt-sm="100" layout="column" layout-align="center center">
-	<form name = "profileForm">
-	<div layout-gt-sm="row">
-	<md-input-container > 
-		<label>First Name</label> 
-		<input required ng-model="model.profile.firstname" md-input-name="firstname">
-		<div ng-messages="profileForm.firstname.$error"
-				ng-if="profileForm.firstname.$touched">
-			<div ng-message="required">
-				You <b>must</b> enter your firstname.
-			</div>
-		</div>
-	</md-input-container>
-	<md-input-container > 
-		<label>Last Name</label> 
-		<input required ng-model="model.profile.lastname" md-input-name="lastname">
-		<div ng-messages="profileForm.lastname.$error"
-				ng-if="profileForm.lastname.$touched">
-			<div ng-message="required">
-				You <b>must</b> enter your lastname.
-			</div>
-		</div>
-	</md-input-container>
-	</div>
-	
-	<div layout-gt-sm="row">
-	<md-input-container > 
-		<label>Phone</label> 
-		<input required ng-model="model.profile.phone" md-input-name="phone" ng-pattern="/^[0-9]{10}$/">
-		<div ng-messages="profileForm.phone.$error"
-				ng-if="profileForm.phone.$touched">
-			<div ng-message="required">
-				You <b>must</b> enter your phone number.
-			</div>
-		</div>
-	</md-input-container>
-	<md-input-container > 
-		<label>Email</label> 
-		<input type="email" required ng-model="model.profile.email" md-input-name="email">
-		<div ng-messages="profileForm.email.$error"
-				ng-if="profileForm.email.$touched">
-			<div ng-message="required">
-				You <b>must</b> enter your email.
-			</div>
-		</div>
-	</md-input-container>
-	</div>
-	
-	<div layout-gt-sm="row">
-	<md-input-container > 
-		<label>Username</label> 
-		<input required ng-model="model.profile.username" md-input-name="username">
-		<div ng-messages="profileForm.username.$error"
-				ng-if="profileForm.username.$touched">
-			<div ng-message="required">
-				You <b>must</b> enter your username.
-			</div>
-		</div>
-	</md-input-container>
-	<md-input-container > 
-		<label>Current Password</label> 
-		<input required ng-model="model.profile.password" md-input-name="password" type = "password">
-		<div ng-messages="profileForm.password.$error"
-				ng-if="profileForm.password.$touched">
-			<div ng-message="required">
-				You <b>must</b> enter your current password to update your profile
-			</div>
-		</div>
-	</md-input-container>
-	</div>
-	
-	<div layout-gt-sm="row">
-		<md-button type="submit" class="md-raised md-primary" ng-click = "model.updateProfile($event, model.profile)"> Update </md-button>
-	</div>
-	
-	</form>
-	</div>
-	
-	</md-card-content>
-	</md-card>
-	
+  <md-grid-tile class="gray" md-colspan="10">
+        <div layout="row" flex>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Flight</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">From</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Departure Time</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">To</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Arrival Time</p></div>
+            <div flex><p class="subhead md-body-2" style = "font-weight: bold">Aircraft</p></div>
+        </div>
+  </md-grid-tile>
+  
+  <md-grid-tile class="gray" md-colspan="10">
+        <div layout="row" flex>
+            <div flex><p class="md-body-1">{{item.flight}}</p></div>
+            <div flex><p class="md-body-1">{{item.origin}}</p></div>
+            <div flex><p class="md-body-1">{{item.departure | date : 'medium'}}</p></div>
+            <div flex><p class="md-body-1">{{item.destination}}</p></div>
+            <div flex><p class="md-body-1">{{item.arrival | date : 'medium'}}</p></div>
+            <div flex><p class="md-body-1">{{item.aircraft}}</p></div>
+        </div>
+   </md-grid-tile>
+
+</md-grid-list>
+ <md-divider></md-divider>
+</div>
 
 </div>
 </md-content>
 
-
 <nav>
 	<ul class="main">
 		<li><a href="/travelbooking">Home</a></li>
-		<li ng-show="model.loggedin && model.employee"><a href="employee">My Flights</a></li>
-		<li ng-show= "model.loggedin && model.user"><a href="tickets">My Tickets</a></li>
+		<li ng-show="model.loggedin && model.employee"><a href="">My Flights</a></li>
+		<li ng-show="model.loggedin && model.user"><a href="tickets">My
+				Tickets</a></li>
 		<li ng-show="model.loggedin && model.admin"><a href="tickets">Admin
 				Dashboard</a></li>
 		<li ng-hide="model.loggedin"><a href="#0">About</a></li>
@@ -157,4 +91,3 @@
 	</ul>
 </nav>
 <div class="overlay"></div>
-

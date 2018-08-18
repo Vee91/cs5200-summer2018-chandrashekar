@@ -1,5 +1,5 @@
 define(['jquery', 'angular', 'app', 'homeService', 'searchService'], function(jquery, angular, app) {
-	app.controller('searchController', [ '$location', 'HomeService', 'SearchService', function($location, HomeService, SearchService) {
+	app.controller('searchController', [ '$window', 'HomeService', 'SearchService', function($window, HomeService, SearchService) {
 		var vm = this;
 		vm.message = null;
 		vm.tiles = null;
@@ -45,8 +45,10 @@ define(['jquery', 'angular', 'app', 'homeService', 'searchService'], function(jq
 		}
 
 		function book(flight) {
-			SearchService.savequery(flight);
-			$location.path('/book');
+			SearchService.savequery(flight).then(function (response) {
+				var url = "http://" + $window.location.host + "/travelbooking/book";
+				$window.location.href = url;
+			});
 		}
 		
 		function logout() {

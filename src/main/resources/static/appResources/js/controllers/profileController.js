@@ -4,6 +4,7 @@ define(['jquery', 'app', 'homeService', 'profileService'], function(jquery, app)
 		vm.profile = null;
 		vm.user          = null;
 		vm.admin         = null;
+		vm.employee      = null;
 		vm.loggedin      = false;
 		vm.logout = logout;
 		vm.updateProfile = updateProfile;
@@ -30,6 +31,8 @@ define(['jquery', 'app', 'homeService', 'profileService'], function(jquery, app)
 					vm.user = true;
 				if(role == 'ROLE_ADMIN')
 					vm.admin = true;
+				if(role == 'ROLE_EMPLOYEE')
+					vm.employee = true;
 			});
 
 			ProfileService.profile().then(function (response) {

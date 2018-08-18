@@ -61,6 +61,7 @@ public class QueryConstants {
 	public static final StringBuilder GET_AIRPORT_AUTOCOMPLETE = new StringBuilder();
 	public static final StringBuilder GET_AIRLINE_AUTOCOMPLETE = new StringBuilder();
 	public static final StringBuilder GET_AIRCRAFT_AUTOCOMPLETE = new StringBuilder();
+	public static final StringBuilder GET_CREW_ASSIGNMENT = new StringBuilder();
 
 	static {
 		INSERT_AIRCRAFT.append("INSERT INTO `cs5200_summer2018_chandrashekar`.`aircrafts` ");
@@ -361,6 +362,20 @@ public class QueryConstants {
 		ASSIGN_CREW.append(" VALUES ");
 		ASSIGN_CREW.append(" (?,?) ");
 
+		GET_CREW_ASSIGNMENT.append(" SELECT  ");
+		GET_CREW_ASSIGNMENT.append(" f.flight_number as flight, f.origin_airport as origin, s.departure as departure, f.destination_airport as destination, s.arrival, a.name as aircraft ");
+		GET_CREW_ASSIGNMENT.append(" FROM ");
+		GET_CREW_ASSIGNMENT.append(" cs5200_summer2018_chandrashekar.fight_crew fc, ");
+		GET_CREW_ASSIGNMENT.append(" cs5200_summer2018_chandrashekar.schedule s, ");
+		GET_CREW_ASSIGNMENT.append(" cs5200_summer2018_chandrashekar.flights f, ");
+		GET_CREW_ASSIGNMENT.append(" cs5200_summer2018_chandrashekar.aircrafts a ");
+		GET_CREW_ASSIGNMENT.append(" WHERE ");
+		GET_CREW_ASSIGNMENT.append(" fc.schedule = s.id ");
+		GET_CREW_ASSIGNMENT.append(" AND s.flight = f.flight_number ");
+		GET_CREW_ASSIGNMENT.append(" and a.code = f.aircraft ");
+		GET_CREW_ASSIGNMENT.append(" AND employee = ? ");
+		GET_CREW_ASSIGNMENT.append(" and departure > now() ");
+		GET_CREW_ASSIGNMENT.append(" order by departure ");
 
 	}
 
